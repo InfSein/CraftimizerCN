@@ -43,5 +43,5 @@ jobs:
         uses: softprops/action-gh-release@v1
         id: release
         with:
-          tag_name: ${{ github.sha }}
+          tag_name: sha-${{ github.sha.substring(0, 7) }}
           files: ${{env.PROJECT_NAME}}/bin/x64/Release/${{env.PROJECT_NAME}}/*
