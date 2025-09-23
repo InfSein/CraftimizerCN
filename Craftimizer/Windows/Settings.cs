@@ -229,7 +229,7 @@ public sealed class Settings : Window, IDisposable
 
     private void DrawTabGeneral()
     {
-        using var tab = TabItem("General");
+        using var tab = TabItem("通用");
         if (!tab)
             return;
 
@@ -238,15 +238,15 @@ public sealed class Settings : Window, IDisposable
         var isDirty = false;
 
         DrawOption(
-            "Enable Synthesis Helper",
-            "Adds a helper next to your synthesis window to help solve for the best craft. " +
-            "Extremely useful for expert recipes, where the condition can greatly affect " +
-            "which actions you take.",
+            "启用制作助手",
+            "在制作期间的游戏窗口旁添加一个助手窗口，以提示接下来的推荐步骤。" +
+            "对于高难度配方格外有效，因为特殊状态会极大地影响使用技能的收益。",
             Config.EnableSynthHelper,
             v => Config.EnableSynthHelper = v,
             ref isDirty
         );
 
+        // todo
         DrawOption(
             "Show Only One Macro Stat in Crafting Log",
             "Only one stat will be shown for a macro. If a craft will be finished, quality " +
