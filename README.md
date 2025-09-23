@@ -5,5 +5,5 @@ soon(tm)
 ## use
 
 ```
-https://raw.githubusercontent.com/InfSein/CraftimizerCN/refs/heads/main/mainfest.json
+https://raw.githubusercontent.com/InfSein/CraftimizerCN/refs/heads/main/manifest.json
 ```

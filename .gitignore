@@ -3,3 +3,5 @@ obj/
 bin/
 *.user
 BenchmarkDotNet.Artifacts/
+folder-alias.json
+private-folder-alias.json
