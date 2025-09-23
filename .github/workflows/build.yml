@@ -39,9 +39,25 @@ jobs:
         run: |
           dotnet build --configuration Release --no-restore
 
+      - name: Get commit hash
+        id: get_hash
+        run: echo "short_sha=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
+
+      - name: Create tag
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git tag build-${{ steps.get_hash.outputs.short_sha }}
+          git push origin build-${{ steps.get_hash.outputs.short_sha }}
+
       - name: Create Release
         uses: softprops/action-gh-release@v1
         id: release
         with:
-          tag_name: sha-${{ github.sha.substring(0, 7) }}
+          tag_name: build-${{ steps.get_hash.outputs.short_sha }}
+          name: "Release for ${{ steps.get_hash.outputs.short_sha }}"
           files: ${{env.PROJECT_NAME}}/bin/x64/Release/${{env.PROJECT_NAME}}/*
+          body: |
+            This is an automatic build from commit `${{ steps.get_hash.outputs.short_sha }}`
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
