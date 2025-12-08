@@ -14,7 +14,7 @@ public static class LuminaSheets
     public static readonly ExcelSheet<Status> StatusSheet = Module.GetSheet<Status>();
     public static readonly ExcelSheet<Addon> AddonSheet = Module.GetSheet<Addon>();
     public static readonly ExcelSheet<ClassJob> ClassJobSheet = Module.GetSheet<ClassJob>();
-    public static readonly ExcelSheet<Item> ItemSheet = Module.GetSheet<Item>();
+    public static readonly ExcelSheet<Item> ItemSheet = Module.GetSheet<Item>(Language.ChineseSimplified);
     public static readonly ExcelSheet<Item> ItemSheetEnglish = Module.GetSheet<Item>(Language.English)!;
     public static readonly ExcelSheet<Level> LevelSheet = Module.GetSheet<Level>();
     public static readonly ExcelSheet<Quest> QuestSheet = Module.GetSheet<Quest>();
