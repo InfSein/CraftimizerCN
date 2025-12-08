@@ -43,7 +43,7 @@ public sealed unsafe class RecipeNote : Window, IDisposable
         ImGuiWindowFlags.AlwaysAutoResize
       | ImGuiWindowFlags.NoFocusOnAppearing;
 
-    private const string WindowNamePinned = "CraftimizerCN Crafting Log Helper###CraftimizerRecipeNote";
+    private const string WindowNamePinned = "CraftimizerCN 制作笔记助手###CraftimizerRecipeNote";
     private const string WindowNameFloating = $"{WindowNamePinned}Floating";
 
     public enum CraftableStatus
@@ -109,13 +109,13 @@ public sealed unsafe class RecipeNote : Window, IDisposable
                 Icon = FontAwesomeIcon.Cog,
                 IconOffset = new(2, 1),
                 Click = _ => Service.Plugin.OpenSettingsTab("Crafting Log"),
-                ShowTooltip = () => ImGuiUtils.Tooltip("Open Settings")
+                ShowTooltip = () => ImGuiUtils.Tooltip("打开设置面板")
             },
             new() {
                 Icon = FontAwesomeIcon.Heart,
                 IconOffset = new(2, 1),
                 Click = _ => Util.OpenLink(Plugin.Plugin.SupportLink),
-                ShowTooltip = () => ImGuiUtils.Tooltip("Support me on Ko-fi!")
+                ShowTooltip = () => ImGuiUtils.Tooltip("赞助原作者")
             }
         ];
 
@@ -467,16 +467,16 @@ public sealed unsafe class RecipeNote : Window, IDisposable
 
         ImGuiHelpers.ScaledDummy(5);
 
-        if (ImGui.Button("View Saved Macros", new(availWidth, 0)))
+        if (ImGui.Button("查看已保存的宏", new(availWidth, 0)))
             Service.Plugin.OpenMacroListWindow();
 
-        if (ImGui.Button("Open in Macro Editor", new(availWidth, 0)))
+        if (ImGui.Button("打开宏编辑器", new(availWidth, 0)))
             Service.Plugin.OpenMacroEditor(CharacterStats!, RecipeData!, new(Service.ClientState.LocalPlayer!.StatusList), CalculateIngredientHqCounts(), [], null);
     }
 
     private void DrawCharacterStats()
     {
-        ImGuiUtils.TextCentered("Crafter");
+        ImGuiUtils.TextCentered("职业");
 
         var level = RecipeData!.ClassJob.GetPlayerLevel();
         {
@@ -525,7 +525,7 @@ public sealed unsafe class RecipeNote : Window, IDisposable
                 ImGui.SameLine(0, 3);
                 ImGui.Image(SplendorousBadge.Handle, new Vector2(imageSize));
                 if (ImGui.IsItemHovered())
-                    ImGuiUtils.Tooltip($"Splendorous Tool");
+                    ImGuiUtils.Tooltip($"肝武加成");
             }
 
             if (hasSpecialist)
@@ -533,7 +533,7 @@ public sealed unsafe class RecipeNote : Window, IDisposable
                 ImGui.SameLine(0, 3);
                 ImGui.Image(SpecialistBadge.Handle, new Vector2(imageSize), Vector2.Zero, Vector2.One, new(0.99f, 0.97f, 0.62f, 1f));
                 if (ImGui.IsItemHovered())
-                    ImGuiUtils.Tooltip($"Specialist");
+                    ImGuiUtils.Tooltip($"专家");
             }
 
             if (shouldHaveManip)
@@ -541,7 +541,7 @@ public sealed unsafe class RecipeNote : Window, IDisposable
                 ImGui.SameLine(0, 3);
                 ImGui.Image(NoManipulationBadge.Handle, new Vector2(imageSize));
                 if (ImGui.IsItemHovered())
-                    ImGuiUtils.Tooltip($"No Manipulation (Missing Job Quest)");
+                    ImGuiUtils.Tooltip($"未习得掌握 (该做职业任务了)");
             }
         }
 
@@ -551,12 +551,12 @@ public sealed unsafe class RecipeNote : Window, IDisposable
         {
             case CraftableStatus.LockedClassJob:
                 {
-                    ImGuiUtils.TextCentered($"You do not have {RecipeData.ClassJob.GetName()} unlocked.");
+                    ImGuiUtils.TextCentered($"你还没有解锁“{RecipeData.ClassJob.GetName()}”。");
                     ImGui.Separator();
                     var unlockQuest = RecipeData.ClassJob.GetUnlockQuest();
                     var (questGiver, questTerritory, questLocation, mapPayload) = ResolveLevelData(unlockQuest.IssuerLocation.RowId);
 
-                    var unlockText = $"Unlock it from {questGiver}";
+                    var unlockText = $"你可以通过完成任务“{questGiver}”来解锁职业。";
                     ImGuiUtils.AlignCentered(ImGui.CalcTextSize(unlockText).X + 5 + ImGui.GetFrameHeight());
                     ImGui.AlignTextToFramePadding();
                     ImGui.TextUnformatted(unlockText);
@@ -564,34 +564,34 @@ public sealed unsafe class RecipeNote : Window, IDisposable
                     if (ImGuiComponents.IconButton(FontAwesomeIcon.Flag))
                         Service.GameGui.OpenMapWithMapLink(mapPayload);
                     if (ImGui.IsItemHovered())
-                        ImGuiUtils.Tooltip("Open in map");
+                        ImGuiUtils.Tooltip("打开地图");
 
                     ImGuiUtils.TextCentered($"{questTerritory} ({GetCoordinatesString(questLocation)})");
                 }
                 break;
             case CraftableStatus.WrongClassJob:
                 {
-                    ImGuiUtils.TextCentered($"You are not {RecipeData.ClassJob.GetNameArticle()} {RecipeData.ClassJob.GetName()}.");
+                    ImGuiUtils.TextCentered($"你的职业还不是“{RecipeData.ClassJob.GetName()}”。");
                     var gearsetId = GetGearsetForJob(RecipeData.ClassJob);
                     if (gearsetId.HasValue)
                     {
-                        if (ImGuiUtils.ButtonCentered("Switch Job"))
+                        if (ImGuiUtils.ButtonCentered("点此切换"))
                             RaptureGearsetModule.Instance()->EquipGearset(gearsetId.Value);
                         if (ImGui.IsItemHovered())
-                            ImGuiUtils.Tooltip($"Swap to gearset {gearsetId + 1}");
+                            ImGuiUtils.Tooltip($"将自动使用{gearsetId + 1}号套装");
                     }
                     else
-                        ImGuiUtils.TextCentered($"You do not have any {RecipeData.ClassJob.GetName()} gearsets.");
+                        ImGuiUtils.TextCentered($"你还没有设置“{RecipeData.ClassJob.GetName()}”职业的套装。");
                     ImGui.Dummy(default);
                 }
                 break;
             case CraftableStatus.SpecialistRequired:
                 {
-                    ImGuiUtils.TextCentered($"You need to be a specialist to craft this recipe.");
+                    ImGuiUtils.TextCentered($"此配方必须使用专家职业制作。");
 
                     var (vendorName, vendorTerritory, vendorLoation, mapPayload) = ResolveLevelData(5891399);
 
-                    var unlockText = $"Trade a Soul of the Crafter to {vendorName}";
+                    var unlockText = $"在“{vendorName}”处进行专家认证。";
                     ImGuiUtils.AlignCentered(ImGui.CalcTextSize(unlockText).X + 5 + ImGui.GetFrameHeight());
                     ImGui.AlignTextToFramePadding();
                     ImGui.TextUnformatted(unlockText);
@@ -599,7 +599,7 @@ public sealed unsafe class RecipeNote : Window, IDisposable
                     if (ImGuiComponents.IconButton(FontAwesomeIcon.Flag))
                         Service.GameGui.OpenMapWithMapLink(mapPayload);
                     if (ImGui.IsItemHovered())
-                        ImGuiUtils.Tooltip("Open in map");
+                        ImGuiUtils.Tooltip("打开地图");
 
                     ImGuiUtils.TextCentered($"{vendorTerritory} ({GetCoordinatesString(vendorLoation)})");
                 }
@@ -610,7 +610,7 @@ public sealed unsafe class RecipeNote : Window, IDisposable
                     var itemName = item.Name.ToString();
                     var imageSize = ImGui.GetFrameHeight();
 
-                    ImGuiUtils.TextCentered($"You are missing the required equipment.");
+                    ImGuiUtils.TextCentered($"这个配方需要装备以下物品。");
                     ImGuiUtils.AlignCentered(imageSize + 5 + ImGui.CalcTextSize(itemName).X);
                     ImGui.AlignTextToFramePadding();
                     ImGui.Image(Service.IconManager.GetIconCached(item.Icon).Handle, new(imageSize));
@@ -625,7 +625,7 @@ public sealed unsafe class RecipeNote : Window, IDisposable
                     var statusIcon = Service.IconManager.GetIconCached(status.Icon);
                     var imageSize = new Vector2(ImGui.GetFrameHeight() * (statusIcon.AspectRatio ?? 1), ImGui.GetFrameHeight());
 
-                    ImGuiUtils.TextCentered($"You are missing the required status effect.");
+                    ImGuiUtils.TextCentered($"这个配方需要处于以下状态。");
                     ImGuiUtils.AlignCentered(imageSize.X + 5 + ImGui.CalcTextSize(statusName).X);
                     ImGui.AlignTextToFramePadding();
                     ImGui.Image(statusIcon.Handle, imageSize);
@@ -635,14 +635,14 @@ public sealed unsafe class RecipeNote : Window, IDisposable
                 break;
             case CraftableStatus.CraftsmanshipTooLow:
                 {
-                    ImGuiUtils.TextCentered("Your Craftsmanship is too low.");
+                    ImGuiUtils.TextCentered("作业精度不足。");
 
                     DrawRequiredStatsTable(CharacterStats!.Craftsmanship, RecipeData.Recipe.RequiredCraftsmanship);
                 }
                 break;
             case CraftableStatus.ControlTooLow:
                 {
-                    ImGuiUtils.TextCentered("Your Control is too low.");
+                    ImGuiUtils.TextCentered("加工精度不足。");
 
                     DrawRequiredStatsTable(CharacterStats!.Control, RecipeData.Recipe.RequiredControl);
                 }
@@ -656,17 +656,17 @@ public sealed unsafe class RecipeNote : Window, IDisposable
                         ImGui.TableSetupColumn("", ImGuiTableColumnFlags.WidthStretch);
 
                         ImGui.TableNextColumn();
-                        ImGui.TextUnformatted("Craftsmanship");
+                        ImGui.TextUnformatted("作业精度");
                         ImGui.TableNextColumn();
                         ImGuiUtils.TextRight($"{CharacterStats!.Craftsmanship}");
 
                         ImGui.TableNextColumn();
-                        ImGui.TextUnformatted("Control");
+                        ImGui.TextUnformatted("加工精度");
                         ImGui.TableNextColumn();
                         ImGuiUtils.TextRight($"{CharacterStats.Control}");
 
                         ImGui.TableNextColumn();
-                        ImGui.TextUnformatted("CP");
+                        ImGui.TextUnformatted("制作力");
                         ImGui.TableNextColumn();
                         ImGuiUtils.TextRight($"{CharacterStats.CP}");
                     }
@@ -680,7 +680,7 @@ public sealed unsafe class RecipeNote : Window, IDisposable
 
     private void DrawRecipeStats()
     {
-        ImGuiUtils.TextCentered("Recipe");
+        ImGuiUtils.TextCentered("配方");
 
         {
             var textStars = new string('★', RecipeData!.Table.Stars);
@@ -727,7 +727,7 @@ public sealed unsafe class RecipeNote : Window, IDisposable
                 ImGui.SameLine(0, 3);
                 ImGui.Image(CosmicExplorationBadge.Handle, new(imageSize));
                 if (ImGui.IsItemHovered())
-                    ImGuiUtils.Tooltip($"Cosmic Exploration");
+                    ImGuiUtils.Tooltip($"宇宙探索");
             }
 
             if (isCollectable)
@@ -736,7 +736,7 @@ public sealed unsafe class RecipeNote : Window, IDisposable
                 ImGui.SetCursorPosY(ImGui.GetCursorPosY() + badgeOffset);
                 ImGui.Image(CollectibleBadge.Handle, badgeSize);
                 if (ImGui.IsItemHovered())
-                    ImGuiUtils.Tooltip($"Collectible");
+                    ImGuiUtils.Tooltip($"收藏品");
             }
 
             if (isExpert)
@@ -745,7 +745,7 @@ public sealed unsafe class RecipeNote : Window, IDisposable
                 ImGui.SetCursorPosY(ImGui.GetCursorPosY() + badgeOffset);
                 ImGui.Image(ExpertBadge.Handle, badgeSize);
                 if (ImGui.IsItemHovered())
-                    ImGuiUtils.Tooltip($"Expert Recipe");
+                    ImGuiUtils.Tooltip($"高难度配方");
             }
         }
 
@@ -758,17 +758,17 @@ public sealed unsafe class RecipeNote : Window, IDisposable
             ImGui.TableSetupColumn("", ImGuiTableColumnFlags.WidthStretch);
 
             ImGui.TableNextColumn();
-            ImGui.TextUnformatted("Progress");
+            ImGui.TextUnformatted("难度");
             ImGui.TableNextColumn();
             ImGuiUtils.TextRight($"{RecipeData.RecipeInfo.MaxProgress}");
 
             ImGui.TableNextColumn();
-            ImGui.TextUnformatted("Quality");
+            ImGui.TextUnformatted("最高品质");
             ImGui.TableNextColumn();
             ImGuiUtils.TextRight($"{RecipeData.RecipeInfo.MaxQuality}");
 
             ImGui.TableNextColumn();
-            ImGui.TextUnformatted("Durability");
+            ImGui.TextUnformatted("耐久");
             ImGui.TableNextColumn();
             ImGuiUtils.TextRight($"{RecipeData.RecipeInfo.MaxDurability}");
         }
@@ -798,9 +798,9 @@ public sealed unsafe class RecipeNote : Window, IDisposable
     {
         var panelTitle = state.Type switch
         {
-            MacroTaskType.Saved => "Best Saved Macro",
-            MacroTaskType.Suggested => "Suggested Macro",
-            MacroTaskType.Community => "Best Community Macro",
+            MacroTaskType.Saved => "最佳本地宏",
+            MacroTaskType.Suggested => "推荐宏",
+            MacroTaskType.Community => "最佳社区宏",
             _ => throw new ArgumentOutOfRangeException(nameof(state), "state.Type must have a valid type")
         };
 
@@ -821,30 +821,29 @@ public sealed unsafe class RecipeNote : Window, IDisposable
                 case MacroTaskType.Suggested:
                     {
                         using var _padding = ImRaii.PushStyle(ImGuiStyleVar.FramePadding, ImGui.GetStyle().FramePadding * 2);
-                        var size = ImGui.CalcTextSize("Generate") + ImGui.GetStyle().FramePadding * 2;
+                        var size = ImGui.CalcTextSize("生成") + ImGui.GetStyle().FramePadding * 2;
                         var c = ImGui.GetCursorPos();
                         var availSize = new Vector2(ImGui.GetContentRegionAvail().X - stepsAvailWidthOffset, windowHeight);
                         ImGuiUtils.AlignMiddle(size, availSize);
-                        if (ImGui.Button("Generate"))
+                        if (ImGui.Button("生成"))
                             CalculateSuggestedMacro();
                         if (ImGui.IsItemHovered())
-                            ImGuiUtils.TooltipWrapped("Suggest a way to finish the crafting recipe. " +
-                                                      "Results aren't perfect, and levels of success " +
-                                                      "can vary wildly depending on the solver's settings.");
+                            ImGuiUtils.TooltipWrapped("生成一种完成制作配方的手法。" +
+                                                      "结果并非总是完美的，成功程度会因求解器的设置而有很大差异。");
                         ImGui.SetCursorPos(c + new Vector2(0, availSize.Y + ImGui.GetStyle().ItemSpacing.Y));
                         break;
                     }
                 case MacroTaskType.Community:
                     {
                         using var _padding = ImRaii.PushStyle(ImGuiStyleVar.FramePadding, ImGui.GetStyle().FramePadding * 2);
-                        var size = ImGui.CalcTextSize("Search Online") + ImGui.GetStyle().FramePadding * 2;
+                        var size = ImGui.CalcTextSize("在线查找") + ImGui.GetStyle().FramePadding * 2;
                         var c = ImGui.GetCursorPos();
                         var availSize = new Vector2(ImGui.GetContentRegionAvail().X - stepsAvailWidthOffset, windowHeight);
                         ImGuiUtils.AlignMiddle(size, availSize);
-                        if (ImGui.Button("Search Online"))
+                        if (ImGui.Button("在线查找"))
                             CalculateCommunityMacro();
                         if (ImGui.IsItemHovered())
-                            ImGuiUtils.TooltipWrapped("Searches FFXIV Teamcraft to find you the best macro");
+                            ImGuiUtils.TooltipWrapped("在 Teamcraft 社区中检索最佳手法");
                         ImGui.SetCursorPos(c + new Vector2(0, availSize.Y + ImGui.GetStyle().ItemSpacing.Y));
                         break;
                     }
@@ -855,14 +854,14 @@ public sealed unsafe class RecipeNote : Window, IDisposable
             switch (state.Type)
             {
                 case MacroTaskType.Saved:
-                    ImGuiUtils.TextMiddleNewLine("Calculating...", new(ImGui.GetContentRegionAvail().X - stepsAvailWidthOffset, windowHeight + 1));
+                    ImGuiUtils.TextMiddleNewLine("计算中...", new(ImGui.GetContentRegionAvail().X - stepsAvailWidthOffset, windowHeight + 1));
                     break;
                 case MacroTaskType.Suggested:
                     {
                         if (state.Solver is not { } solver)
                             throw new ArgumentNullException(nameof(state), "Solver should not be null");
 
-                        var calcTextSize = ImGui.CalcTextSize("Calculating...");
+                        var calcTextSize = ImGui.CalcTextSize("计算中...");
                         var spacing = ImGui.GetStyle().ItemSpacing.X;
                         var fraction = Math.Clamp((float)solver.ProgressValue / solver.ProgressMax, 0, 1);
 
@@ -894,12 +893,12 @@ public sealed unsafe class RecipeNote : Window, IDisposable
                         ImGui.SameLine(0, spacing);
 
                         ImGuiUtils.AlignMiddle(calcTextSize, new(calcTextSize.X, windowHeight));
-                        ImGui.TextUnformatted("Calculating...");
+                        ImGui.TextUnformatted("计算中...");
                         ImGui.SetCursorPos(c + new Vector2(0, windowHeight + ImGui.GetStyle().ItemSpacing.Y - 1));
                         break;
                     }
                 case MacroTaskType.Community:
-                    ImGuiUtils.TextMiddleNewLine("Searching...", new(ImGui.GetContentRegionAvail().X - stepsAvailWidthOffset, windowHeight + 1));
+                    ImGuiUtils.TextMiddleNewLine("检索中...", new(ImGui.GetContentRegionAvail().X - stepsAvailWidthOffset, windowHeight + 1));
                     break;
             }
         }
@@ -907,8 +906,8 @@ public sealed unsafe class RecipeNote : Window, IDisposable
         {
             ImGui.AlignTextToFramePadding();
             using (var color = ImRaii.PushColor(ImGuiCol.Text, ImGuiColors.DalamudRed))
-                ImGuiUtils.TextCentered("An exception occurred");
-            if (ImGuiUtils.ButtonCentered("Copy Error Message"))
+                ImGuiUtils.TextCentered("发生错误");
+            if (ImGuiUtils.ButtonCentered("复制错误信息"))
                 ImGui.SetClipboardText(state.Exception.ToString());
         }
         else if (state.Actions is not { } actions || state.State is not { } simState)
@@ -916,13 +915,13 @@ public sealed unsafe class RecipeNote : Window, IDisposable
             switch (state.Type)
             {
                 case MacroTaskType.Saved:
-                    ImGuiUtils.TextMiddleNewLine("You have no macros!", new(ImGui.GetContentRegionAvail().X - stepsAvailWidthOffset, windowHeight + 1));
+                    ImGuiUtils.TextMiddleNewLine("还没有保存任何宏!", new(ImGui.GetContentRegionAvail().X - stepsAvailWidthOffset, windowHeight + 1));
                     break;
                 case MacroTaskType.Suggested:
                     // Cancelled?
                     break;
                 case MacroTaskType.Community:
-                    ImGuiUtils.TextMiddleNewLine("No macros found!", new(ImGui.GetContentRegionAvail().X - stepsAvailWidthOffset, windowHeight + 1));
+                    ImGuiUtils.TextMiddleNewLine("没有找到合适的宏!", new(ImGui.GetContentRegionAvail().X - stepsAvailWidthOffset, windowHeight + 1));
                     break;
             }
         }
@@ -969,7 +968,7 @@ public sealed unsafe class RecipeNote : Window, IDisposable
                             ImGui.GetColorU32(ImGuiCol.TableBorderLight),
                             ImGui.GetColorU32(Colors.Quality));
                             if (ImGui.IsItemHovered())
-                                ImGuiUtils.Tooltip($"Quality: {simState.Quality} / {simState.Input.Recipe.MaxQuality}");
+                                ImGuiUtils.Tooltip($"品质: {simState.Quality} / {simState.Input.Recipe.MaxQuality}");
                         }
                         else
                         {
@@ -980,7 +979,7 @@ public sealed unsafe class RecipeNote : Window, IDisposable
                             ImGui.GetColorU32(ImGuiCol.TableBorderLight),
                             ImGui.GetColorU32(Colors.Progress));
                             if (ImGui.IsItemHovered())
-                                ImGuiUtils.Tooltip($"Progress: {simState.Progress} / {simState.Input.Recipe.MaxProgress}");
+                                ImGuiUtils.Tooltip($"进展: {simState.Progress} / {simState.Input.Recipe.MaxProgress}");
                         }
                     }
                     else
@@ -992,7 +991,7 @@ public sealed unsafe class RecipeNote : Window, IDisposable
                             ImGui.GetColorU32(ImGuiCol.TableBorderLight),
                             ImGui.GetColorU32(Colors.Progress));
                         if (ImGui.IsItemHovered())
-                            ImGuiUtils.Tooltip($"Progress: {simState.Progress} / {simState.Input.Recipe.MaxProgress}");
+                            ImGuiUtils.Tooltip($"进展: {simState.Progress} / {simState.Input.Recipe.MaxProgress}");
 
                         ImGui.SameLine(0, spacing);
                         ImGuiUtils.ArcProgress(
@@ -1002,14 +1001,14 @@ public sealed unsafe class RecipeNote : Window, IDisposable
                             ImGui.GetColorU32(ImGuiCol.TableBorderLight),
                             ImGui.GetColorU32(Colors.Quality));
                         if (ImGui.IsItemHovered())
-                            ImGuiUtils.Tooltip($"Quality: {simState.Quality} / {simState.Input.Recipe.MaxQuality}");
+                            ImGuiUtils.Tooltip($"品质: {simState.Quality} / {simState.Input.Recipe.MaxQuality}");
                         ImGuiUtils.ArcProgress((float)simState.Durability / simState.Input.Recipe.MaxDurability,
                         miniRowHeight / 2f,
                             .5f,
                             ImGui.GetColorU32(ImGuiCol.TableBorderLight),
                             ImGui.GetColorU32(Colors.Durability));
                         if (ImGui.IsItemHovered())
-                            ImGuiUtils.Tooltip($"Remaining Durability: {simState.Durability} / {simState.Input.Recipe.MaxDurability}");
+                            ImGuiUtils.Tooltip($"剩余耐久: {simState.Durability} / {simState.Input.Recipe.MaxDurability}");
 
                         ImGui.SameLine(0, spacing);
                         ImGuiUtils.ArcProgress(
@@ -1019,7 +1018,7 @@ public sealed unsafe class RecipeNote : Window, IDisposable
                             ImGui.GetColorU32(ImGuiCol.TableBorderLight),
                             ImGui.GetColorU32(Colors.CP));
                         if (ImGui.IsItemHovered())
-                            ImGuiUtils.Tooltip($"Remaining CP: {simState.CP} / {simState.Input.Stats.CP}");
+                            ImGuiUtils.Tooltip($"剩余制作力: {simState.CP} / {simState.Input.Stats.CP}");
                     }
                 }
 
@@ -1028,11 +1027,11 @@ public sealed unsafe class RecipeNote : Window, IDisposable
                     if (ImGuiUtils.IconButtonSquare(FontAwesomeIcon.Edit, miniRowHeight))
                         Service.Plugin.OpenMacroEditor(CharacterStats!, RecipeData!, new(Service.ClientState.LocalPlayer!.StatusList), CalculateIngredientHqCounts(), actions, state.MacroEditorSetter);
                     if (ImGui.IsItemHovered())
-                        ImGuiUtils.Tooltip("Open in Macro Editor");
+                        ImGuiUtils.Tooltip("打开宏编辑器");
                     if (ImGuiUtils.IconButtonSquare(FontAwesomeIcon.Paste, miniRowHeight))
                         MacroCopy.Copy(actions);
                     if (ImGui.IsItemHovered())
-                        ImGuiUtils.Tooltip("Copy to Clipboard");
+                        ImGuiUtils.Tooltip("复制到剪贴板");
                 }
 
                 ImGui.TableNextColumn();
@@ -1058,7 +1057,7 @@ public sealed unsafe class RecipeNote : Window, IDisposable
                                 var pos = ImGui.GetCursorPos();
                                 ImGui.Image(actions[i].GetIcon(RecipeData!.ClassJob).Handle, new(miniRowHeight), default, Vector2.One, new(1, 1, 1, .5f));
                                 if (ImGui.IsItemHovered())
-                                    ImGuiUtils.Tooltip($"{actions[i].GetName(RecipeData!.ClassJob)}\nand {amtMore} more");
+                                    ImGuiUtils.Tooltip($"{actions[i].GetName(RecipeData!.ClassJob)}\n以及另外 {amtMore} 步");
                                 ImGui.SetCursorPos(pos);
                                 ImGui.GetWindowDrawList().AddRectFilled(ImGui.GetCursorScreenPos(), ImGui.GetCursorScreenPos() + new Vector2(miniRowHeight), ImGui.GetColorU32(ImGuiCol.FrameBg), miniRowHeight / 8f);
                                 ImGui.GetWindowDrawList().AddTextClippedEx(ImGui.GetCursorScreenPos(), ImGui.GetCursorScreenPos() + new Vector2(miniRowHeight), $"+{amtMore}", null, new(.5f), null);
@@ -1083,17 +1082,17 @@ public sealed unsafe class RecipeNote : Window, IDisposable
             ImGui.TableSetupColumn("", ImGuiTableColumnFlags.WidthStretch);
 
             ImGui.TableNextColumn();
-            ImGui.TextUnformatted("Current");
+            ImGui.TextUnformatted("当前");
             ImGui.TableNextColumn();
             ImGui.TextColored(new Vector4(0, 1, 0, 1), $"{current}");
 
             ImGui.TableNextColumn();
-            ImGui.TextUnformatted("Required");
+            ImGui.TextUnformatted("需要");
             ImGui.TableNextColumn();
             ImGui.TextColored(new Vector4(1, 0, 0, 1), $"{required}");
 
             ImGui.TableNextColumn();
-            ImGui.TextUnformatted("You need");
+            ImGui.TextUnformatted("还需");
             ImGui.TableNextColumn();
             ImGui.TextUnformatted($"{required - current}");
         }
