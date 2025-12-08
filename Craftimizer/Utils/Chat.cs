@@ -2,7 +2,7 @@ using FFXIVClientStructs.FFXIV.Client.System.String;
 using FFXIVClientStructs.FFXIV.Client.UI;
 using System;
 
-namespace Craftimizer.Utils;
+namespace CraftimizerCN.Utils;
 
 // https://github.com/Caraxi/SimpleTweaksPlugin/blob/0973b93931cdf8a1b01153984d62f76d998747ff/Utility/ChatHelper.cs#L17
 public static unsafe class Chat

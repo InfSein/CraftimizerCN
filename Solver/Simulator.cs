@@ -1,9 +1,9 @@
-using Craftimizer.Simulator;
-using Craftimizer.Simulator.Actions;
+using CraftimizerCN.Simulator;
+using CraftimizerCN.Simulator.Actions;
 using System.Diagnostics.Contracts;
 using System.Runtime.CompilerServices;
 
-namespace Craftimizer.Solver;
+namespace CraftimizerCN.Solver;
 
 internal sealed class Simulator : SimulatorNoRandom
 {

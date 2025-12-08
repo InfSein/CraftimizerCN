@@ -1,10 +1,10 @@
-using Craftimizer.Simulator;
-using Craftimizer.Simulator.Actions;
-using Craftimizer.Solver;
+using CraftimizerCN.Simulator;
+using CraftimizerCN.Simulator.Actions;
+using CraftimizerCN.Solver;
 using ObjectLayoutInspector;
 using System.Diagnostics;
 
-namespace Craftimizer.Benchmark;
+namespace CraftimizerCN.Benchmark;
 
 internal static class Program
 {

@@ -1,4 +1,4 @@
-namespace Craftimizer.Simulator.Actions;
+namespace CraftimizerCN.Simulator.Actions;
 
 internal sealed class Veneration() : BaseBuffAction(
     ActionCategory.Buffs, 15, 19297,

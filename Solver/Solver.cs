@@ -1,8 +1,8 @@
-using Craftimizer.Simulator;
-using Craftimizer.Simulator.Actions;
+using CraftimizerCN.Simulator;
+using CraftimizerCN.Simulator.Actions;
 using System.Diagnostics;
 
-namespace Craftimizer.Solver;
+namespace CraftimizerCN.Solver;
 
 public sealed class Solver : IDisposable
 {

@@ -1,10 +1,10 @@
-using Craftimizer.Plugin;
+using CraftimizerCN.Plugin;
 using Dalamud.Game.Command;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
 
-namespace Craftimizer.Utils;
+namespace CraftimizerCN.Utils;
 
 [AttributeUsage(AttributeTargets.Method)]
 public sealed class CommandAttribute(string name, string description, bool hidden = false, params string[] aliases) : Attribute

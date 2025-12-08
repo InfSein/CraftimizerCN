@@ -10,11 +10,11 @@ using System.Net.Http.Json;
 using System.Text.Json;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
-using Craftimizer.Simulator.Actions;
-using Craftimizer.Simulator;
-using Craftimizer.Solver;
+using CraftimizerCN.Simulator.Actions;
+using CraftimizerCN.Simulator;
+using CraftimizerCN.Solver;
 
-namespace Craftimizer.Utils;
+namespace CraftimizerCN.Utils;
 
 public sealed class CommunityMacros
 {

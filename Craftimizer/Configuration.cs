@@ -1,12 +1,12 @@
-using Craftimizer.Simulator.Actions;
-using Craftimizer.Solver;
+using CraftimizerCN.Simulator.Actions;
+using CraftimizerCN.Solver;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
-namespace Craftimizer.Plugin;
+namespace CraftimizerCN.Plugin;
 
 public class StoredActionTypeConverter : JsonConverter<ActionType[]>
 {
@@ -32,7 +32,7 @@ public class StoredActionTypeConverter : JsonConverter<ActionType[]>
             }
             else if (reader.TokenType == JsonTokenType.Number)
             {
-                // https://github.com/WorkingRobot/Craftimizer/blob/90f53de3d88344084bb2413161c8051ef073dc3d/Simulator/Actions/ActionType.cs#L6
+                // https://github.com/WorkingRobot/CraftimizerCN/blob/90f53de3d88344084bb2413161c8051ef073dc3d/Simulator/Actions/ActionType.cs#L6
                 ActionType? key = reader.GetByte() switch
                 {
                     0 => ActionType.AdvancedTouch,
@@ -139,7 +139,7 @@ public class MacroCopyConfiguration
     public int MaxMacroCount { get; set; } = 5;
 
     // CopyToMacroMate
-    public string MacroMateName { get; set; } = "Craftimizer";
+    public string MacroMateName { get; set; } = "CraftimizerCN";
     public string MacroMateParent { get; set; } = string.Empty;
 
     // Add /nextmacro [down]

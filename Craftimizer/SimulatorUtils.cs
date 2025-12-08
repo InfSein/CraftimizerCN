@@ -1,23 +1,23 @@
-using Craftimizer.Simulator;
-using Craftimizer.Simulator.Actions;
+using CraftimizerCN.Simulator;
+using CraftimizerCN.Simulator.Actions;
 using FFXIVClientStructs.FFXIV.Client.Game.UI;
 using System;
 using System.Linq;
 using System.Numerics;
 using System.Text;
 using Action = Lumina.Excel.Sheets.Action;
-using ActionType = Craftimizer.Simulator.Actions.ActionType;
-using ClassJob = Craftimizer.Simulator.ClassJob;
-using Condition = Craftimizer.Simulator.Condition;
+using ActionType = CraftimizerCN.Simulator.Actions.ActionType;
+using ClassJob = CraftimizerCN.Simulator.ClassJob;
+using Condition = CraftimizerCN.Simulator.Condition;
 using Status = Lumina.Excel.Sheets.Status;
-using Craftimizer.Utils;
+using CraftimizerCN.Utils;
 using Lumina.Text.ReadOnly;
 using Lumina.Text.Payloads;
 using Lumina.Excel.Sheets;
 using Dalamud.Utility;
 using FFXIVClientStructs.FFXIV.Client.Game.Event;
 
-namespace Craftimizer.Plugin;
+namespace CraftimizerCN.Plugin;
 
 internal static class ActionUtils
 {

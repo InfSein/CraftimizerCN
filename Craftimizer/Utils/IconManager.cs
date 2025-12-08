@@ -1,4 +1,4 @@
-using Craftimizer.Plugin;
+using CraftimizerCN.Plugin;
 using Dalamud.Bindings.ImGui;
 using Dalamud.Interface.Textures;
 using Dalamud.Interface.Textures.TextureWraps;
@@ -10,7 +10,7 @@ using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Craftimizer.Utils;
+namespace CraftimizerCN.Utils;
 
 public interface ITextureIcon
 {
@@ -85,7 +85,7 @@ public sealed class IconManager : IDisposable
         Service.TextureProvider.GetFromGameIcon(new GameIconLookup(id, itemHq: isHq));
 
     private static ISharedImmediateTexture GetAssemblyTextureInternal(string filename) =>
-        Service.TextureProvider.GetFromManifestResource(Assembly.GetExecutingAssembly(), $"Craftimizer.{filename}");
+        Service.TextureProvider.GetFromManifestResource(Assembly.GetExecutingAssembly(), $"CraftimizerCN.{filename}");
 
     public static ILoadedTextureIcon GetIcon(uint id, bool isHq = false) =>
         new LoadedIcon(GetIconInternal(id, isHq));

@@ -1,7 +1,7 @@
 using System.Diagnostics.Contracts;
 using System.Runtime.CompilerServices;
 
-namespace Craftimizer.Solver;
+namespace CraftimizerCN.Solver;
 
 public struct ArenaBuffer
 {

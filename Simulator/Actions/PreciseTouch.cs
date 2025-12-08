@@ -1,4 +1,4 @@
-namespace Craftimizer.Simulator.Actions;
+namespace CraftimizerCN.Simulator.Actions;
 
 internal sealed class PreciseTouch() : BaseAction(
     ActionCategory.Quality, 53, 100128,

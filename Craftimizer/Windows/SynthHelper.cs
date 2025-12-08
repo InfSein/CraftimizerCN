@@ -1,7 +1,7 @@
-using Craftimizer.Plugin;
-using Craftimizer.Simulator;
-using Craftimizer.Simulator.Actions;
-using Craftimizer.Utils;
+using CraftimizerCN.Plugin;
+using CraftimizerCN.Simulator;
+using CraftimizerCN.Simulator.Actions;
+using CraftimizerCN.Utils;
 using Dalamud.Game.ClientState.Conditions;
 using Dalamud.Interface;
 using Dalamud.Interface.Colors;
@@ -21,11 +21,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
 using System.Threading;
-using ActionType = Craftimizer.Simulator.Actions.ActionType;
-using Sim = Craftimizer.Simulator.Simulator;
-using SimNoRandom = Craftimizer.Simulator.SimulatorNoRandom;
+using ActionType = CraftimizerCN.Simulator.Actions.ActionType;
+using Sim = CraftimizerCN.Simulator.Simulator;
+using SimNoRandom = CraftimizerCN.Simulator.SimulatorNoRandom;
 
-namespace Craftimizer.Windows;
+namespace CraftimizerCN.Windows;
 
 public sealed unsafe class SynthHelper : Window, IDisposable
 {
@@ -36,7 +36,7 @@ public sealed unsafe class SynthHelper : Window, IDisposable
         ImGuiWindowFlags.AlwaysAutoResize
       | ImGuiWindowFlags.NoFocusOnAppearing;
 
-    private const string WindowNamePinned = "Craftimizer Synthesis Helper###CraftimizerSynthHelper";
+    private const string WindowNamePinned = "CraftimizerCN Synthesis Helper###CraftimizerSynthHelper";
     private const string WindowNameFloating = $"{WindowNamePinned}Floating";
 
     public AddonSynthesis* Addon { get; private set; }

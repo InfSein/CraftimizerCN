@@ -6,7 +6,7 @@ on:
       - main
 
 env:
-  PROJECT_NAME: Craftimizer
+  PROJECT_NAME: CraftimizerCN
 
 jobs:
   build:

@@ -1,4 +1,4 @@
-namespace Craftimizer.Simulator.Actions;
+namespace CraftimizerCN.Simulator.Actions;
 
 internal sealed class HastyTouch() : BaseAction(
     ActionCategory.Quality, 9, 100355,

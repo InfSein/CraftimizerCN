@@ -4,7 +4,7 @@ using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Numerics;
 
-namespace Craftimizer.Utils;
+namespace CraftimizerCN.Utils;
 
 public static class SqText
 {

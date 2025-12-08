@@ -1,4 +1,4 @@
-namespace Craftimizer.Simulator.Actions;
+namespace CraftimizerCN.Simulator.Actions;
 
 internal sealed class QuickInnovation() : BaseBuffAction(
     ActionCategory.Other, 96, 100459,

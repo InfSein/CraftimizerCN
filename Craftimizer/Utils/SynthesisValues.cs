@@ -1,4 +1,4 @@
-using Craftimizer.Simulator;
+using CraftimizerCN.Simulator;
 using Dalamud.Game.Text.SeStringHandling;
 using Dalamud.Memory;
 using FFXIVClientStructs.FFXIV.Client.UI;
@@ -6,7 +6,7 @@ using FFXIVClientStructs.FFXIV.Component.GUI;
 using System;
 using ValueType = FFXIVClientStructs.FFXIV.Component.GUI.ValueType;
 
-namespace Craftimizer.Utils;
+namespace CraftimizerCN.Utils;
 
 internal sealed unsafe class SynthesisValues(AddonSynthesis* addon)
 {

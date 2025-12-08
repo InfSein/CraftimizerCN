@@ -1,7 +1,7 @@
-using Craftimizer.Plugin;
+using CraftimizerCN.Plugin;
 using System;
 
-namespace Craftimizer.Utils;
+namespace CraftimizerCN.Utils;
 
 public static class Log
 {

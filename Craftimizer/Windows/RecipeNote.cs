@@ -1,8 +1,8 @@
-using Craftimizer.Plugin;
-using Craftimizer.Simulator;
-using Craftimizer.Simulator.Actions;
-using Craftimizer.Solver;
-using Craftimizer.Utils;
+using CraftimizerCN.Plugin;
+using CraftimizerCN.Simulator;
+using CraftimizerCN.Simulator.Actions;
+using CraftimizerCN.Solver;
+using CraftimizerCN.Utils;
 using Dalamud.Game.ClientState.Objects.Enums;
 using Dalamud.Game.Text;
 using Dalamud.Game.Text.SeStringHandling.Payloads;
@@ -27,12 +27,12 @@ using System.Globalization;
 using System.Linq;
 using System.Numerics;
 using System.Runtime.InteropServices;
-using ActionType = Craftimizer.Simulator.Actions.ActionType;
-using ClassJob = Craftimizer.Simulator.ClassJob;
+using ActionType = CraftimizerCN.Simulator.Actions.ActionType;
+using ClassJob = CraftimizerCN.Simulator.ClassJob;
 using CSRecipeNote = FFXIVClientStructs.FFXIV.Client.Game.UI.RecipeNote;
-using RecipeIngredient2 = Craftimizer.Utils.CSRecipeNote.RecipeIngredient;
+using RecipeIngredient2 = CraftimizerCN.Utils.CSRecipeNote.RecipeIngredient;
 
-namespace Craftimizer.Windows;
+namespace CraftimizerCN.Windows;
 
 public sealed unsafe class RecipeNote : Window, IDisposable
 {
@@ -43,7 +43,7 @@ public sealed unsafe class RecipeNote : Window, IDisposable
         ImGuiWindowFlags.AlwaysAutoResize
       | ImGuiWindowFlags.NoFocusOnAppearing;
 
-    private const string WindowNamePinned = "Craftimizer Crafting Log Helper###CraftimizerRecipeNote";
+    private const string WindowNamePinned = "CraftimizerCN Crafting Log Helper###CraftimizerRecipeNote";
     private const string WindowNameFloating = $"{WindowNamePinned}Floating";
 
     public enum CraftableStatus

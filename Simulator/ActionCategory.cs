@@ -1,7 +1,7 @@
-using Craftimizer.Simulator.Actions;
+using CraftimizerCN.Simulator.Actions;
 using System.Collections.Frozen;
 
-namespace Craftimizer.Simulator;
+namespace CraftimizerCN.Simulator;
 
 public enum ActionCategory
 {

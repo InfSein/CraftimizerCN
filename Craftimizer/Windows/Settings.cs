@@ -1,6 +1,6 @@
-using Craftimizer.Simulator;
-using Craftimizer.Simulator.Actions;
-using Craftimizer.Solver;
+using CraftimizerCN.Simulator;
+using CraftimizerCN.Simulator.Actions;
+using CraftimizerCN.Solver;
 using Dalamud.Interface;
 using Dalamud.Interface.Colors;
 using Dalamud.Interface.ManagedFontAtlas;
@@ -15,7 +15,7 @@ using System.Linq;
 using System.Numerics;
 using System.Text;
 
-namespace Craftimizer.Plugin.Windows;
+namespace CraftimizerCN.Plugin.Windows;
 
 public sealed class Settings : Window, IDisposable
 {
@@ -31,7 +31,7 @@ public sealed class Settings : Window, IDisposable
     private IFontHandle HeaderFont { get; }
     private IFontHandle SubheaderFont { get; }
 
-    public Settings() : base("Craftimizer Settings", WindowFlags)
+    public Settings() : base("CraftimizerCN Settings", WindowFlags)
     {
         Service.WindowSystem.AddWindow(this);
 
@@ -1105,8 +1105,8 @@ public sealed class Settings : Window, IDisposable
 
                 using (HeaderFont.Push())
                 {
-                    ImGuiUtils.AlignCentered(ImGui.CalcTextSize("Craftimizer").X);
-                    ImGuiUtils.Hyperlink("Craftimizer", "https://github.com/WorkingRobot/Craftimizer", false);
+                    ImGuiUtils.AlignCentered(ImGui.CalcTextSize("CraftimizerCN").X);
+                    ImGuiUtils.Hyperlink("CraftimizerCN", "https://github.com/WorkingRobot/CraftimizerCN", false);
                 }
 
                 using (SubheaderFont.Push())

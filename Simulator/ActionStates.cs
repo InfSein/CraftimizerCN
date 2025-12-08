@@ -1,8 +1,8 @@
-using Craftimizer.Simulator.Actions;
+using CraftimizerCN.Simulator.Actions;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
-namespace Craftimizer.Simulator;
+namespace CraftimizerCN.Simulator;
 
 [StructLayout(LayoutKind.Auto)]
 public record struct ActionStates

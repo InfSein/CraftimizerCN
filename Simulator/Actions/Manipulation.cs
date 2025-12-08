@@ -1,4 +1,4 @@
-namespace Craftimizer.Simulator.Actions;
+namespace CraftimizerCN.Simulator.Actions;
 
 internal sealed class Manipulation() : BaseBuffAction(
     ActionCategory.Durability, 65, 4574,

@@ -1,4 +1,4 @@
-namespace Craftimizer.Simulator;
+namespace CraftimizerCN.Simulator;
 
 public class SimulatorNoRandom : Simulator
 {

@@ -2,7 +2,7 @@ using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Runtime.Intrinsics;
 
-namespace Craftimizer.Solver;
+namespace CraftimizerCN.Solver;
 
 public struct NodeScoresBuffer
 {

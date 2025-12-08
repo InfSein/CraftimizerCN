@@ -1,4 +1,4 @@
-namespace Craftimizer.Simulator.Actions;
+namespace CraftimizerCN.Simulator.Actions;
 
 internal sealed class BasicTouch() : BaseAction(
     ActionCategory.Quality, 5, 100002,

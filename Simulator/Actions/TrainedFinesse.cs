@@ -1,4 +1,4 @@
-namespace Craftimizer.Simulator.Actions;
+namespace CraftimizerCN.Simulator.Actions;
 
 internal sealed class TrainedFinesse() : BaseAction(
     ActionCategory.Quality, 90, 100435,

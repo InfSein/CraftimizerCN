@@ -1,4 +1,4 @@
-using Craftimizer.Plugin;
+using CraftimizerCN.Plugin;
 using Dalamud.Interface.Utility.Raii;
 using Dalamud.Bindings.ImGui;
 using System.Collections.Generic;
@@ -8,7 +8,7 @@ using System.Linq;
 using Dalamud.Utility.Numerics;
 using Dalamud.Interface;
 
-namespace Craftimizer.Utils;
+namespace CraftimizerCN.Utils;
 
 internal static class DynamicBars
 {

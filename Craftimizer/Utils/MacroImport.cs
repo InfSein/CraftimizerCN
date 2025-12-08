@@ -1,6 +1,6 @@
-using Craftimizer.Plugin;
-using Craftimizer.Simulator;
-using Craftimizer.Simulator.Actions;
+using CraftimizerCN.Plugin;
+using CraftimizerCN.Simulator;
+using CraftimizerCN.Simulator.Actions;
 using Dalamud.Networking.Http;
 using System;
 using System.Collections.Generic;
@@ -12,9 +12,9 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Threading;
 using System.Threading.Tasks;
-using static Craftimizer.Utils.CommunityMacros;
+using static CraftimizerCN.Utils.CommunityMacros;
 
-namespace Craftimizer.Utils;
+namespace CraftimizerCN.Utils;
 
 public static class MacroImport
 {

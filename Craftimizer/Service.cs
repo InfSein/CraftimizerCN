@@ -1,4 +1,4 @@
-using Craftimizer.Utils;
+using CraftimizerCN.Utils;
 using Dalamud.Game;
 using Dalamud.Game.ClientState.Objects;
 using Dalamud.Interface.Windowing;
@@ -7,7 +7,7 @@ using Dalamud.Plugin;
 using Dalamud.Plugin.Services;
 using Dalamud.Storage.Assets;
 
-namespace Craftimizer.Plugin;
+namespace CraftimizerCN.Plugin;
 
 #pragma warning disable SeStringEvaluator
 

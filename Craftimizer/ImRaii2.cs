@@ -4,7 +4,7 @@ using Dalamud.Bindings.ImPlot;
 using System;
 using System.Numerics;
 
-namespace Craftimizer.Plugin;
+namespace CraftimizerCN.Plugin;
 
 public static class ImRaii2
 {

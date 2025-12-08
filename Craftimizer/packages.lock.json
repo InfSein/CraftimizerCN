@@ -44,13 +44,13 @@
         "resolved": "8.0.0",
         "contentHash": "ne1843evDugl0md7Fjzy6QjJrzsjh46ZKbhf8GwBXb5f/gw97J4bxMs0NQKifDuThh/f0bZ0e62NPl1jzTuRqA=="
       },
-      "craftimizer.simulator": {
+      "craftimizercn.simulator": {
         "type": "Project"
       },
-      "craftimizer.solver": {
+      "craftimizercn.solver": {
         "type": "Project",
         "dependencies": {
-          "Craftimizer.Simulator": "[1.0.0, )",
+          "CraftimizerCN.Simulator": "[1.0.0, )",
           "DotNext": "[5.21.0, )",
           "Raphael.Net": "[3.0.0, )"
         }

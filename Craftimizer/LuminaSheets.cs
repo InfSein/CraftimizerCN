@@ -2,7 +2,7 @@ using Lumina.Data;
 using Lumina.Excel;
 using Lumina.Excel.Sheets;
 
-namespace Craftimizer.Plugin;
+namespace CraftimizerCN.Plugin;
 
 public static class LuminaSheets
 {

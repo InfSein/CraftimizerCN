@@ -2,11 +2,11 @@ using BenchmarkDotNet.Attributes;
 using BenchmarkDotNet.Diagnosers;
 using BenchmarkDotNet.Diagnostics.dotTrace;
 using BenchmarkDotNet.Jobs;
-using Craftimizer.Simulator;
-using Craftimizer.Solver;
+using CraftimizerCN.Simulator;
+using CraftimizerCN.Solver;
 using System.Runtime.CompilerServices;
 
-namespace Craftimizer.Benchmark;
+namespace CraftimizerCN.Benchmark;
 
 [SimpleJob(RuntimeMoniker.Net80, baseline: true)]
 //[SimpleJob(RuntimeMoniker.Net90)]

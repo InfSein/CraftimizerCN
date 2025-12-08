@@ -28,8 +28,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Simulator\Craftimizer.Simulator.csproj" />
-    <ProjectReference Include="..\Solver\Craftimizer.Solver.csproj" />
+    <ProjectReference Include="..\Simulator\CraftimizerCN.Simulator.csproj" />
+    <ProjectReference Include="..\Solver\CraftimizerCN.Solver.csproj" />
   </ItemGroup>
 
   <PropertyGroup Condition="'$(IS_BENCH)'=='1' Or '$(Configuration)'=='Deterministic'">

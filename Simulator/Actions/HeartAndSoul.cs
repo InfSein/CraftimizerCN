@@ -1,4 +1,4 @@
-namespace Craftimizer.Simulator.Actions;
+namespace CraftimizerCN.Simulator.Actions;
 
 internal sealed class HeartAndSoul() : BaseBuffAction(
     ActionCategory.Other, 86, 100419,

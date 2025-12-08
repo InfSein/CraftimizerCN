@@ -1,6 +1,6 @@
 using System.Runtime.InteropServices;
 
-namespace Craftimizer.Simulator;
+namespace CraftimizerCN.Simulator;
 
 [StructLayout(LayoutKind.Auto)]
 public record struct SimulationState

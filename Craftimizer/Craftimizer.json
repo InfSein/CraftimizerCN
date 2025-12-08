@@ -1,10 +1,10 @@
 {
-    "Author": "Asriel",
-    "Name": "Craftimizer",
+    "Author": "Asriel(原作) / InfSein(翻译)",
+    "Name": "CraftimizerCN",
     "Punchline": "Simulate crafts, create computer-assisted macros, and get mid-craft suggestions from the comfort of your own game!",
     "Description": "Allows you to generate macros and simulate all sorts of crafts without having to open another app. Open your crafting log to get started!",
-    "RepoUrl": "https://github.com/WorkingRobot/Craftimizer",
-    "InternalName": "Craftimizer",
+    "RepoUrl": "https://github.com/InfSein/CraftimizerCN",
+    "InternalName": "CraftimizerCN",
     "ApplicableVersion": "any",
     "Tags": [
         "crafting",

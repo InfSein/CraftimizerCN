@@ -1,10 +1,10 @@
-using Craftimizer.Plugin;
+using CraftimizerCN.Plugin;
 using Dalamud.Interface.Colors;
 using Dalamud.Bindings.ImGui;
 using System;
 using System.Numerics;
 
-namespace Craftimizer.Utils;
+namespace CraftimizerCN.Utils;
 
 public static class Colors
 {

@@ -1,7 +1,7 @@
-using Craftimizer.Plugin;
-using Craftimizer.Simulator;
-using Craftimizer.Simulator.Actions;
-using Craftimizer.Utils;
+using CraftimizerCN.Plugin;
+using CraftimizerCN.Simulator;
+using CraftimizerCN.Simulator.Actions;
+using CraftimizerCN.Utils;
 using Dalamud.Game.ClientState.Statuses;
 using Dalamud.Game.Text;
 using Dalamud.Interface;
@@ -20,13 +20,13 @@ using System.Numerics;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using Sim = Craftimizer.Simulator.Simulator;
-using SimNoRandom = Craftimizer.Simulator.SimulatorNoRandom;
+using Sim = CraftimizerCN.Simulator.Simulator;
+using SimNoRandom = CraftimizerCN.Simulator.SimulatorNoRandom;
 using Recipe = Lumina.Excel.Sheets.Recipe;
 using Dalamud.Utility;
-using Craftimizer.Solver;
+using CraftimizerCN.Solver;
 
-namespace Craftimizer.Windows;
+namespace CraftimizerCN.Windows;
 
 public sealed class MacroEditor : Window, IDisposable
 {
@@ -111,7 +111,7 @@ public sealed class MacroEditor : Window, IDisposable
     private CancellationTokenSource? popupImportUrlTokenSource;
     private CommunityMacros.CommunityMacro? popupImportUrlMacro;
 
-    public MacroEditor(CharacterStats characterStats, RecipeData recipeData, CrafterBuffs buffs, IEnumerable<int>? ingredientHqCounts, IEnumerable<ActionType> actions, Action<IEnumerable<ActionType>>? setter) : base("Craftimizer Macro Editor", WindowFlags)
+    public MacroEditor(CharacterStats characterStats, RecipeData recipeData, CrafterBuffs buffs, IEnumerable<int>? ingredientHqCounts, IEnumerable<ActionType> actions, Action<IEnumerable<ActionType>>? setter) : base("CraftimizerCN Macro Editor", WindowFlags)
     {
         CharacterStats = characterStats;
         RecipeData = recipeData;

@@ -1,4 +1,4 @@
-using Craftimizer.Utils;
+using CraftimizerCN.Utils;
 using Dalamud.Interface;
 using Dalamud.Interface.ManagedFontAtlas;
 using Dalamud.Interface.Utility;
@@ -16,7 +16,7 @@ using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Craftimizer.Plugin;
+namespace CraftimizerCN.Plugin;
 
 internal static class ImGuiUtils
 {

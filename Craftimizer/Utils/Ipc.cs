@@ -1,4 +1,4 @@
-using Craftimizer.Plugin;
+using CraftimizerCN.Plugin;
 using Dalamud.Plugin;
 using System;
 using System.Reflection;
@@ -6,7 +6,7 @@ using System.Runtime.CompilerServices;
 using DotNext.Reflection;
 using DotNext.Collections.Generic;
 
-namespace Craftimizer.Utils;
+namespace CraftimizerCN.Utils;
 
 public sealed class Ipc
 {

@@ -1,8 +1,8 @@
-using Craftimizer.Simulator.Actions;
+using CraftimizerCN.Simulator.Actions;
 using System.Collections.Frozen;
 using System.Runtime.InteropServices;
 
-namespace Craftimizer.Solver;
+namespace CraftimizerCN.Solver;
 
 public enum SolverAlgorithm
 {

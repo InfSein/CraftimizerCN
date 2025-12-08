@@ -1,14 +1,14 @@
-using Craftimizer.Plugin;
-using Craftimizer.Simulator;
-using Craftimizer.Simulator.Actions;
+using CraftimizerCN.Plugin;
+using CraftimizerCN.Simulator;
+using CraftimizerCN.Simulator.Actions;
 using DotNext.Collections.Generic;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Sim = Craftimizer.Simulator.Simulator;
-using SimNoRandom = Craftimizer.Simulator.SimulatorNoRandom;
+using Sim = CraftimizerCN.Simulator.Simulator;
+using SimNoRandom = CraftimizerCN.Simulator.SimulatorNoRandom;
 
-namespace Craftimizer.Utils;
+namespace CraftimizerCN.Utils;
 
 internal sealed class SimulatedMacro
 {

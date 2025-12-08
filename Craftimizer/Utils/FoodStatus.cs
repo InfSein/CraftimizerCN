@@ -1,11 +1,11 @@
-using Craftimizer.Plugin;
+using CraftimizerCN.Plugin;
 using Lumina.Excel.Sheets;
 using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 
-namespace Craftimizer.Utils;
+namespace CraftimizerCN.Utils;
 
 public static class FoodStatus
 {

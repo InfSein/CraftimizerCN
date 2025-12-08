@@ -3,7 +3,7 @@
   <PropertyGroup>
     <Authors>Asriel Camora</Authors>
     <Version>2.8.0.0</Version>
-    <PackageProjectUrl>https://github.com/WorkingRobot/Craftimizer.git</PackageProjectUrl>
+    <PackageProjectUrl>https://github.com/InfSein/CraftimizerCN.git</PackageProjectUrl>
     <Configurations>Debug;Release</Configurations>
   </PropertyGroup>
 
@@ -37,8 +37,8 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <ProjectReference Include="..\Simulator\Craftimizer.Simulator.csproj" />
-    <ProjectReference Include="..\Solver\Craftimizer.Solver.csproj" />
+    <ProjectReference Include="..\Simulator\CraftimizerCN.Simulator.csproj" />
+    <ProjectReference Include="..\Solver\CraftimizerCN.Solver.csproj" />
   </ItemGroup>
 
 </Project>

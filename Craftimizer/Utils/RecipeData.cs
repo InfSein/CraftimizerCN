@@ -1,12 +1,12 @@
-using Craftimizer.Plugin;
-using Craftimizer.Simulator;
+using CraftimizerCN.Plugin;
+using CraftimizerCN.Simulator;
 using Lumina.Excel.Sheets;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using ClassJob = Craftimizer.Simulator.ClassJob;
+using ClassJob = CraftimizerCN.Simulator.ClassJob;
 
-namespace Craftimizer.Utils;
+namespace CraftimizerCN.Utils;
 
 public sealed record RecipeData
 {

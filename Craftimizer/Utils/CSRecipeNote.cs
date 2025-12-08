@@ -2,7 +2,7 @@ using FFXIVClientStructs.FFXIV.Client.Game.UI;
 using FFXIVClientStructs.FFXIV.Client.System.String;
 using System.Runtime.InteropServices;
 
-namespace Craftimizer.Utils;
+namespace CraftimizerCN.Utils;
 
 [StructLayout(LayoutKind.Explicit, Size = 2880)]
 public unsafe struct CSRecipeNote

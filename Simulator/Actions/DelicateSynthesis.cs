@@ -1,4 +1,4 @@
-namespace Craftimizer.Simulator.Actions;
+namespace CraftimizerCN.Simulator.Actions;
 
 internal sealed class DelicateSynthesis() : BaseAction(
     ActionCategory.Synthesis, 76, 100323,

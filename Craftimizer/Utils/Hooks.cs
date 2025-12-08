@@ -1,12 +1,12 @@
-using Craftimizer.Plugin;
+using CraftimizerCN.Plugin;
 using Dalamud.Hooking;
 using FFXIVClientStructs.FFXIV.Client.Game;
 using System;
-using ActionType = Craftimizer.Simulator.Actions.ActionType;
-using ActionUtils = Craftimizer.Plugin.ActionUtils;
+using ActionType = CraftimizerCN.Simulator.Actions.ActionType;
+using ActionUtils = CraftimizerCN.Plugin.ActionUtils;
 using CSActionType = FFXIVClientStructs.FFXIV.Client.Game.ActionType;
 
-namespace Craftimizer.Utils;
+namespace CraftimizerCN.Utils;
 
 public sealed unsafe class Hooks : IDisposable
 {

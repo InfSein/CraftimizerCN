@@ -1,20 +1,20 @@
-using Craftimizer.Plugin;
-using Craftimizer.Utils;
+using CraftimizerCN.Plugin;
+using CraftimizerCN.Utils;
 using Dalamud.Interface.Utility.Raii;
 using Dalamud.Interface;
 using Dalamud.Interface.Windowing;
 using Dalamud.Bindings.ImGui;
 using System;
-using Craftimizer.Simulator;
-using Craftimizer.Simulator.Actions;
+using CraftimizerCN.Simulator;
+using CraftimizerCN.Simulator.Actions;
 using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
-using Sim = Craftimizer.Simulator.SimulatorNoRandom;
+using Sim = CraftimizerCN.Simulator.SimulatorNoRandom;
 using Dalamud.Interface.Utility;
 using Dalamud.Utility;
 
-namespace Craftimizer.Windows;
+namespace CraftimizerCN.Windows;
 
 public sealed class MacroList : Window, IDisposable
 {
@@ -26,7 +26,7 @@ public sealed class MacroList : Window, IDisposable
     private IReadOnlyList<Macro> Macros => Service.Configuration.Macros;
     private Dictionary<Macro, SimulationState> MacroStateCache { get; } = [];
 
-    public MacroList() : base("Craftimizer Macro List", WindowFlags, false)
+    public MacroList() : base("CraftimizerCN Macro List", WindowFlags, false)
     {
         RefreshSearch();
 

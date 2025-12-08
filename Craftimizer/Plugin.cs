@@ -1,8 +1,8 @@
-using Craftimizer.Plugin.Windows;
-using Craftimizer.Simulator;
-using Craftimizer.Simulator.Actions;
-using Craftimizer.Utils;
-using Craftimizer.Windows;
+using CraftimizerCN.Plugin.Windows;
+using CraftimizerCN.Simulator;
+using CraftimizerCN.Simulator.Actions;
+using CraftimizerCN.Utils;
+using CraftimizerCN.Windows;
 using Dalamud.Interface.ImGuiNotification;
 using Dalamud.Interface.Windowing;
 using Dalamud.Plugin;
@@ -10,7 +10,7 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 
-namespace Craftimizer.Plugin;
+namespace CraftimizerCN.Plugin;
 
 public sealed class Plugin : IDalamudPlugin
 {
@@ -39,7 +39,7 @@ public sealed class Plugin : IDalamudPlugin
     {
         Service.Initialize(this, pluginInterface);
 
-        WindowSystem = new("Craftimizer");
+        WindowSystem = new("CraftimizerCN");
         Configuration = Configuration.Load();
         IconManager = new();
         Hooks = new();

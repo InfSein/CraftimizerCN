@@ -1,6 +1,6 @@
-using Craftimizer.Plugin;
-using Craftimizer.Simulator;
-using Craftimizer.Simulator.Actions;
+using CraftimizerCN.Plugin;
+using CraftimizerCN.Simulator;
+using CraftimizerCN.Simulator.Actions;
 using Dalamud.Interface.ImGuiNotification;
 using FFXIVClientStructs.FFXIV.Client.System.Memory;
 using FFXIVClientStructs.FFXIV.Client.System.String;
@@ -9,7 +9,7 @@ using Dalamud.Bindings.ImGui;
 using System;
 using System.Collections.Generic;
 
-namespace Craftimizer.Utils;
+namespace CraftimizerCN.Utils;
 
 public static class MacroCopy
 {
@@ -185,7 +185,7 @@ public static class MacroCopy
         var macro = module->GetMacro(set, (uint)idx);
         if (!macro->IsNotEmpty())
         {
-            macro->Name.SetString($"Craftimizer Macro {macroIdx}");
+            macro->Name.SetString($"CraftimizerCN Macro {macroIdx}");
             macro->SetIcon((uint)(macroIdx > 10 ? 66161 : (66161 + macroIdx)));
         }
         var text = Utf8String.FromString(macroText.ReplaceLineEndings("\n"));

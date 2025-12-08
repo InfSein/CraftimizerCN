@@ -1,4 +1,4 @@
-using Craftimizer.Plugin;
+using CraftimizerCN.Plugin;
 using Dalamud.Interface;
 using Dalamud.Interface.Utility.Raii;
 using Dalamud.Interface.Windowing;
@@ -9,7 +9,7 @@ using System.Numerics;
 using System.Linq;
 using Dalamud.Interface.ImGuiNotification;
 
-namespace Craftimizer.Windows;
+namespace CraftimizerCN.Windows;
 
 public sealed class MacroClipboard : Window, IDisposable
 {

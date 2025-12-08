@@ -1,4 +1,4 @@
-namespace Craftimizer.Simulator.Actions;
+namespace CraftimizerCN.Simulator.Actions;
 
 internal sealed class PreparatoryTouch() : BaseAction(
     ActionCategory.Quality, 71, 100299,
