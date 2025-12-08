@@ -109,7 +109,7 @@ public sealed unsafe class RecipeNote : Window, IDisposable
                 Icon = FontAwesomeIcon.Cog,
                 IconOffset = new(2, 1),
                 Click = _ => Service.Plugin.OpenSettingsTab("Crafting Log"),
-                ShowTooltip = () => ImGuiUtils.Tooltip("打开设置面板")
+                ShowTooltip = () => ImGuiUtils.Tooltip("打开设置")
             },
             new() {
                 Icon = FontAwesomeIcon.Heart,
@@ -472,7 +472,7 @@ public sealed unsafe class RecipeNote : Window, IDisposable
 
         ImGuiHelpers.ScaledDummy(5);
 
-        if (ImGui.Button("查看已保存的宏", new(availWidth, 0)))
+        if (ImGui.Button("查看本地宏", new(availWidth, 0)))
             Service.Plugin.OpenMacroListWindow();
 
         if (ImGui.Button("打开宏编辑器", new(availWidth, 0)))
@@ -523,7 +523,7 @@ public sealed unsafe class RecipeNote : Window, IDisposable
                 ImGui.SameLine(0, 3);
             }
 
-            AxisFont.Text(textClassName);
+            AxisFont.Text(RecipeData.ClassJob.GetName());
 
             if (hasSplendorous)
             {

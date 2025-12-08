@@ -99,7 +99,7 @@ public sealed class Plugin : IDalamudPlugin
         );
     }
 
-    [Command(name: "/crafteditor", aliases: "/macroeditor", description: "Open the crafting macro editor.")]
+    [Command(name: "/cccrafteditor", aliases: "/ccmacroeditor", description: "打开宏编辑器。")]
     public void OpenEmptyMacroEditor()
     {
         var stats = GetDefaultStats();
@@ -112,15 +112,15 @@ public sealed class Plugin : IDalamudPlugin
         EditorWindow = new(characterStats, recipeData, buffs, ingredientHqCounts, actions, setter);
     }
 
-    [Command(name: "/craftaction", description: "Execute the suggested action in the synthesis helper. Can also be run inside a macro. This command is useful for controller players.")]
+    [Command(name: "/cccraftaction", description: "执行制作助手所建议的生产技能，可以写在宏里。此命令对于手柄玩家可能尤其有用。")]
     public void ExecuteSuggestedSynthHelperAction() =>
         SynthHelperWindow.ExecuteNextAction();
 
-    [Command(name: "/craftretry", description: "Clicks \"Retry\" in the synthesis helper. Can also be run inside a macro. This command is useful for controller players.")]
+    [Command(name: "/cccraftretry", description: "相当于点击制作助手中的“重试”按钮，可以写在宏里。此命令对于手柄玩家可能尤其有用。")]
     public void ExecuteRetrySynthHelper() =>
         SynthHelperWindow.AttemptRetry();
 
-    [Command(name: "/craftimizer", description: "Open the settings window.")]
+    [Command(name: "/craftimizercn", description: "打开设置窗口。")]
     private void OpenSettingsWindowForced() =>
         OpenSettingsWindow(true);
 
@@ -136,7 +136,7 @@ public sealed class Plugin : IDalamudPlugin
         SettingsWindow.SelectTab(selectedTabLabel);
     }
 
-    [Command(name: "/craftmacros", aliases: "/macrolist", description: "Open the crafting macros window.")]
+    [Command(name: "/cccraftmacros", aliases: "/ccmacrolist", description: "打开生产宏窗口。")]
     public void OpenMacroListWindow()
     {
         ListWindow.IsOpen = true;
