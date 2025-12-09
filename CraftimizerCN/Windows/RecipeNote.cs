@@ -523,7 +523,7 @@ public sealed unsafe class RecipeNote : Window, IDisposable
                 ImGui.SameLine(0, 3);
             }
 
-            AxisFont.Text(RecipeData.ClassJob.GetName());
+            AxisFont.Text(textClassName);
 
             if (hasSplendorous)
             {
@@ -768,7 +768,7 @@ public sealed unsafe class RecipeNote : Window, IDisposable
             ImGuiUtils.TextRight($"{RecipeData.RecipeInfo.MaxProgress}");
 
             ImGui.TableNextColumn();
-            ImGui.TextUnformatted("最高品质");
+            ImGui.TextUnformatted("品质");
             ImGui.TableNextColumn();
             ImGuiUtils.TextRight($"{RecipeData.RecipeInfo.MaxQuality}");
 
@@ -920,7 +920,7 @@ public sealed unsafe class RecipeNote : Window, IDisposable
             switch (state.Type)
             {
                 case MacroTaskType.Saved:
-                    ImGuiUtils.TextMiddleNewLine("还没有保存任何宏!", new(ImGui.GetContentRegionAvail().X - stepsAvailWidthOffset, windowHeight + 1));
+                    ImGuiUtils.TextMiddleNewLine("还没有保存过本地宏!", new(ImGui.GetContentRegionAvail().X - stepsAvailWidthOffset, windowHeight + 1));
                     break;
                 case MacroTaskType.Suggested:
                     // Cancelled?

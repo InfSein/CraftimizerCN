@@ -31,7 +31,7 @@ public sealed class Settings : Window, IDisposable
     private IFontHandle HeaderFont { get; }
     private IFontHandle SubheaderFont { get; }
 
-    public Settings() : base("CraftimizerCN Settings", WindowFlags)
+    public Settings() : base("CraftimizerCN 偏好设置", WindowFlags)
     {
         Service.WindowSystem.AddWindow(this);
 
@@ -147,68 +147,62 @@ public sealed class Settings : Window, IDisposable
     private static string GetAlgorithmName(SolverAlgorithm algorithm) =>
         algorithm switch
         {
-            SolverAlgorithm.Oneshot => "Oneshot",
-            SolverAlgorithm.OneshotForked => "Oneshot Forked",
-            SolverAlgorithm.Stepwise => "Stepwise",
-            SolverAlgorithm.StepwiseForked => "Stepwise Forked",
-            SolverAlgorithm.StepwiseGenetic => "Stepwise Genetic",
-            SolverAlgorithm.Raphael => "Optimal",
+            SolverAlgorithm.Oneshot => "一次性 / Oneshot",
+            SolverAlgorithm.OneshotForked => "一次性(分支) / Oneshot Forked",
+            SolverAlgorithm.Stepwise => "逐步 / Stepwise",
+            SolverAlgorithm.StepwiseForked => "逐步(分支) / Stepwise Forked",
+            SolverAlgorithm.StepwiseGenetic => "逐步(遗传) / Stepwise Genetic",
+            SolverAlgorithm.Raphael => "最优 / Optimal",
             _ => "Unknown",
         };
 
     private static string GetAlgorithmTooltip(SolverAlgorithm algorithm) =>
         algorithm switch
         {
-            SolverAlgorithm.Oneshot =>          "Run through all iterations and pick the best macro",
-            SolverAlgorithm.OneshotForked =>    "Oneshot, but using multiple solvers simultaneously",
-            SolverAlgorithm.Stepwise =>         "Run through all iterations and pick the next best step, " +
-                                                "and repeat using previous steps as a starting point",
-            SolverAlgorithm.StepwiseForked =>   "Stepwise, but using multiple solvers simultaneously",
-            SolverAlgorithm.StepwiseGenetic =>  "Stepwise Forked, but the top N next best steps are " +
-                                                "selected from the solvers, and each one is equally " +
-                                                "used as a starting point",
-            SolverAlgorithm.Raphael =>          "Finds the best solution, every time. This solver has " +
-                                                "very different options compared to the rest, as it " +
-                                                "is designed using an entirely different algorithm.",
+            SolverAlgorithm.Oneshot => "运行所有迭代并选出最佳宏",
+            SolverAlgorithm.OneshotForked => "一次性算法，但同时使用多个求解器",
+            SolverAlgorithm.Stepwise => "运行所有迭代并选出下一个最佳步骤，随后以此前步骤为起点重复执行",
+            SolverAlgorithm.StepwiseForked => "逐步算法，但同时使用多个求解器",
+            SolverAlgorithm.StepwiseGenetic => "逐步(分支)算法，但从求解器中选出前 N 个最佳的下一步，并将每一个都作为等权的起始点",
+            SolverAlgorithm.Raphael => "每次都能找到最佳解。此求解器与其他求解器的选项差异很大，因为它使用完全不同的算法设计。",
             _ => "Unknown"
         };
 
     private static string GetCopyTypeName(MacroCopyConfiguration.CopyType type) =>
         type switch
         {
-            MacroCopyConfiguration.CopyType.OpenWindow => "Open a Window",
-            MacroCopyConfiguration.CopyType.CopyToMacro => "Copy to Macros",
-            MacroCopyConfiguration.CopyType.CopyToClipboard => "Copy to Clipboard",
-            MacroCopyConfiguration.CopyType.CopyToMacroMate => "Copy to Macro Mate",
+            MacroCopyConfiguration.CopyType.OpenWindow => "打开复制窗口",
+            MacroCopyConfiguration.CopyType.CopyToMacro => "复制到用户宏",
+            MacroCopyConfiguration.CopyType.CopyToClipboard => "复制到剪贴板",
+            MacroCopyConfiguration.CopyType.CopyToMacroMate => "复制到 Macro Mate",
             _ => "Unknown",
         };
 
     private static string GetCopyTypeTooltip(MacroCopyConfiguration.CopyType type) =>
         type switch
         {
-            MacroCopyConfiguration.CopyType.OpenWindow =>       "Open a dedicated window with all macros being copied. " +
-                                                                "Copy, view, and choose at your own leisure.",
-            MacroCopyConfiguration.CopyType.CopyToMacro =>      "Copy directly to the game's macro system.",
-            MacroCopyConfiguration.CopyType.CopyToClipboard =>  "Copy to your clipboard. Macros are separated by a blank line.",
-            MacroCopyConfiguration.CopyType.CopyToMacroMate =>  "Copy directly to a Macro Mate macro. Requires the Macro Mate plugin.",
+            MacroCopyConfiguration.CopyType.OpenWindow =>       "打开一个新窗口，从而自行查看和复制宏的内容。",
+            MacroCopyConfiguration.CopyType.CopyToMacro =>      "直接将宏内容设置到游戏的用户宏中。",
+            MacroCopyConfiguration.CopyType.CopyToClipboard =>  "将宏内容复制到剪贴板。有多个宏时会用空白行来分隔它们。",
+            MacroCopyConfiguration.CopyType.CopyToMacroMate =>  "将宏内容复制到 Macro Mate，你需要先安装这个插件。",
             _ => "Unknown"
         };
 
     private static string GetProgressBarTypeName(Configuration.ProgressBarType type) =>
         type switch
         {
-            Configuration.ProgressBarType.Colorful => "Colorful",
-            Configuration.ProgressBarType.Simple => "Simple",
-            Configuration.ProgressBarType.None => "None",
+            Configuration.ProgressBarType.Colorful => "多彩",
+            Configuration.ProgressBarType.Simple => "简单",
+            Configuration.ProgressBarType.None => "无",
             _ => "Unknown",
         };
 
     private static string GetProgressBarTooltip(Configuration.ProgressBarType type) =>
         type switch
         {
-            Configuration.ProgressBarType.Colorful => "Colorful, rainbow colors",
-            Configuration.ProgressBarType.Simple => "Simple, grayscale colors",
-            Configuration.ProgressBarType.None => "No progress bar; only percent completion is shown",
+            Configuration.ProgressBarType.Colorful => "五颜六色",
+            Configuration.ProgressBarType.Simple => "简朴灰度",
+            Configuration.ProgressBarType.None => "没有进度条，只显示百分比文本",
             _ => "Unknown"
         };
 
@@ -246,31 +240,29 @@ public sealed class Settings : Window, IDisposable
             ref isDirty
         );
 
-        // todo
         DrawOption(
-            "Show Only One Macro Stat in Crafting Log",
-            "Only one stat will be shown for a macro. If a craft will be finished, quality " +
-            "is shown. Otherwise, progress is shown. Durability and remaining CP will be " +
-            "hidden.",
+            "宏效果统计只显示一条",
+            "在计算和显示某个宏的制作效果时只展示最重要的一条。" +
+            "如果这个宏能够完成配方的进展，显示宏能够推进的品质；否则显示宏能够推进的进展。" +
+            "相应的，“剩余耐久”和“剩余CP”不会显示。",
             Config.ShowOptimalMacroStat,
             v => Config.ShowOptimalMacroStat = v,
             ref isDirty
         );
 
         DrawOption(
-            "Check For Delineations",
-            "Your inventory will be checked to ensure that you have delineations available " +
-            "before suggesting any specialist actions.",
+            "检查图纸",
+            "在制作助手向你建议使用专家技能之前，预先检查你是否持有“能工巧匠图纸”。",
             Config.CheckDelineations,
             v => Config.CheckDelineations = v,
             ref isDirty
         );
 
         DrawOption(
-            "Reliability Trial Count",
-            "When testing for reliability of a macro in the editor, this many trials will be " +
-            "run. You should set this value to at least 100 to get a reliable spread of data. " +
-            "If it's too low, you may not find an outlier, and the average might be skewed.",
+            "可靠性测试次数",
+            "在编辑器中测试宏的可靠性时，将运行此处所指定次数的试验。" +
+            "虽然可以自由指定，但为了获得足够可靠的数据分布，设置值应当不低于 100。" +
+            "如果次数太少，可能无法发现离群值，且平均值可能会被扭曲。",
             Config.ReliabilitySimulationCount,
             5,
             5000,
@@ -279,8 +271,8 @@ public sealed class Settings : Window, IDisposable
         );
 
         DrawOption(
-            "Progress Bar Style",
-            "The style of progress bar to use when solving for a macro.",
+            "进度条风格",
+            "调整手法左侧进度条的显示风格。",
             GetProgressBarTypeName,
             GetProgressBarTooltip,
             Config.ProgressType,
@@ -290,11 +282,11 @@ public sealed class Settings : Window, IDisposable
 
         ImGuiHelpers.ScaledDummy(5);
 
-        using (var panel = ImRaii2.GroupPanel("Copying Settings", -1, out _))
+        using (var panel = ImRaii2.GroupPanel("复制相关", -1, out _))
         {
             DrawOption(
-                "Macro Copy Method",
-                "The method to copy a macro with.",
+                "复制宏的方式",
+                "点击复制宏按钮时进行的操作。",
                 GetCopyTypeName,
                 GetCopyTypeTooltip,
                 Config.MacroCopy.Type,
@@ -312,32 +304,32 @@ public sealed class Settings : Window, IDisposable
                     ImGui.TextUnformatted(FontAwesomeIcon.ExclamationCircle.ToIconString());
                 }
                 if (ImGui.IsItemHovered())
-                    ImGuiUtils.Tooltip("Macro Mate is not installed");
+                    ImGuiUtils.Tooltip("还没有安装 Macro Mate 插件");
             }
 
             if (Config.MacroCopy.Type == MacroCopyConfiguration.CopyType.CopyToMacro)
             {
                 DrawOption(
-                    "Copy Downwards",
-                    "Copy subsequent macros downward (#1 -> #11) instead of to the right.",
+                    "向下递进",
+                    "在有多个宏需要设置时，默认的方式是向右递进，如#1、#2、#3。启用此选项会改为向下递进，如#1、#11、#21。",
                     Config.MacroCopy.CopyDown,
                     v => Config.MacroCopy.CopyDown = v,
                     ref isDirty
                 );
 
                 DrawOption(
-                    "Copy to Shared Macros",
-                    "Copy to the shared macros tab. Leaving this unchecked copies to the " +
-                    "individual tab.",
+                    "复制到公用宏中",
+                    "在公用宏标签页中设置宏。" +
+                    "取消勾选此选项则会在角色专用宏标签页中设置宏。",
                     Config.MacroCopy.SharedMacro,
                     v => Config.MacroCopy.SharedMacro = v,
                     ref isDirty
                 );
 
                 DrawOption(
-                    "Macro Number",
-                    "The # of the macro to being copying to. Subsequent macros will be " +
-                    "copied relative to this macro.",
+                    "起始宏序号",
+                    "决定第一个宏将要设置到的序号。" +
+                    "后续的宏将递进设置到之后的宏位置。",
                     Config.MacroCopy.StartMacroIdx,
                     0, 99,
                     v => Config.MacroCopy.StartMacroIdx = v,
@@ -345,9 +337,9 @@ public sealed class Settings : Window, IDisposable
                 );
 
                 DrawOption(
-                    "Max Macro Copy Count",
-                    "The maximum number of macros to be copied. Any more and a window is " +
-                    "displayed with the rest of them.",
+                    "最大宏数",
+                    "决定最多连续设置几个宏。" +
+                    "如果手法生成的宏数量超过了这个数目，则将自动打开复制窗口。",
                     Config.MacroCopy.MaxMacroCount,
                     1, 99,
                     v => Config.MacroCopy.MaxMacroCount = v,
@@ -357,16 +349,16 @@ public sealed class Settings : Window, IDisposable
             else if (Config.MacroCopy.Type == MacroCopyConfiguration.CopyType.CopyToMacroMate)
             {
                 DrawOption(
-                    "Macro Name",
-                    "The name of the macro to be created or updated in Macro Mate.",
+                    "宏名称",
+                    "决定在 Macro Mate 中将要创建的宏的名称。",
                     Config.MacroCopy.MacroMateName,
                     v => Config.MacroCopy.MacroMateName = v,
                     ref isDirty
                 );
 
                 DrawOption(
-                    "Macro Parent",
-                    "The name of the parent group of the new macro. Leave blank or \"/\" if there is none.",
+                    "宏归属",
+                    "决定将要创建的宏归属于哪一个组。如果不需要设置归属，将输入框留空或是填入 \"/\" 。",
                     Config.MacroCopy.MacroMateParent,
                     v => Config.MacroCopy.MacroMateParent = v,
                     ref isDirty
@@ -374,8 +366,8 @@ public sealed class Settings : Window, IDisposable
             }
 
             DrawOption(
-                "Show Copied Message",
-                "Shows a notification in the bottom right when a macro is copied successfully.",
+                "显示“已复制”通知",
+                "当宏内容被成功复制或应用时，在游戏右下方显示通知。",
                 Config.MacroCopy.ShowCopiedMessage,
                 v => Config.MacroCopy.ShowCopiedMessage = v,
                 ref isDirty
@@ -384,9 +376,9 @@ public sealed class Settings : Window, IDisposable
             if (Config.MacroCopy.Type != MacroCopyConfiguration.CopyType.CopyToMacroMate)
             {
                 DrawOption(
-                    "Use Macro Chain",
-                    "Replaces the last step with /nextmacro to run the next macro " +
-                    "automatically. Overrides the Intermediate Notification Sound.",
+                    "启用宏连锁(/nextmacro)",
+                    "将过渡宏的最后一行改为 /nextmacro ，" +
+                    "从而能够一键连续执行完整个制作手法流程。",
                     Config.MacroCopy.UseNextMacro,
                     v => Config.MacroCopy.UseNextMacro = v,
                     ref isDirty
@@ -407,17 +399,17 @@ public sealed class Settings : Window, IDisposable
             }
 
             DrawOption(
-                "Add Macro Lock",
-                "Adds /mlock to the beginning of every macro. Prevents other " +
-                "macros from being run.",
+                "启用宏锁定(/mlock)",
+                "在每个宏的开头添加一行 /mlock ，" +
+                "以阻止制作宏被其他宏打断。",
                 Config.MacroCopy.UseMacroLock,
                 v => Config.MacroCopy.UseMacroLock = v,
                 ref isDirty
             );
 
             DrawOption(
-                "Add Notification",
-                "Replaces the last step of every macro with a /echo notification.",
+                "启用完成提醒",
+                "在每个宏的最后添加一行 /echo ，以提醒你这个宏已经执行完毕。",
                 Config.MacroCopy.AddNotification,
                 v => Config.MacroCopy.AddNotification = v,
                 ref isDirty
@@ -428,9 +420,9 @@ public sealed class Settings : Window, IDisposable
                 if ((Config.MacroCopy.Type == MacroCopyConfiguration.CopyType.CopyToMacro || !Config.MacroCopy.CombineMacro) && Config.MacroCopy.Type != MacroCopyConfiguration.CopyType.CopyToMacroMate)
                 {
                     DrawOption(
-                        "Force Notification",
-                        "Prioritize always having a notification sound at the end of " +
-                        "every macro. Keeping this off prevents macros with only 1 action.",
+                        "强制提醒",
+                        "总是在每个宏的末尾添加完成提醒，无论这个宏是否可以正好执行完剩余工序。" +
+                        "关闭此选项可以避免出现末尾宏只执行一个技能的情况。",
                         Config.MacroCopy.ForceNotification,
                         v => Config.MacroCopy.ForceNotification = v,
                         ref isDirty
@@ -438,8 +430,8 @@ public sealed class Settings : Window, IDisposable
                 }
 
                 DrawOption(
-                    "Add Notification Sound",
-                    "Adds a sound to the end of every macro.",
+                    "启用提示音",
+                    "允许完成提醒播放提示音效。",
                     Config.MacroCopy.AddNotificationSound,
                     v => Config.MacroCopy.AddNotificationSound = v,
                     ref isDirty
@@ -450,9 +442,9 @@ public sealed class Settings : Window, IDisposable
                     if (!Config.MacroCopy.UseNextMacro && Config.MacroCopy.Type != MacroCopyConfiguration.CopyType.CopyToMacroMate)
                     {
                         DrawOption(
-                            "Intermediate Notification Sound",
-                            "Ending notification sound for an intermediary macro.\n" +
-                            "Uses <se.#>",
+                            "过渡宏提示音",
+                            "自定义过渡宏末尾完成提醒所播报的提示音序号，\n" +
+                            "即游戏内的 <se.#> 。",
                             Config.MacroCopy.IntermediateNotificationSound,
                             1, 16,
                             v =>
@@ -465,9 +457,9 @@ public sealed class Settings : Window, IDisposable
                     }
 
                     DrawOption(
-                        "Final Notification Sound",
-                        "Ending notification sound for the final macro.\n" +
-                        "Uses <se.#>",
+                        "最终宏提示音",
+                        "自定义最终宏末尾完成提醒所播报的提示音序号，\n" +
+                        "即游戏内的 <se.#> 。",
                         Config.MacroCopy.EndNotificationSound,
                         1, 16,
                         v =>
@@ -483,8 +475,8 @@ public sealed class Settings : Window, IDisposable
             if (Config.MacroCopy.Type != MacroCopyConfiguration.CopyType.CopyToMacro)
             {
                 DrawOption(
-                    "Remove Wait Times",
-                    "Remove <wait.#> at the end of every action.",
+                    "移除等待时间",
+                    "移除宏中每个技能行最后的 <wait.#> 。",
                     Config.MacroCopy.RemoveWaitTimes,
                     v => Config.MacroCopy.RemoveWaitTimes = v,
                     ref isDirty
@@ -493,8 +485,9 @@ public sealed class Settings : Window, IDisposable
                 if (Config.MacroCopy.Type != MacroCopyConfiguration.CopyType.CopyToMacroMate)
                 {
                     DrawOption(
-                        "Combine Macro",
-                        "Doesn't split the macro into smaller macros.",
+                        "不进行宏拆分",
+                        "一般情况下由于游戏内用户宏有15行的限制，手法工序过多时需要拆分为多个宏。" +
+                        "如果打开这个选项，插件就不会再自动拆分，而是把所有技能放在一个宏里，不管它会有多少行。",
                         Config.MacroCopy.CombineMacro,
                         v => Config.MacroCopy.CombineMacro = v,
                         ref isDirty
@@ -513,20 +506,20 @@ public sealed class Settings : Window, IDisposable
 
         var config = configRef;
 
-        using (var panel = ImRaii2.GroupPanel("General", -1, out _))
+        using (var panel = ImRaii2.GroupPanel("通用", -1, out _))
         {
-            if (ImGui.Button("Reset to Default", OptionButtonSize))
+            if (ImGui.Button("恢复初始设置", OptionButtonSize))
             {
                 config = defaultConfig;
                 isDirty = true;
             }
 
             DrawOption(
-                "Algorithm",
-                "The algorithm to use when solving for a macro. Different " +
-                "algorithms provide different pros and cons for using them. " +
-                "By far, the Optimal and Stepwise Genetic algorithms provide " +
-                "the best results, especially for very difficult crafts.",
+                "算法",
+                "决定在求解宏时要采用的算法。The algorithm to use when solving for a macro. Different " +
+                "这些算法各有优劣。algorithms provide different pros and cons for using them. " +
+                "目前来看，By far, the Optimal and Stepwise Genetic algorithms provide " +
+                "尤其是在处理高难度的制作时。the best results, especially for very difficult crafts.",
                 GetAlgorithmName,
                 GetAlgorithmTooltip,
                 config.Algorithm,
@@ -537,13 +530,12 @@ public sealed class Settings : Window, IDisposable
 
             using (ImRaii.Disabled(config.Algorithm is not (SolverAlgorithm.OneshotForked or SolverAlgorithm.StepwiseForked or SolverAlgorithm.StepwiseGenetic or SolverAlgorithm.Raphael)))
                 DrawOption(
-                    "Max Core Count",
-                    "The number of cores to use when solving. You should use as many " +
-                    "as you can. If it's too high, it will have an effect on your gameplay " +
-                    $"experience. A good estimate would be 1 or 2 cores less than your " +
-                    $"system (FYI, you have {Environment.ProcessorCount} cores), but make sure to accomodate " +
-                    $"for any other tasks you have in the background, if you have any.\n" +
-                    "(Only used in the Forked, Genetic, and Optimal algorithms)",
+                    "最大核心数",
+                    "求解时使用的核心数量。你应尽可能多地使用可用核心。" +
+                    $"如果设置过高，可能会影响你的游戏体验。" +
+                    $"一个较好的估计是比你的系统核心数少 1 到 2 个（提示：你有 {Environment.ProcessorCount} 个核心），" +
+                    $"但请确保为后台任务预留足够的核心（如果有的话）。\n" +
+                    "（只在分支、遗传和最优算法中使用）",
                     config.MaxThreadCount,
                     1,
                     Environment.ProcessorCount,
@@ -554,11 +546,10 @@ public sealed class Settings : Window, IDisposable
             if (config.Algorithm != SolverAlgorithm.Raphael)
             {
                 DrawOption(
-                    "Target Iterations",
-                    "The total number of iterations to run per crafting step. " +
-                    "Higher values require more computational power. Higher values " +
-                    "also may decrease variance, so other values should be tweaked " +
-                    "as necessary to get a more favorable outcome.",
+                    "目标迭代次数",
+                    "每个制作步骤要运行的总迭代次数。" +
+                    "较高的数值需要更多的计算能力。" +
+                    "较高的数值也可能降低结果的波动性，因此可以根据需要调整其他参数，以获得更理想的结果。",
                     config.Iterations,
                     1000,
                     1000000,
@@ -567,12 +558,10 @@ public sealed class Settings : Window, IDisposable
                 );
 
                 DrawOption(
-                    "Max Iterations",
-                    "The solver may go about the target iteration value if the craft " +
-                    "is sufficiently difficult, and it wasn't able to find any way to " +
-                    "complete it yet. In rare cases, the solver might go on for a very " +
-                    "long time. This maximum is here to prevent the solver from stealing " +
-                    "all your RAM.",
+                    "最大迭代次数",
+                    "当制作难度足够高且求解器尚未找到任何完成方式时，" +
+                    "求解器可能会超过目标迭代次数。在少数情况下，" +
+                    "求解器可能会持续运行非常长的时间。设置该最大值是为了防止求解器占用你所有的内存。",
                     config.MaxIterations,
                     config.Iterations,
                     5000000,
@@ -581,12 +570,11 @@ public sealed class Settings : Window, IDisposable
                 );
 
                 DrawOption(
-                    "Max Step Count",
-                    "The maximum number of crafting steps; this is generally the only " +
-                    "setting you should change, and it should be set to around 5 steps " +
-                    "more than what you'd expect. If this value is too low, the solver " +
-                    "won't learn much per iteration; too high and it will waste time " +
-                    "on useless extra steps.",
+                    "最大步骤数",
+                    "制作步骤的最大数量；这通常是你唯一需要调整的设置。" +
+                    "它应该比你预计的步骤数多大约 5 步。如果该值过低，" +
+                    "求解器在每次迭代中学到的内容会很少；如果过高，" +
+                    "则会在无用的额外步骤上浪费时间。",
                     config.MaxStepCount,
                     1,
                     100,
@@ -595,10 +583,9 @@ public sealed class Settings : Window, IDisposable
                 );
 
                 DrawOption(
-                    "Exploration Constant",
-                    "A constant that decides how often the solver will explore new, " +
-                    "possibly good paths. If this value is too high, " +
-                    "moves will mostly be decided at random.",
+                    "探索常数",
+                    "决定求解器探索新的、可能更佳路径频率的常数。" +
+                    "如果该值设置得过高，求解动作将大多随机决定。",
                     config.ExplorationConstant,
                     0,
                     10,
@@ -607,11 +594,10 @@ public sealed class Settings : Window, IDisposable
                 );
 
                 DrawOption(
-                    "Score Weighting Constant",
-                    "A constant ranging from 0 to 1 that configures how the solver " +
-                    "scores and picks paths to travel to next. A value of 0 means " +
-                    "actions will be chosen based on their average outcome, whereas " +
-                    "1 uses their best outcome achieved so far.",
+                    "评分权重常数",
+                    "一个范围在 0 到 1 之间的常数，用于配置求解器如何评分并选择下一步路径。" +
+                    "值为 0 时，将根据其平均结果选择；" +
+                    "值为 1 时，则使用迄今为止取得的最佳结果选择。",
                     config.MaxScoreWeightingConstant,
                     0,
                     1,
@@ -621,14 +607,14 @@ public sealed class Settings : Window, IDisposable
 
                 using (ImRaii.Disabled(config.Algorithm is not (SolverAlgorithm.OneshotForked or SolverAlgorithm.StepwiseForked or SolverAlgorithm.StepwiseGenetic)))
                     DrawOption(
-                        "Fork Count",
-                        "Split the number of iterations across different solvers. In general, " +
-                        "you should increase this value to at least the number of cores in " +
-                        $"your system (FYI, you have {Environment.ProcessorCount} cores) to attain the most speedup. " +
-                        "The higher the number, the more chance you have of finding a " +
-                        "better local maximum; this concept similar but not equivalent " +
-                        "to the exploration constant.\n" +
-                        "(Only used in the Forked and Genetic algorithms)",
+                        "分支数量",
+                        "将迭代次数分配到不同的求解器上。" +
+                        "通常，你应该将此值至少增加到系统核心数" +
+                        $"（提示：你有 {Environment.ProcessorCount} 个核心），" +
+                        "以获得最大的加速效果。" +
+                        "数量越高，找到更好局部最大值的机会就越大；" +
+                        "这一概念与探索常数类似，但不完全相同。\n" +
+                        "（只在分支和遗传算法中使用）",
                         config.ForkCount,
                         1,
                         500,
@@ -638,11 +624,10 @@ public sealed class Settings : Window, IDisposable
 
                 using (ImRaii.Disabled(config.Algorithm is not SolverAlgorithm.StepwiseGenetic))
                     DrawOption(
-                        "Elitist Action Count",
-                        "On every craft step, pick this many top solutions and use them as " +
-                        "the input for the next craft step. For best results, use Fork Count / 2 " +
-                        "and add about 1 or 2 more if needed.\n" +
-                        "(Only used in the Stepwise Genetic algorithm)",
+                        "精英动作数量",
+                        "在每个制作步骤中，选择此处指定的数量的最佳方案，并将它们作为下一制作步骤的输入。" +
+                        "为了获得最佳效果，可设置为分支数量的一半，如有需要可再加 1 到 2。\n" +
+                        "（只在逐步遗传算法中使用）",
                         config.FurcatedActionCount,
                         1,
                         500,
@@ -653,17 +638,17 @@ public sealed class Settings : Window, IDisposable
             else
             {
                 DrawOption(
-                    "Quick Solve",
-                    "Speeds up solve times. Backloads all Progress " +
-                    "actions to the end of the rotation.",
+                    "快速求解",
+                    "加快求解时间。" +
+                    "将所有作业类技能推迟到循环的末尾。",
                     config.BackloadProgress,
                     v => config = config with { BackloadProgress = v },
                     ref isDirty
                 );
                 DrawOption(
-                    "Ensure Reliability",
-                    "Find a rotation that can reach the target quality no matter " +
-                    "how unlucky the random conditions are.",
+                    "确保可靠性",
+                    "找到一种循环策略，" +
+                    "无论随机条件多么不利，都能达到目标品质。",
                     config.Adversarial,
                     v => config = config with { Adversarial = v },
                     ref isDirty
@@ -678,16 +663,16 @@ public sealed class Settings : Window, IDisposable
                         ImGui.TextUnformatted(FontAwesomeIcon.ExclamationCircle.ToIconString());
                     }
                     if (ImGui.IsItemHovered())
-                        ImGuiUtils.TooltipWrapped("\"Ensure Reliability\" uses a lot more memory and can significantly increase solve times.");
+                        ImGuiUtils.TooltipWrapped("启用“确保可靠性”会使用更多内存，并可能显著增加求解时间。");
                 }
             }
         }
 
-        using (var panel = ImRaii2.GroupPanel("Action Pool", -1, out var poolWidth))
+        using (var panel = ImRaii2.GroupPanel("技能池", -1, out var poolWidth))
         {
             poolWidth -= ImGui.GetStyle().ItemSpacing.X * 2;
 
-            ImGui.TextUnformatted("Select the actions you want the solver to choose from.");
+            ImGui.TextUnformatted("点击下方的技能图标以决定是否允许求解器使用它们。");
 
             var pool = config.ActionPool;
             DrawActionPool(ref pool, poolWidth, out var isPoolDirty);
@@ -700,13 +685,13 @@ public sealed class Settings : Window, IDisposable
 
         if (config.Algorithm != SolverAlgorithm.Raphael)
         {
-            using (var panel = ImRaii2.GroupPanel("Advanced", -1, out _))
+            using (var panel = ImRaii2.GroupPanel("高级", -1, out _))
             {
                 DrawOption(
-                    "Max Rollout Step Count",
-                    "The maximum number of crafting steps every iteration can consider. " +
-                    "Decreasing this value can have unintended side effects. Only change " +
-                    "this value if you absolutely know what you're doing.",
+                    "最大展开步骤数",
+                    "每次迭代可考虑的制作步骤的最大数量。" +
+                    "降低此值可能会产生意想不到的副作用。" +
+                    "请仅在你完全清楚自己在做什么时才更改此值。",
                     config.MaxRolloutStepCount,
                     1,
                     50,
@@ -715,10 +700,10 @@ public sealed class Settings : Window, IDisposable
                 );
 
                 DrawOption(
-                    "Strict Actions",
-                    "When finding the next possible actions to execute, use a heuristic " +
-                    "to restrict which actions to attempt taking. This results in a much " +
-                    "better macro at the cost of not finding an extremely creative one.",
+                    "严格技能",
+                    "在寻找下一步可执行技能时，" +
+                    "使用启发式方法限制尝试的技能范围。" +
+                    "这样可以生成更优秀的宏，但代价是可能无法找到极具创造性的宏。",
                     config.StrictActions,
                     v => config = config with { StrictActions = v },
                     ref isDirty
@@ -728,11 +713,11 @@ public sealed class Settings : Window, IDisposable
 
         if (config.Algorithm != SolverAlgorithm.Raphael)
         {
-            using (var panel = ImRaii2.GroupPanel("Score Weights (Advanced)", -1, out _))
+            using (var panel = ImRaii2.GroupPanel("权重分数 (高级)", -1, out _))
             {
                 DrawOption(
-                    "Progress",
-                    "Amount of weight to give to the craft's progress.",
+                    "进展",
+                    "决定你要为推进配方进展分配多少权重分数。",
                     config.ScoreProgress,
                     0,
                     100,
@@ -741,8 +726,8 @@ public sealed class Settings : Window, IDisposable
                 );
 
                 DrawOption(
-                    "Quality",
-                    "Amount of weight to give to the craft's quality.",
+                    "品质",
+                    "决定你要为提高配方品质分配多少权重分数。",
                     config.ScoreQuality,
                     0,
                     100,
@@ -751,8 +736,8 @@ public sealed class Settings : Window, IDisposable
                 );
 
                 DrawOption(
-                    "Durability",
-                    "Amount of weight to give to the craft's remaining durability.",
+                    "耐久",
+                    "决定你要为剩余耐久分配多少权重分数。",
                     config.ScoreDurability,
                     0,
                     100,
@@ -761,8 +746,8 @@ public sealed class Settings : Window, IDisposable
                 );
 
                 DrawOption(
-                    "CP",
-                    "Amount of weight to give to the craft's remaining CP.",
+                    "制作力",
+                    "决定你要为剩余制作力分配多少权重分数。",
                     config.ScoreCP,
                     0,
                     100,
@@ -771,9 +756,9 @@ public sealed class Settings : Window, IDisposable
                 );
 
                 DrawOption(
-                    "Steps",
-                    "Amount of weight to give to the craft's number of steps. The lower " +
-                    "the step count, the higher the score.",
+                    "步数",
+                    "决定你要为工序步数分配多少权重分数。" +
+                    "步数越少，权重分越高。",
                     config.ScoreSteps,
                     0,
                     100,
@@ -842,16 +827,14 @@ public sealed class Settings : Window, IDisposable
                         s.AppendLine(actions[i].GetName(recipeData.ClassJob));
                         if (isInefficient)
                             s.AppendLine(
-                                "Not recommended. This action may be randomly used in a " +
-                                "detrimental way to the rest of the craft. Always use " +
-                                "your best judgement if enabling this action.");
+                                "不推荐。此技能可能会以对整个制作不利的方式被随机使用。" +
+                                "如果启用此技能，请始终使用你的最佳判断。");
                         if (isRisky)
                             s.AppendLine(
-                                "Useless; the solver currently doesn't take any risks in " +
-                                "its crafts. It only takes steps that have a 100% chance of " +
-                                "succeeding. If you want have a moment where you want to take " +
-                                "risks in your craft (like in expert recipes), don't rely " +
-                                "on the solver during that time.");
+                                "无用；求解器目前在制作期间不会冒任何风险。" +
+                                "它只会执行成功率为 100% 的步骤。" +
+                                "如果你想在制作中尝试冒险（例如高难度配方），" +
+                                "就不要在那段时间依赖求解器。");
                         ImGuiUtils.TooltipWrapped(s.ToString());
                     }
                 }
@@ -903,7 +886,7 @@ public sealed class Settings : Window, IDisposable
 
     private void DrawTabRecipeNote()
     {
-        using var tab = TabItem("Crafting Log");
+        using var tab = TabItem("制作笔记");
         if (!tab)
             return;
 
@@ -912,41 +895,41 @@ public sealed class Settings : Window, IDisposable
         var isDirty = false;
 
         DrawOption(
-            "Pin Helper Window",
-            "Pins the helper window to the right of your crafting log. Disabling this will " +
-            "allow you to move it around.",
+            "固定助手窗口",
+            "默认情况下助手窗口会固定在你制作笔记面板的右侧。" +
+            "取消勾选此项后，你可以将它拖动到其他位置。",
             Config.PinRecipeNoteToWindow,
             v => Config.PinRecipeNoteToWindow = v,
             ref isDirty
         );
 
         DrawOption(
-            "Always Collapse Helper Window",
-            "Enabling this will cause the Helper Window to be collapsed whenever you start " +
-            "a new craft, preventing the solver from running automatically.",
+            "默认折叠助手窗口",
+            "启用此选项时会在你开始制作时自动折叠助手窗口，" +
+            "同时也会阻止求解器的自动运行。",
             Config.CollapseSynthHelper,
             v => Config.CollapseSynthHelper = v,
             ref isDirty
         );
 
         DrawOption(
-            "Automatically Suggest Macro",
-            "(Can cause frame drops!) When navigating to a new recipe or changing your gear " +
-            "stats, automatically suggest a new macro (equivalent to clicking \"Generate\" " +
-            "in the Macro Editor). This can cause harsh frame drops on some computers or " +
-            "recipes when underleveled while navigating the crafting log. Turning this off " +
-            "provides a button to allow you to manually suggest a macro only when you need it.",
+            "自动生成推荐宏",
+            "（可能导致掉帧！）" +
+            "在浏览新配方或更换装备属性时，自动生成推荐宏" +
+            "（相当于在宏编辑器中点击“生成”）。" +
+            "在某些电脑或低等级配方下，这可能会导致严重掉帧。" +
+            "关闭此选项则会提供一个“生成”按钮，让你仅在需要时获取推荐宏。",
             Config.SuggestMacroAutomatically,
             v => Config.SuggestMacroAutomatically = v,
             ref isDirty
         );
 
         DrawOption(
-            "Enable Community Macros",
-            "Use FFXIV Teamcraft's community rotations to search for and find the best possible " +
-            "crowd-sourced macro for your craft. This sends a request to their servers to retrieve " +
-            "a list of macros that apply to your craft's rlvl. Requests are only sent once per rlvl " +
-            "and are always cached to reduce server load.",
+            "启用社区宏",
+            "从 FFXIV Teamcraft 的社区中为你的制作寻找最佳的宏。" +
+            "这将会向它们的服务器发送请求，获取匹配你目标配方等级的宏。" +
+            "这种请求每种配方等级只会发送一次，" +
+            "并且总是会在本地缓存，以降低服务器负载。",
             Config.ShowCommunityMacros,
             v => Config.ShowCommunityMacros = v,
             ref isDirty
@@ -955,10 +938,10 @@ public sealed class Settings : Window, IDisposable
         if (Config.ShowCommunityMacros)
         {
             DrawOption(
-                "Automatically Search for Community Macro",
-                "When navigating to a new recipe or changing your gear stats, automatically search " +
-                "online for a new community macro.\n" +
-                "This is turned off by default so you don't hammer their servers :)",
+                "自动检索社区宏Automatically Search for Community Macro",
+                "在你点击一个新的配方或是改变装备属性时自动检索社区宏。" +
+                "\n" +
+                "这个选项默认关闭，这样不会对它们的服务器造成太大伤害 :)",
                 Config.SearchCommunityMacroAutomatically,
                 v => Config.SearchCommunityMacroAutomatically = v,
                 ref isDirty
@@ -983,7 +966,7 @@ public sealed class Settings : Window, IDisposable
 
     private void DrawTabMacroEditor()
     {
-        using var tab = TabItem("Macro Editor");
+        using var tab = TabItem("宏编辑器");
         if (!tab)
             return;
 
@@ -1005,7 +988,7 @@ public sealed class Settings : Window, IDisposable
 
     private void DrawTabSynthHelper()
     {
-        using var tab = TabItem("Synthesis Helper");
+        using var tab = TabItem("制作助手");
         if (!tab)
             return;
 
@@ -1014,46 +997,46 @@ public sealed class Settings : Window, IDisposable
         var isDirty = false;
 
         DrawOption(
-            "Pin Helper Window",
-            "Pins the synthesis helper to the right of your synthesis window. Disabling this will " +
-            "allow you to move it around.",
+            "固定助手窗口",
+            "默认情况下助手窗口会固定在你制作窗口的右侧。" +
+            "取消勾选此项后，你可以将它拖动到其他位置。",
             Config.PinSynthHelperToWindow,
             v => Config.PinSynthHelperToWindow = v,
             ref isDirty
         );
 
         DrawOption(
-            "Disable When Running Macro",
-            "Disables itself when an in-game macro is running.",
+            "执行宏时自动禁用",
+            "在你执行游戏内的用户宏时禁用制作助手。",
             Config.DisableSynthHelperOnMacro,
             v => Config.DisableSynthHelperOnMacro = v,
             ref isDirty
         );
 
         DrawOption(
-            "Simulate Only First Step",
-            "Only the first step is simulated by default. You can still " +
-            "hover over the other steps to view their outcomes, but the " +
-            "reliability trials (when hovering over the macro stats) are hidden.",
+            "仅模拟第一步",
+            "默认情况下仅模拟第一步。" +
+            "你仍然可以将鼠标悬停在其他步骤上查看结果，" +
+            "但可靠性试验（在悬停宏统计信息时显示）将被隐藏。",
             Config.SynthHelperDisplayOnlyFirstStep,
             v => Config.SynthHelperDisplayOnlyFirstStep = v,
             ref isDirty
         );
 
         DrawOption(
-            "Draw Ability Ants",
-            "Turns your hotbar into a whack-a-mole game! Draws ants for " +
-            "the next action that should be executed. Also disables ants " +
-            "for things like combo actions and condition procs.",
+            "绘制技能提示",
+            "在你的热键栏上绘制技能提示，就像PvE打连击一样。" +
+            "制作助手分析出的下一步最优技能会被高亮显示。" +
+            "在这种场景下，原先应被高亮显示的连击技能和状态触发技能就不会被高亮显示了。",
             Config.SynthHelperAbilityAnts,
             v => Config.SynthHelperAbilityAnts = v,
             ref isDirty
         );
 
         DrawOption(
-            "Solver Step Count",
-            "The minimum number of future steps to solve for during an in-game craft. " +
-            "The solver may still give more than this amount if it's at no cost to you.",
+            "求解器步骤数",
+            "在游戏内制作时，求解器要考虑的最少未来步骤数。" +
+            "如果不会对你造成额外成本，求解器仍可能给出超过此数量的步骤。",
             Config.SynthHelperStepCount,
             1,
             100,
@@ -1062,9 +1045,9 @@ public sealed class Settings : Window, IDisposable
         );
 
         DrawOption(
-            "Max Step Display Count",
-            "Enforces a maximum number of steps to display in the synth helper to " +
-            "get rid of clutter.",
+            "最大显示步骤数",
+            "设置一个阈值，让制作助手不要显示再往后的步骤，" +
+            "以减少界面杂乱。",
             Config.SynthHelperMaxDisplayCount,
             Config.SynthHelperStepCount,
             100,
@@ -1121,21 +1104,26 @@ public sealed class Settings : Window, IDisposable
                 using (SubheaderFont.Push())
                     ImGuiUtils.TextCentered($"v{plugin.Version} {plugin.BuildConfiguration}");
 
-                ImGuiUtils.AlignCentered(ImGui.CalcTextSize($"By {plugin.Author} (WorkingRobot)").X);
-                ImGui.TextUnformatted($"By {plugin.Author} (");
+                ImGuiUtils.AlignCentered(ImGui.CalcTextSize($"原作者： {plugin.Author} (WorkingRobot)").X);
+                ImGui.TextUnformatted($"原作者： {plugin.Author} (");
                 ImGui.SameLine(0, 0);
                 ImGuiUtils.Hyperlink("WorkingRobot", "https://github.com/WorkingRobot");
                 ImGui.SameLine(0, 0);
                 ImGui.TextUnformatted(")");
 
+                ImGuiUtils.AlignCentered(ImGui.CalcTextSize($"本地化&改造： InfSein").X);
+                ImGui.TextUnformatted($"本地化&改造： ");
+                ImGui.SameLine(0, 0);
+                ImGuiUtils.Hyperlink("InfSein", "https://github.com/InfSein");
+
                 using (ImRaii.PushColor(ImGuiCol.Text, new Vector4(0.07f, 0.76f, 1.00f, 1f)))
                 {
-                    ImGuiUtils.AlignCentered(ImGui.CalcTextSize($"Support me on Ko-fi!").X);
-                    ImGui.TextUnformatted($"Support me on ");
+                    ImGuiUtils.AlignCentered(ImGui.CalcTextSize($"在 Ko-fi 上赞助原作者!").X);
+                    ImGui.TextUnformatted($"在 ");
                     ImGui.SameLine(0, 0);
                     ImGuiUtils.Hyperlink("Ko-fi", Plugin.SupportLink);
                     ImGui.SameLine(0, 0);
-                    ImGui.TextUnformatted("!");
+                    ImGui.TextUnformatted(" 上赞助原作者!");
                 }
             }
         }
@@ -1147,7 +1135,7 @@ public sealed class Settings : Window, IDisposable
         ImGuiHelpers.ScaledDummy(5);
 
         using (SubheaderFont.Push())
-            ImGuiUtils.TextCentered("Special Thanks");
+            ImGuiUtils.TextCentered("特别感谢");
 
         var startPosX = ImGui.GetCursorPosX();
 

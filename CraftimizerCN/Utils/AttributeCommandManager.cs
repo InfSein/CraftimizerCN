@@ -46,7 +46,7 @@ public sealed class AttributeCommandManager : IDisposable
 
             var aliasInfo = new CommandInfo(handler)
             {
-                HelpMessage = $"An alias for {command.Name}",
+                HelpMessage = $"效果等同 {command.Name}",
                 ShowInHelp = !command.Hidden,
             };
 

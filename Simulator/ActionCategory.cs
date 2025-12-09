@@ -37,12 +37,12 @@ public static class ActionCategoryUtils
     public static string GetDisplayName(this ActionCategory category) =>
         category switch
         {
-            ActionCategory.FirstTurn => "First Turn",
-            ActionCategory.Synthesis => "Synthesis",
-            ActionCategory.Quality => "Quality",
-            ActionCategory.Durability => "Durability",
-            ActionCategory.Buffs => "Buffs",
-            ActionCategory.Other => "Other",
+            ActionCategory.FirstTurn => "首次作业",
+            ActionCategory.Synthesis => "作业",
+            ActionCategory.Quality => "加工",
+            ActionCategory.Durability => "耐久度",
+            ActionCategory.Buffs => "增益",
+            ActionCategory.Other => "其他",
             _ => category.ToString()
         };
 }
