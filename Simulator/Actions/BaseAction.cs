@@ -104,23 +104,23 @@ public abstract class BaseAction(
 
         var builder = new StringBuilder();
         if (addUsability && !CanUse(s))
-            builder.AppendLine($"Cannot Use");
-        builder.AppendLine($"Level {Level}");
+            builder.AppendLine($"无法使用");
+        builder.AppendLine($"{Level}级");
         if (cost != 0)
-            builder.AppendLine($"-{s.CalculateCPCost(cost)} CP");
+            builder.AppendLine($"-{s.CalculateCPCost(cost)}CP");
         if (DurabilityCost != 0)
-            builder.AppendLine($"-{s.CalculateDurabilityCost(DurabilityCost)} Durability");
+            builder.AppendLine($"-{s.CalculateDurabilityCost(DurabilityCost)}耐久");
         if (eff != 0)
         {
             if (IncreasesProgress)
-                builder.AppendLine($"+{s.CalculateProgressGain(eff)} Progress");
+                builder.AppendLine($"+{s.CalculateProgressGain(eff)}进展");
             if (IncreasesQuality)
-                builder.AppendLine($"+{s.CalculateQualityGain(eff)} Quality");
+                builder.AppendLine($"+{s.CalculateQualityGain(eff)}品质");
         }
         if (!IncreasesStepCount)
-            builder.AppendLine($"Does Not Increase Step Count");
+            builder.AppendLine($"不消耗步数");
         if (success != 100)
-            builder.AppendLine($"{s.CalculateSuccessRate(success)}% Success Rate");
+            builder.AppendLine($"成功率：{s.CalculateSuccessRate(success)}%");
         return builder.ToString();
     }
 }

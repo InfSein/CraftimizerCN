@@ -17,7 +17,7 @@ public sealed class MacroClipboard : Window, IDisposable
 
     private List<string> Macros { get; }
 
-    public MacroClipboard(IEnumerable<string> macros) : base("Macro Clipboard", WindowFlags)
+    public MacroClipboard(IEnumerable<string> macros) : base("宏剪贴板", WindowFlags)
     {
         Macros = [.. macros];
 
@@ -39,7 +39,7 @@ public sealed class MacroClipboard : Window, IDisposable
     private void DrawMacro(int idx, string macro)
     {
         using var id = ImRaii.PushId(idx);
-        using var panel = ImRaii2.GroupPanel(Macros.Count == 1 ? "Macro" : $"Macro {idx + 1}", -1, out var availWidth);
+        using var panel = ImRaii2.GroupPanel(Macros.Count == 1 ? "宏" : $"宏#{idx + 1}", -1, out var availWidth);
 
         var cursor = ImGui.GetCursorPos();
 
@@ -60,8 +60,8 @@ public sealed class MacroClipboard : Window, IDisposable
                 {
                     Service.Plugin.DisplayNotification(new()
                     {
-                        Content = Macros.Count == 1 ? "Copied macro to clipboard." : $"Copied macro {idx + 1} to clipboard.",
-                        MinimizedText = Macros.Count == 1 ? "Copied macro" : $"Copied macro {idx + 1}",
+                        Content = Macros.Count == 1 ? "已将宏复制到剪贴板。" : $"已将宏#{idx + 1}复制到剪贴板。",
+                        MinimizedText = Macros.Count == 1 ? "已复制宏" : $"已复制宏#{idx + 1}",
                         Title = "Macro Copied",
                         Type = NotificationType.Success
                     });
@@ -69,7 +69,7 @@ public sealed class MacroClipboard : Window, IDisposable
             }
         }
         if (buttonHovered)
-            ImGuiUtils.Tooltip("Copy to Clipboard");
+            ImGuiUtils.Tooltip("复制到剪贴板");
 
         ImGui.SetCursorPos(cursor);
         {

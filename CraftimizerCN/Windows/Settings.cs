@@ -184,7 +184,7 @@ public sealed class Settings : Window, IDisposable
             MacroCopyConfiguration.CopyType.OpenWindow =>       "打开一个新窗口，从而自行查看和复制宏的内容。",
             MacroCopyConfiguration.CopyType.CopyToMacro =>      "直接将宏内容设置到游戏的用户宏中。",
             MacroCopyConfiguration.CopyType.CopyToClipboard =>  "将宏内容复制到剪贴板。有多个宏时会用空白行来分隔它们。",
-            MacroCopyConfiguration.CopyType.CopyToMacroMate =>  "将宏内容复制到 Macro Mate，你需要先安装这个插件。",
+            MacroCopyConfiguration.CopyType.CopyToMacroMate =>  "将宏内容复制到Macro Mate。你需要先安装这个插件。",
             _ => "Unknown"
         };
 
@@ -261,7 +261,7 @@ public sealed class Settings : Window, IDisposable
         DrawOption(
             "可靠性测试次数",
             "在编辑器中测试宏的可靠性时，将运行此处所指定次数的试验。" +
-            "虽然可以自由指定，但为了获得足够可靠的数据分布，设置值应当不低于 100。" +
+            "虽然可以自由指定，但为了获得足够可靠的数据分布，设置值应当不低于100。" +
             "如果次数太少，可能无法发现离群值，且平均值可能会被扭曲。",
             Config.ReliabilitySimulationCount,
             5,
@@ -271,8 +271,8 @@ public sealed class Settings : Window, IDisposable
         );
 
         DrawOption(
-            "进度条风格",
-            "调整手法左侧进度条的显示风格。",
+            "求解进度条风格",
+            "调整生成宏时进度条的显示风格。",
             GetProgressBarTypeName,
             GetProgressBarTooltip,
             Config.ProgressType,
@@ -311,7 +311,7 @@ public sealed class Settings : Window, IDisposable
             {
                 DrawOption(
                     "向下递进",
-                    "在有多个宏需要设置时，默认的方式是向右递进，如#1、#2、#3。启用此选项会改为向下递进，如#1、#11、#21。",
+                    "在有多个宏需要设置时，默认的方式是向右递进，如#1→#2→#3。启用此选项会改为向下递进，如#1→#11→#21。",
                     Config.MacroCopy.CopyDown,
                     v => Config.MacroCopy.CopyDown = v,
                     ref isDirty
@@ -319,8 +319,8 @@ public sealed class Settings : Window, IDisposable
 
                 DrawOption(
                     "复制到公用宏中",
-                    "在公用宏标签页中设置宏。" +
-                    "取消勾选此选项则会在角色专用宏标签页中设置宏。",
+                    "在“与其他角色公用”标签页中设置宏。" +
+                    "不勾选此选项则会在“该角色专用”宏标签页中设置宏。",
                     Config.MacroCopy.SharedMacro,
                     v => Config.MacroCopy.SharedMacro = v,
                     ref isDirty
@@ -377,8 +377,8 @@ public sealed class Settings : Window, IDisposable
             {
                 DrawOption(
                     "启用宏连锁(/nextmacro)",
-                    "将过渡宏的最后一行改为 /nextmacro ，" +
-                    "从而能够一键连续执行完整个制作手法流程。",
+                    "将过渡宏的最后一行改为「/nextmacro」，从而能够一键连续执行完整个制作手法流程。" +
+                    "\n需要安装“Macro Chain”插件才能正常工作。",
                     Config.MacroCopy.UseNextMacro,
                     v => Config.MacroCopy.UseNextMacro = v,
                     ref isDirty
@@ -516,10 +516,10 @@ public sealed class Settings : Window, IDisposable
 
             DrawOption(
                 "算法",
-                "决定在求解宏时要采用的算法。The algorithm to use when solving for a macro. Different " +
-                "这些算法各有优劣。algorithms provide different pros and cons for using them. " +
-                "目前来看，By far, the Optimal and Stepwise Genetic algorithms provide " +
-                "尤其是在处理高难度的制作时。the best results, especially for very difficult crafts.",
+                "决定在求解宏时要采用的算法。" +
+                "这些算法各有优劣。" +
+                "目前来看，“最优”和“逐步(遗传)”算法能提供最好的结果，" +
+                "尤其是在处理高难度的制作时。",
                 GetAlgorithmName,
                 GetAlgorithmTooltip,
                 config.Algorithm,
@@ -533,8 +533,8 @@ public sealed class Settings : Window, IDisposable
                     "最大核心数",
                     "求解时使用的核心数量。你应尽可能多地使用可用核心。" +
                     $"如果设置过高，可能会影响你的游戏体验。" +
-                    $"一个较好的估计是比你的系统核心数少 1 到 2 个（提示：你有 {Environment.ProcessorCount} 个核心），" +
-                    $"但请确保为后台任务预留足够的核心（如果有的话）。\n" +
+                    $"一个较好的估计是比你的系统核心数少1到2个，但请确保为后台任务预留足够的核心（如果有）。" +
+                    $"\n（提示：你有{Environment.ProcessorCount}个核心）\n" +
                     "（只在分支、遗传和最优算法中使用）",
                     config.MaxThreadCount,
                     1,
@@ -572,7 +572,7 @@ public sealed class Settings : Window, IDisposable
                 DrawOption(
                     "最大步骤数",
                     "制作步骤的最大数量；这通常是你唯一需要调整的设置。" +
-                    "它应该比你预计的步骤数多大约 5 步。如果该值过低，" +
+                    "它应该比你预计的步骤数多大约5步。如果该值过低，" +
                     "求解器在每次迭代中学到的内容会很少；如果过高，" +
                     "则会在无用的额外步骤上浪费时间。",
                     config.MaxStepCount,
@@ -595,9 +595,9 @@ public sealed class Settings : Window, IDisposable
 
                 DrawOption(
                     "评分权重常数",
-                    "一个范围在 0 到 1 之间的常数，用于配置求解器如何评分并选择下一步路径。" +
-                    "值为 0 时，将根据其平均结果选择；" +
-                    "值为 1 时，则使用迄今为止取得的最佳结果选择。",
+                    "一个范围在0到1之间的数，用于配置求解器如何评分并选择下一步路径。" +
+                    "值为0时，将根据其平均结果选择；" +
+                    "值为1时，则使用迄今为止取得的最佳结果选择。",
                     config.MaxScoreWeightingConstant,
                     0,
                     1,
@@ -609,9 +609,8 @@ public sealed class Settings : Window, IDisposable
                     DrawOption(
                         "分支数量",
                         "将迭代次数分配到不同的求解器上。" +
-                        "通常，你应该将此值至少增加到系统核心数" +
-                        $"（提示：你有 {Environment.ProcessorCount} 个核心），" +
-                        "以获得最大的加速效果。" +
+                        "通常，你应该将此值至少增加到系统核心数以获得最大的加速效果。" +
+                        $"\n（提示：你有{Environment.ProcessorCount}个核心）\n" +
                         "数量越高，找到更好局部最大值的机会就越大；" +
                         "这一概念与探索常数类似，但不完全相同。\n" +
                         "（只在分支和遗传算法中使用）",
@@ -626,7 +625,7 @@ public sealed class Settings : Window, IDisposable
                     DrawOption(
                         "精英动作数量",
                         "在每个制作步骤中，选择此处指定的数量的最佳方案，并将它们作为下一制作步骤的输入。" +
-                        "为了获得最佳效果，可设置为分支数量的一半，如有需要可再加 1 到 2。\n" +
+                        "为了获得最佳效果，可设置为分支数量的一半，如有需要可再加1到2。\n" +
                         "（只在逐步遗传算法中使用）",
                         config.FurcatedActionCount,
                         1,
@@ -758,7 +757,7 @@ public sealed class Settings : Window, IDisposable
                 DrawOption(
                     "步数",
                     "决定你要为工序步数分配多少权重分数。" +
-                    "步数越少，权重分越高。",
+                    "\n步数越少，权重分越高。",
                     config.ScoreSteps,
                     0,
                     100,
@@ -832,7 +831,7 @@ public sealed class Settings : Window, IDisposable
                         if (isRisky)
                             s.AppendLine(
                                 "无用；求解器目前在制作期间不会冒任何风险。" +
-                                "它只会执行成功率为 100% 的步骤。" +
+                                "它只会执行成功率为100%的步骤。" +
                                 "如果你想在制作中尝试冒险（例如高难度配方），" +
                                 "就不要在那段时间依赖求解器。");
                         ImGuiUtils.TooltipWrapped(s.ToString());
@@ -926,7 +925,7 @@ public sealed class Settings : Window, IDisposable
 
         DrawOption(
             "启用社区宏",
-            "从 FFXIV Teamcraft 的社区中为你的制作寻找最佳的宏。" +
+            "从Teamcraft社区中为你的制作寻找最佳的宏。" +
             "这将会向它们的服务器发送请求，获取匹配你目标配方等级的宏。" +
             "这种请求每种配方等级只会发送一次，" +
             "并且总是会在本地缓存，以降低服务器负载。",
@@ -938,7 +937,7 @@ public sealed class Settings : Window, IDisposable
         if (Config.ShowCommunityMacros)
         {
             DrawOption(
-                "自动检索社区宏Automatically Search for Community Macro",
+                "自动检索社区宏",
                 "在你点击一个新的配方或是改变装备属性时自动检索社区宏。" +
                 "\n" +
                 "这个选项默认关闭，这样不会对它们的服务器造成太大伤害 :)",
@@ -1027,7 +1026,7 @@ public sealed class Settings : Window, IDisposable
             "绘制技能提示",
             "在你的热键栏上绘制技能提示，就像PvE打连击一样。" +
             "制作助手分析出的下一步最优技能会被高亮显示。" +
-            "在这种场景下，原先应被高亮显示的连击技能和状态触发技能就不会被高亮显示了。",
+            "这时，原先可能会被高亮显示的连击中技能和状态触发技能就不会被高亮显示了。",
             Config.SynthHelperAbilityAnts,
             v => Config.SynthHelperAbilityAnts = v,
             ref isDirty
@@ -1073,7 +1072,7 @@ public sealed class Settings : Window, IDisposable
 
     private void DrawTabAbout()
     {
-        using var tab = TabItem("About");
+        using var tab = TabItem("关于");
         if (!tab)
             return;
 

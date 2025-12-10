@@ -26,7 +26,7 @@ public sealed class MacroList : Window, IDisposable
     private IReadOnlyList<Macro> Macros => Service.Configuration.Macros;
     private Dictionary<Macro, SimulationState> MacroStateCache { get; } = [];
 
-    public MacroList() : base("CraftimizerCN Macro List", WindowFlags, false)
+    public MacroList() : base("CraftimizerCN 本地宏列表", WindowFlags, false)
     {
         RefreshSearch();
 
@@ -44,14 +44,14 @@ public sealed class MacroList : Window, IDisposable
             {
                 Icon = FontAwesomeIcon.Cog,
                 IconOffset = new(2, 1),
-                Click = _ => Service.Plugin.OpenSettingsTab("General"),
-                ShowTooltip = () => ImGuiUtils.Tooltip("Open Settings")
+                Click = _ => Service.Plugin.OpenSettingsTab("通用"),
+                ShowTooltip = () => ImGuiUtils.Tooltip("打开设置")
             },
             new() {
                 Icon = FontAwesomeIcon.Heart,
                 IconOffset = new(2, 1),
                 Click = _ => Util.OpenLink(Plugin.Plugin.SupportLink),
-                ShowTooltip = () => ImGuiUtils.Tooltip("Support me on Ko-fi!")
+                ShowTooltip = () => ImGuiUtils.Tooltip("赞助原作者")
             }
         ];
 
@@ -111,10 +111,10 @@ public sealed class MacroList : Window, IDisposable
         }
         else
         {
-            var text1 = "You have no macros! Create one by opening";
-            var text2 = "the Macro Editor here or from the Crafting Log.";
-            var text3 = "Open Crafting Log";
-            var text4 = "Open Macro Editor";
+            var text1 = "还没有保存过任何本地宏！";
+            var text2 = "在宏编辑器和制作笔记助手处可以将手法保存到本地。";
+            var text3 = "打开制作笔记";
+            var text4 = "打开宏编辑器";
             var buttonRowWidth = ImGui.CalcTextSize(text3).X + ImGui.CalcTextSize(text4).X + ImGui.GetStyle().ItemSpacing.X * 5;
             var size = new Vector2(
                 Math.Max(
@@ -186,7 +186,7 @@ public sealed class MacroList : Window, IDisposable
                         ImGui.GetColorU32(ImGuiCol.TableBorderLight),
                         ImGui.GetColorU32(Colors.Quality));
                         if (ImGui.IsItemHovered())
-                            ImGuiUtils.Tooltip($"Quality: {state.Quality} / {state.Input.Recipe.MaxQuality}");
+                            ImGuiUtils.Tooltip($"品质: {state.Quality} / {state.Input.Recipe.MaxQuality}");
                     }
                     else
                     {
@@ -197,7 +197,7 @@ public sealed class MacroList : Window, IDisposable
                         ImGui.GetColorU32(ImGuiCol.TableBorderLight),
                         ImGui.GetColorU32(Colors.Progress));
                         if (ImGui.IsItemHovered())
-                            ImGuiUtils.Tooltip($"Progress: {state.Progress} / {state.Input.Recipe.MaxProgress}");
+                            ImGuiUtils.Tooltip($"进展: {state.Progress} / {state.Input.Recipe.MaxProgress}");
                     }
                 }
                 else
@@ -209,7 +209,7 @@ public sealed class MacroList : Window, IDisposable
                         ImGui.GetColorU32(ImGuiCol.TableBorderLight),
                         ImGui.GetColorU32(Colors.Progress));
                     if (ImGui.IsItemHovered())
-                        ImGuiUtils.Tooltip($"Progress: {state.Progress} / {state.Input.Recipe.MaxProgress}");
+                        ImGuiUtils.Tooltip($"进展: {state.Progress} / {state.Input.Recipe.MaxProgress}");
 
                     ImGui.SameLine(0, spacing);
                     ImGuiUtils.ArcProgress(
@@ -219,7 +219,7 @@ public sealed class MacroList : Window, IDisposable
                         ImGui.GetColorU32(ImGuiCol.TableBorderLight),
                         ImGui.GetColorU32(Colors.Quality));
                     if (ImGui.IsItemHovered())
-                        ImGuiUtils.Tooltip($"Quality: {state.Quality} / {state.Input.Recipe.MaxQuality}");
+                        ImGuiUtils.Tooltip($"品质: {state.Quality} / {state.Input.Recipe.MaxQuality}");
 
                     ImGuiUtils.ArcProgress((float)state.Durability / state.Input.Recipe.MaxDurability,
                         miniRowHeight / 2f,
@@ -227,7 +227,7 @@ public sealed class MacroList : Window, IDisposable
                         ImGui.GetColorU32(ImGuiCol.TableBorderLight),
                         ImGui.GetColorU32(Colors.Durability));
                     if (ImGui.IsItemHovered())
-                        ImGuiUtils.Tooltip($"Remaining Durability: {state.Durability} / {state.Input.Recipe.MaxDurability}");
+                        ImGuiUtils.Tooltip($"剩余耐久: {state.Durability} / {state.Input.Recipe.MaxDurability}");
 
                     ImGui.SameLine(0, spacing);
                     ImGuiUtils.ArcProgress(
@@ -237,7 +237,7 @@ public sealed class MacroList : Window, IDisposable
                         ImGui.GetColorU32(ImGuiCol.TableBorderLight),
                         ImGui.GetColorU32(Colors.CP));
                     if (ImGui.IsItemHovered())
-                        ImGuiUtils.Tooltip($"Remaining CP: {state.CP} / {state.Input.Stats.CP}");
+                        ImGuiUtils.Tooltip($"剩余CP: {state.CP} / {state.Input.Stats.CP}");
                 }
             }
 
@@ -246,18 +246,18 @@ public sealed class MacroList : Window, IDisposable
                 if (ImGuiUtils.IconButtonSquare(FontAwesomeIcon.Edit, miniRowHeight))
                     OpenEditor(macro);
                 if (ImGui.IsItemHovered())
-                    ImGuiUtils.Tooltip("Open in Macro Editor");
+                    ImGuiUtils.Tooltip("在宏编辑器中打开");
                 ImGui.SameLine(0, spacing);
                 if (ImGuiUtils.IconButtonSquare(FontAwesomeIcon.PencilAlt, miniRowHeight))
                     ShowRenamePopup(macro);
                 DrawRenamePopup(macro);
                 if (ImGui.IsItemHovered())
-                    ImGuiUtils.Tooltip("Rename");
+                    ImGuiUtils.Tooltip("重命名");
 
                 if (ImGuiUtils.IconButtonSquare(FontAwesomeIcon.Paste, miniRowHeight))
                     MacroCopy.Copy(macro.Actions);
                 if (ImGui.IsItemHovered())
-                    ImGuiUtils.Tooltip("Copy to Clipboard");
+                    ImGuiUtils.Tooltip("复制到剪贴板");
                 ImGui.SameLine(0, spacing);
                 using (var _disabled = ImRaii.Disabled(!ImGui.GetIO().KeyShift))
                 {
@@ -265,7 +265,7 @@ public sealed class MacroList : Window, IDisposable
                         Service.Configuration.RemoveMacro(macro);
                 }
                 if (ImGui.IsItemHovered(ImGuiHoveredFlags.AllowWhenDisabled))
-                    ImGuiUtils.Tooltip("Delete (Hold Shift)");
+                    ImGuiUtils.Tooltip("删除 (按住Shift点击此按钮以确认)");
             }
 
             ImGui.TableNextColumn();
@@ -291,7 +291,7 @@ public sealed class MacroList : Window, IDisposable
                             var pos = ImGui.GetCursorPos();
                             ImGui.Image(macro.Actions[i].GetIcon(RecipeData!.ClassJob).Handle, new(miniRowHeight), default, Vector2.One, new(1, 1, 1, .5f));
                             if (ImGui.IsItemHovered())
-                                ImGuiUtils.Tooltip($"{macro.Actions[i].GetName(RecipeData!.ClassJob)}\nand {amtMore} more");
+                                ImGuiUtils.Tooltip($"{macro.Actions[i].GetName(RecipeData!.ClassJob)}\n以及另外 {amtMore} 步");
                             ImGui.SetCursorPos(pos);
                             ImGui.GetWindowDrawList().AddRectFilled(ImGui.GetCursorScreenPos(), ImGui.GetCursorScreenPos() + new Vector2(miniRowHeight), ImGui.GetColorU32(ImGuiCol.FrameBg), miniRowHeight / 8f);
                             ImGui.GetWindowDrawList().AddTextClippedEx(ImGui.GetCursorScreenPos(), ImGui.GetCursorScreenPos() + new Vector2(miniRowHeight), $"+{amtMore}", null, new(.5f), null);

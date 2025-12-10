@@ -36,7 +36,7 @@ public sealed unsafe class SynthHelper : Window, IDisposable
         ImGuiWindowFlags.AlwaysAutoResize
       | ImGuiWindowFlags.NoFocusOnAppearing;
 
-    private const string WindowNamePinned = "CraftimizerCN Synthesis Helper###CraftimizerSynthHelper";
+    private const string WindowNamePinned = "CraftimizerCN 制作助手###CraftimizerSynthHelper";
     private const string WindowNameFloating = $"{WindowNamePinned}Floating";
 
     public AddonSynthesis* Addon { get; private set; }
@@ -92,14 +92,14 @@ public sealed unsafe class SynthHelper : Window, IDisposable
             {
                 Icon = FontAwesomeIcon.Cog,
                 IconOffset = new(2, 1),
-                Click = _ => Service.Plugin.OpenSettingsTab("Synthesis Helper"),
-                ShowTooltip = () => ImGuiUtils.Tooltip("Open Settings")
+                Click = _ => Service.Plugin.OpenSettingsTab("制作助手"),
+                ShowTooltip = () => ImGuiUtils.Tooltip("打开设置")
             },
             new() {
                 Icon = FontAwesomeIcon.Heart,
                 IconOffset = new(2, 1),
                 Click = _ => Util.OpenLink(Plugin.Plugin.SupportLink),
-                ShowTooltip = () => ImGuiUtils.Tooltip("Support me on Ko-fi!")
+                ShowTooltip = () => ImGuiUtils.Tooltip("赞助原作者")
             }
         ];
 
@@ -356,7 +356,7 @@ public sealed unsafe class SynthHelper : Window, IDisposable
             {
                 ImGuiUtils.Tooltip($"{action.GetName(RecipeData!.ClassJob)}\n" +
                     $"{actionBase.GetTooltip(CreateSim(lastState), true)}" +
-                    $"{(canExecute && i == 0 ? "Click or run /craftaction to execute" : string.Empty)}");
+                    $"{(canExecute && i == 0 ? "点击此按钮或是输入“/cccraftaction”来发动该技能" : string.Empty)}");
                 hoveredState = state;
             }
             lastState = state;
@@ -417,22 +417,22 @@ public sealed unsafe class SynthHelper : Window, IDisposable
         {
             var mainBars = new List<DynamicBars.BarData>()
             {
-                new("Progress", Colors.Progress, reliability.Progress, state.Progress, RecipeData!.RecipeInfo.MaxProgress),
-                new("Quality", Colors.Quality, reliability.Quality, state.Quality, RecipeData.RecipeInfo.MaxQuality),
-                new("CP", Colors.CP, state.CP, CharacterStats!.CP),
+                new("进展", Colors.Progress, reliability.Progress, state.Progress, RecipeData!.RecipeInfo.MaxProgress),
+                new("品质", Colors.Quality, reliability.Quality, state.Quality, RecipeData.RecipeInfo.MaxQuality),
+                new("制作力", Colors.CP, state.CP, CharacterStats!.CP),
             };
             if (RecipeData.RecipeInfo.MaxQuality <= 0)
                 mainBars.RemoveAt(1);
             var halfBars = new List<DynamicBars.BarData>()
             {
-                new("Durability", Colors.Durability, state.Durability, RecipeData.RecipeInfo.MaxDurability),
+                new("耐久", Colors.Durability, state.Durability, RecipeData.RecipeInfo.MaxDurability),
             };
             if (RecipeData.IsCollectable)
-                halfBars.Add(new("Collectability", Colors.Collectability, reliability.ParamScore, state.Collectability, state.MaxCollectability, RecipeData.CollectableThresholds, $"{state.Collectability}", $"{state.MaxCollectability:0}"));
+                halfBars.Add(new("收藏价值", Colors.Collectability, reliability.ParamScore, state.Collectability, state.MaxCollectability, RecipeData.CollectableThresholds, $"{state.Collectability}", $"{state.MaxCollectability:0}"));
             else if (RecipeData.Recipe.RequiredQuality > 0)
             {
                 var qualityPercent = (float)state.Quality / RecipeData.Recipe.RequiredQuality * 100;
-                halfBars.Add(new("Quality %", Colors.HQ, reliability.ParamScore, qualityPercent, 100, null, $"{qualityPercent:0}%", null));
+                halfBars.Add(new("品质 %", Colors.HQ, reliability.ParamScore, qualityPercent, 100, null, $"{qualityPercent:0}%", null));
             }
             else if (RecipeData.RecipeInfo.MaxQuality > 0)
                 halfBars.Add(new("HQ %", Colors.HQ, reliability.ParamScore, state.HQPercent, 100, null, $"{state.HQPercent}%", null));
@@ -465,27 +465,26 @@ public sealed unsafe class SynthHelper : Window, IDisposable
             if (SolverTask?.Cancelling ?? false)
             {
                 using var _disabled = ImRaii.Disabled();
-                ImGui.Button("Stopping", new(-1, 0));
+                ImGui.Button("正在停止", new(-1, 0));
                 if (ImGui.IsItemHovered())
-                    ImGuiUtils.TooltipWrapped("This might could a while, sorry! Please report if this takes longer than a second.");
+                    ImGuiUtils.TooltipWrapped("可能需要花费一段时间来停止求解。如果这个按钮出现超过1秒，请向我们反馈。");
             }
             else
             {
-                if (ImGui.Button("Stop", new(-1, 0)))
+                if (ImGui.Button("停止", new(-1, 0)))
                     SolverTask?.Cancel();
             }
         }
         else
         {
-            if (ImGui.Button("Retry", new(-1, 0)))
+            if (ImGui.Button("重试", new(-1, 0)))
                 AttemptRetry();
             if (ImGui.IsItemHovered())
-                ImGuiUtils.TooltipWrapped("Suggest a way to finish the crafting recipe. " +
-                                 "Results aren't perfect, and levels of success " +
-                                 "can vary wildly depending on the solver's settings.");
+                ImGuiUtils.TooltipWrapped("生成一种完成制作配方的手法。" +
+                                          "结果并非总是完美的，成功程度会因求解器的设置而有很大差异。");
         }
 
-        if (ImGui.Button("Open in Macro Editor", new(-1, 0)))
+        if (ImGui.Button("在宏编辑器中打开", new(-1, 0)))
             Service.Plugin.OpenMacroEditor(CharacterStats!, RecipeData!, new(Service.ClientState.LocalPlayer!.StatusList), null, [], null);
     }
 

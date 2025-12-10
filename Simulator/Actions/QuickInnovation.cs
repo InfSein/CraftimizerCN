@@ -14,5 +14,5 @@ internal sealed class QuickInnovation() : BaseBuffAction(
         !s.ActionStates.UsedQuickInnovation && !s.HasEffect(EffectType.Innovation);
 
     public override string GetTooltip(Simulator s, bool addUsability) =>
-        $"{base.GetTooltip(s, addUsability)}Specialist Only\n";
+        $"{base.GetTooltip(s, addUsability)}专家技能\n";
 }

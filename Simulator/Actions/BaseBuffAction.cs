@@ -29,7 +29,7 @@ internal abstract class BaseBuffAction(
     public override string GetTooltip(Simulator s, bool addUsability)
     {
         var builder = new StringBuilder(base.GetTooltip(s, addUsability));
-        builder.AppendLine(Duration != 1 ? $"{Duration} Steps" : $"{Duration} Step");
+        builder.AppendLine($"持续：{Duration}工次");
         return builder.ToString();
     }
 

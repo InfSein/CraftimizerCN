@@ -149,14 +149,14 @@ public sealed class MacroEditor : Window, IDisposable
             {
                 Icon = FontAwesomeIcon.Cog,
                 IconOffset = new(2, 1),
-                Click = _ => Service.Plugin.OpenSettingsTab("Macro Editor"),
-                ShowTooltip = () => ImGuiUtils.Tooltip("Open Settings")
+                Click = _ => Service.Plugin.OpenSettingsTab("宏编辑器"),
+                ShowTooltip = () => ImGuiUtils.Tooltip("打开设置")
             },
             new() {
                 Icon = FontAwesomeIcon.Heart,
                 IconOffset = new(2, 1),
                 Click = _ => Util.OpenLink(Plugin.Plugin.SupportLink),
-                ShowTooltip = () => ImGuiUtils.Tooltip("Support me on Ko-fi!")
+                ShowTooltip = () => ImGuiUtils.Tooltip("赞助原作者")
             }
         ];
 
@@ -254,7 +254,7 @@ public sealed class MacroEditor : Window, IDisposable
     {
         var oldStats = CharacterStats;
 
-        ImGuiUtils.TextCentered("Crafter");
+        ImGuiUtils.TextCentered("职业");
 
         var textClassName = RecipeData.ClassJob.GetAbbreviation();
         var textClassSize = AxisFont.CalcTextSize(textClassName);
@@ -302,13 +302,13 @@ public sealed class MacroEditor : Window, IDisposable
                 }
 
                 ImGui.TableNextColumn();
-                DrawStat("Craftsmanship", CharacterStats.Craftsmanship, v => CharacterStats = CharacterStats with { Craftsmanship = v });
+                DrawStat("作业精度", CharacterStats.Craftsmanship, v => CharacterStats = CharacterStats with { Craftsmanship = v });
 
                 ImGui.TableNextColumn();
-                DrawStat("Control", CharacterStats.Control, v => CharacterStats = CharacterStats with { Control = v });
+                DrawStat("加工精度", CharacterStats.Control, v => CharacterStats = CharacterStats with { Control = v });
 
                 ImGui.TableNextColumn();
-                DrawStat("CP", CharacterStats.CP, v => CharacterStats = CharacterStats with { CP = v });
+                DrawStat("制作力", CharacterStats.CP, v => CharacterStats = CharacterStats with { CP = v });
             }
         }
 
@@ -350,7 +350,7 @@ public sealed class MacroEditor : Window, IDisposable
                             CharacterStats = CharacterStats with { HasSplendorousBuff = !v };
                     }
                     if (ImGui.IsItemHovered(ImGuiHoveredFlags.AllowWhenDisabled))
-                        ImGuiUtils.Tooltip(CharacterStats.HasSplendorousBuff ? $"Splendorous Tool" : "No Splendorous Tool");
+                        ImGuiUtils.Tooltip(CharacterStats.HasSplendorousBuff ? $"肝武加成" : "无肝武加成");
                 }
                 ImGui.SameLine(0, 5);
                 bool? newIsSpecialist = null;
@@ -371,7 +371,7 @@ public sealed class MacroEditor : Window, IDisposable
                         }
                     }
                     if (ImGui.IsItemHovered(ImGuiHoveredFlags.AllowWhenDisabled))
-                        ImGuiUtils.Tooltip(v ? $"Specialist" : "Not a Specialist");
+                        ImGuiUtils.Tooltip(v ? $"专家" : "非专家");
                 }
                 ImGui.SameLine(0, 5);
                 {
@@ -384,7 +384,7 @@ public sealed class MacroEditor : Window, IDisposable
                             CharacterStats = CharacterStats with { CanUseManipulation = !v };
                     }
                     if (ImGui.IsItemHovered(ImGuiHoveredFlags.AllowWhenDisabled))
-                        ImGuiUtils.Tooltip(CharacterStats.CanUseManipulation && manipLevel <= CharacterStats.Level ? $"Can Use Manipulation" : "Cannot Use Manipulation");
+                        ImGuiUtils.Tooltip(CharacterStats.CanUseManipulation && manipLevel <= CharacterStats.Level ? $"已习得掌握" : "未习得掌握");
                 }
 
                 ImGui.TableNextColumn();
@@ -394,7 +394,7 @@ public sealed class MacroEditor : Window, IDisposable
                 (uint ItemId, bool HQ)? newFoodBuff = null;
                 ImGui.Image(WellFedBadge.Handle, buffBadgeSize);
                 if (ImGui.IsItemHovered())
-                    ImGuiUtils.Tooltip("Food");
+                    ImGuiUtils.Tooltip("食物");
                 ImGui.SameLine(0, 5);
                 {
                     ImGui.SetNextItemWidth(ImGui.GetContentRegionAvail().X);
@@ -403,7 +403,7 @@ public sealed class MacroEditor : Window, IDisposable
                         ImGuiUtils.Tooltip(FormatItemBuffDescription(Buffs.Food));
                     if (combo)
                     {
-                        if (ImGui.Selectable("None", Buffs.Food.ItemId == 0))
+                        if (ImGui.Selectable("无", Buffs.Food.ItemId == 0))
                             newFoodBuff = (0, false);
 
                         foreach (var food in FoodStatus.OrderedFoods)
@@ -429,7 +429,7 @@ public sealed class MacroEditor : Window, IDisposable
                 (uint ItemId, bool HQ)? newMedicineBuff = null;
                 ImGui.Image(MedicatedBadge.Handle, buffBadgeSize);
                 if (ImGui.IsItemHovered())
-                    ImGuiUtils.Tooltip("Medicine");
+                    ImGuiUtils.Tooltip("药品");
                 ImGui.SameLine(0, 5);
                 {
                     ImGui.SetNextItemWidth(ImGui.GetContentRegionAvail().X);
@@ -438,7 +438,7 @@ public sealed class MacroEditor : Window, IDisposable
                         ImGuiUtils.Tooltip(FormatItemBuffDescription(Buffs.Medicine));
                     if (combo)
                     {
-                        if (ImGui.Selectable("None", Buffs.Medicine.ItemId == 0))
+                        if (ImGui.Selectable("无", Buffs.Medicine.ItemId == 0))
                             newMedicineBuff = (0, false);
 
                         foreach (var medicine in FoodStatus.OrderedMedicines)
@@ -465,8 +465,8 @@ public sealed class MacroEditor : Window, IDisposable
 
                 int? newFCCraftsmanshipBuff = null;
                 ImGui.Image(EatFromTheHandBadge.Handle, buffBadgeSize);
-                var fcBuffName = "Eat from the Hand";
-                var fcStatName = "Craftsmanship";
+                var fcBuffName = "作业精度提高";
+                var fcStatName = "作业精度";
                 if (ImGui.IsItemHovered())
                     ImGuiUtils.Tooltip(fcBuffName);
                 ImGui.SameLine(0, 5);
@@ -477,7 +477,7 @@ public sealed class MacroEditor : Window, IDisposable
                         ImGuiUtils.Tooltip(FormatFCBuffDescription(fcBuffName, fcStatName, Buffs.FC.Craftsmanship));
                     if (combo)
                     {
-                        if (ImGui.Selectable("None", Buffs.FC.Craftsmanship == 0))
+                        if (ImGui.Selectable("无", Buffs.FC.Craftsmanship == 0))
                             newFCCraftsmanshipBuff = 0;
 
                         for (var i = 1; i <= 3; ++i)
@@ -492,8 +492,8 @@ public sealed class MacroEditor : Window, IDisposable
 
                 int? newFCControlBuff = null;
                 ImGui.Image(InControlBadge.Handle, buffBadgeSize);
-                fcBuffName = "In Control";
-                fcStatName = "Control";
+                fcBuffName = "加工精度提高";
+                fcStatName = "加工精度";
                 if (ImGui.IsItemHovered())
                     ImGuiUtils.Tooltip(fcBuffName);
                 ImGui.SameLine(0, 5);
@@ -504,7 +504,7 @@ public sealed class MacroEditor : Window, IDisposable
                         ImGuiUtils.Tooltip(FormatFCBuffDescription(fcBuffName, fcStatName, Buffs.FC.Control));
                     if (combo)
                     {
-                        if (ImGui.Selectable("None", Buffs.FC.Control == 0))
+                        if (ImGui.Selectable("无", Buffs.FC.Control == 0))
                             newFCControlBuff = 0;
 
                         for (var i = 1; i <= 3; ++i)
@@ -570,7 +570,7 @@ public sealed class MacroEditor : Window, IDisposable
     private static string FormatItemBuff((uint ItemId, bool IsHQ) input)
     {
         if (input.ItemId == 0)
-            return "None";
+            return "无";
 
         var name = LuminaSheets.ItemSheet.GetRowOrDefault(input.ItemId)?.Name.ToString() ?? $"Unknown ({input.ItemId})";
         return input.IsHQ ? $"{name} (HQ)" : name;
@@ -590,14 +590,14 @@ public sealed class MacroEditor : Window, IDisposable
             if (!stat.IsRelative)
                 s.AppendLine($"{name} +{value}");
             else
-                s.AppendLine($"{name} +{value}% (Max {max})");
+                s.AppendLine($"{name} +{value}% (上限{max})");
         }
 
         if (FoodStatus.TryGetFood(input.ItemId) is { } food)
         {
-            AddStat("Craftsmanship", food.Craftsmanship);
-            AddStat("Control", food.Control);
-            AddStat("CP", food.CP);
+            AddStat("作业精度", food.Craftsmanship);
+            AddStat("加工精度", food.Control);
+            AddStat("制作力", food.CP);
         }
         return s.ToString();
     }
@@ -605,7 +605,7 @@ public sealed class MacroEditor : Window, IDisposable
     private static string FormatFCBuff(string name, int level)
     {
         if (level == 0)
-            return "None";
+            return "无";
 
         return $"{name} {new string('I', level)}";
     }
@@ -738,7 +738,7 @@ public sealed class MacroEditor : Window, IDisposable
         var oldStartingQuality = StartingQuality;
         var adjustedJobLevel = RecipeData.AdjustedJobLevel;
 
-        ImGuiUtils.TextCentered("Recipe");
+        ImGuiUtils.TextCentered("配方");
 
         var textStars = new string('★', RecipeData!.Table.Stars);
         var textStarsSize = Vector2.Zero;
@@ -850,7 +850,7 @@ public sealed class MacroEditor : Window, IDisposable
             ImGui.SameLine(0, 3);
             ImGui.Image(CosmicExplorationBadge.Handle, new(imageSize));
             if (ImGui.IsItemHovered())
-                ImGuiUtils.Tooltip($"Cosmic Exploration");
+                ImGuiUtils.Tooltip($"宇宙探索");
         }
 
         if (isCollectable)
@@ -859,7 +859,7 @@ public sealed class MacroEditor : Window, IDisposable
             ImGui.SetCursorPosY(ImGui.GetCursorPosY() + badgeOffset);
             ImGui.Image(CollectibleBadge.Handle, badgeSize);
             if (ImGui.IsItemHovered())
-                ImGuiUtils.Tooltip($"Collectible");
+                ImGuiUtils.Tooltip($"收藏品制作");
         }
 
         if (isExpert)
@@ -868,7 +868,7 @@ public sealed class MacroEditor : Window, IDisposable
             ImGui.SetCursorPosY(ImGui.GetCursorPosY() + badgeOffset);
             ImGui.Image(ExpertBadge.Handle, badgeSize);
             if (ImGui.IsItemHovered())
-                ImGuiUtils.Tooltip($"Expert Recipe");
+                ImGuiUtils.Tooltip($"高难度配方");
         }
 
         using (var statsTable = ImRaii.Table("stats", 3, ImGuiTableFlags.BordersInnerV))
@@ -881,17 +881,17 @@ public sealed class MacroEditor : Window, IDisposable
 
                 ImGui.TableNextColumn();
                 ImGui.AlignTextToFramePadding();
-                ImGui.TextUnformatted("Progress");
+                ImGui.TextUnformatted("难度");
                 ImGui.SameLine();
                 ImGuiUtils.TextRight($"{RecipeData.RecipeInfo.MaxProgress}");
 
                 ImGui.TableNextColumn();
-                ImGui.TextUnformatted("Quality");
+                ImGui.TextUnformatted("品质");
                 ImGui.SameLine();
                 ImGuiUtils.TextRight($"{RecipeData.RecipeInfo.MaxQuality}");
 
                 ImGui.TableNextColumn();
-                ImGui.TextUnformatted("Durability");
+                ImGui.TextUnformatted("耐久");
                 ImGui.SameLine();
                 ImGuiUtils.TextRight($"{RecipeData.RecipeInfo.MaxDurability}");
             }
@@ -924,7 +924,7 @@ public sealed class MacroEditor : Window, IDisposable
                 ImGui.TableNextColumn();
                 ImGui.AlignTextToFramePadding();
                 ImGui.SetCursorPosY(ImGui.GetCursorPosY() + ImGui.GetStyle().FramePadding.Y);
-                ImGuiUtils.TextCentered($"Starting Quality");
+                ImGuiUtils.TextCentered($"初期品质");
                 ImGui.SetCursorPosY(ImGui.GetCursorPosY() - ImGui.GetStyle().FramePadding.Y);
                 ImGuiUtils.TextCentered($"{StartingQuality}");
             }
@@ -1167,21 +1167,21 @@ public sealed class MacroEditor : Window, IDisposable
                         }
                     }
                     if (ImGui.IsItemHovered(ImGuiHoveredFlags.AllowWhenDisabled))
-                        ImGuiUtils.TooltipWrapped($"Condition Randomness{(!Service.Configuration.ConditionRandomness ? " (Disabled)" : string.Empty)}\n" +
-                            "Allows the condition to fluctuate randomly like a real craft. " +
-                            "Turns off when generating a macro.");
+                        ImGuiUtils.TooltipWrapped($"随机状态模拟{(!Service.Configuration.ConditionRandomness ? " (已禁用)" : string.Empty)}\n" +
+                            "允许制作状态在编辑宏期间随机变换，以模拟真实制作场景。" +
+                            "当你要生成宏时，应当记得禁用它。");
                 }
                 var datas = new List<DynamicBars.BarData>(3)
                 {
-                    new("Durability", Colors.Durability, State.Durability, RecipeData.RecipeInfo.MaxDurability),
-                    new("Condition", DrawCondition)
+                    new("耐久", Colors.Durability, State.Durability, RecipeData.RecipeInfo.MaxDurability),
+                    new("制作状态", DrawCondition)
                 };
                 if (RecipeData.IsCollectable)
-                    datas.Add(new("Collectability", Colors.Collectability, Reliability.ParamScore, State.Collectability, State.MaxCollectability, RecipeData.CollectableThresholds, $"{State.Collectability}", $"{State.MaxCollectability:0}"));
+                    datas.Add(new("收藏价值", Colors.Collectability, Reliability.ParamScore, State.Collectability, State.MaxCollectability, RecipeData.CollectableThresholds, $"{State.Collectability}", $"{State.MaxCollectability:0}"));
                 else if (RecipeData.Recipe.RequiredQuality > 0)
                 {
                     var qualityPercent = (float)State.Quality / RecipeData.Recipe.RequiredQuality * 100;
-                    datas.Add(new("Quality %", Colors.HQ, Reliability.ParamScore, qualityPercent, 100, null, $"{qualityPercent:0}%"));
+                    datas.Add(new("品质 %", Colors.HQ, Reliability.ParamScore, qualityPercent, 100, null, $"{qualityPercent:0}%"));
                 }
                 else if (RecipeData.RecipeInfo.MaxQuality > 0)
                     datas.Add(new("HQ %", Colors.HQ, Reliability.ParamScore, State.HQPercent, 100, null, $"{State.HQPercent}%"));
@@ -1190,9 +1190,9 @@ public sealed class MacroEditor : Window, IDisposable
                 ImGui.TableNextColumn();
                 datas =
                 [
-                    new("Progress", Colors.Progress, Reliability.Progress, State.Progress, RecipeData.RecipeInfo.MaxProgress),
-                    new("Quality", Colors.Quality, Reliability.Quality, State.Quality, RecipeData.RecipeInfo.MaxQuality),
-                    new("CP", Colors.CP, State.CP, CharacterStats.CP)
+                    new("进展", Colors.Progress, Reliability.Progress, State.Progress, RecipeData.RecipeInfo.MaxProgress),
+                    new("品质", Colors.Quality, Reliability.Quality, State.Quality, RecipeData.RecipeInfo.MaxQuality),
+                    new("制作力", Colors.CP, State.CP, CharacterStats.CP)
                 ];
                 if (RecipeData.RecipeInfo.MaxQuality <= 0)
                     datas.RemoveAt(1);
@@ -1216,7 +1216,7 @@ public sealed class MacroEditor : Window, IDisposable
                 var panelHeight = Math.Max(buffHeight, infoHeight);
 
                 ImGui.TableNextColumn();
-                using (ImRaii2.GroupPanel("Buffs", -1, out _))
+                using (ImRaii2.GroupPanel("增益效果", -1, out _))
                 {
                     using var _font = AxisFont.Push();
 
@@ -1254,7 +1254,7 @@ public sealed class MacroEditor : Window, IDisposable
                 }
 
                 ImGui.TableNextColumn();
-                using (ImRaii2.GroupPanel("Info", -1, out _))
+                using (ImRaii2.GroupPanel("信息", -1, out _))
                 {
                     var actions = Macro.Actions.ToArray();
                     var waitTime = actions.Sum(a => a.Base().MacroWaitTime);
@@ -1269,12 +1269,12 @@ public sealed class MacroEditor : Window, IDisposable
                     using (ImRaii.Group())
                     {
                         ImGui.SetCursorPosY(ImGui.GetCursorPos().Y + (panelHeight - height) / 2f);
-                        ImGuiUtils.TextCentered($"{actions.Length} Step{(actions.Length != 1 ? "s" : string.Empty)}");
-                        ImGuiUtils.TextCentered($"{waitTime} sec");
+                        ImGuiUtils.TextCentered($"步数：{actions.Length}步");
+                        ImGuiUtils.TextCentered($"耗时：{waitTime}秒");
                         if (ImGui.IsItemHovered())
-                            ImGuiUtils.Tooltip($"Optimal Time: {waitTimeOptimal:0.#} sec");
+                            ImGuiUtils.Tooltip($"理想耗时：{waitTimeOptimal:0.#}秒");
                         if (delineationCount != 0)
-                            ImGuiUtils.TextCentered($"{delineationCount} Delineation{(delineationCount != 1 ? "s" : string.Empty)}");
+                            ImGuiUtils.TextCentered($"图纸消耗：{delineationCount}");
                     }
                 }
             }
@@ -1287,7 +1287,7 @@ public sealed class MacroEditor : Window, IDisposable
         var imageSize = ImGui.GetFrameHeight() * 2;
         var lastState = Macro.InitialState;
 
-        using var panel = ImRaii2.GroupPanel("Macro", -1, out var availSpace);
+        using var panel = ImRaii2.GroupPanel("手法", -1, out var availSpace);
         ImGui.Dummy(new(0, imageSize));
         ImGui.SameLine(0, 0);
 
@@ -1377,15 +1377,15 @@ public sealed class MacroEditor : Window, IDisposable
         {
             if (MacroSetter != null)
             {
-                if (ImGui.Button("Save", new(quarterWidth, height)))
+                if (ImGui.Button("保存", new(quarterWidth, height)))
                     SaveMacro();
                 ImGui.SameLine();
-                if (ImGui.Button("Save As", new(quarterWidth, height)))
+                if (ImGui.Button("另存为", new(quarterWidth, height)))
                     ShowSaveAsPopup();
             }
             else
             {
-                if (ImGui.Button("Save", new(halfWidth, height)))
+                if (ImGui.Button("保存", new(halfWidth, height)))
                     ShowSaveAsPopup();
             }
         }
@@ -1396,24 +1396,24 @@ public sealed class MacroEditor : Window, IDisposable
             if (SolverTask?.Cancelling ?? false)
             {
                 using var _disabled = ImRaii.Disabled();
-                ImGui.Button("Stopping", new(halfWidth, height));
+                ImGui.Button("正在停止", new(halfWidth, height));
             }
             else
             {
-                if (ImGui.Button("Stop", new(halfWidth, height)))
+                if (ImGui.Button("停止", new(halfWidth, height)))
                     SolverTask?.Cancel();
             }
         }
         else
         {
-            if (ImGui.Button(SolverStartStepCount.HasValue ? "Regenerate" : "Generate", new(halfWidth, height)))
+            if (ImGui.Button(SolverStartStepCount.HasValue ? "重新生成" : "生成", new(halfWidth, height)))
                 CalculateBestMacro();
         }
         ImGui.SameLine();
         if (ImGuiUtils.IconButtonSquare(FontAwesomeIcon.Paste))
             MacroCopy.Copy(Macro.Actions.ToArray());
         if (ImGui.IsItemHovered())
-            ImGuiUtils.Tooltip("Copy to Clipboard");
+            ImGuiUtils.Tooltip("复制到剪贴板");
         ImGui.SameLine();
         using (var _disabled = ImRaii.Disabled(SolverRunning))
         {
@@ -1421,7 +1421,7 @@ public sealed class MacroEditor : Window, IDisposable
                 ShowImportPopup();
         }
         if (ImGui.IsItemHovered(ImGuiHoveredFlags.AllowWhenDisabled))
-            ImGuiUtils.Tooltip("Import Macro");
+            ImGuiUtils.Tooltip("导入宏");
         DrawImportPopup();
         ImGui.SameLine();
         if (DefaultActions.Length > 0)
@@ -1437,7 +1437,7 @@ public sealed class MacroEditor : Window, IDisposable
                 }
             }
             if (ImGui.IsItemHovered(ImGuiHoveredFlags.AllowWhenDisabled))
-                ImGuiUtils.Tooltip("Reset");
+                ImGuiUtils.Tooltip("重设");
         }
         ImGui.SameLine();
         using (var _disabled = ImRaii.Disabled(SolverRunning))
@@ -1449,7 +1449,7 @@ public sealed class MacroEditor : Window, IDisposable
             }
         }
         if (ImGui.IsItemHovered(ImGuiHoveredFlags.AllowWhenDisabled))
-            ImGuiUtils.Tooltip("Clear");
+            ImGuiUtils.Tooltip("清空");
     }
 
     private void ShowSaveAsPopup()
@@ -1467,7 +1467,7 @@ public sealed class MacroEditor : Window, IDisposable
             if (ImGui.IsWindowAppearing())
                 ImGui.SetKeyboardFocusHere();
             ImGui.SetNextItemWidth(ImGui.CalcItemWidth());
-            if (ImGui.InputTextWithHint($"##setName", "Name", ref popupSaveAsMacroName, 100, ImGuiInputTextFlags.AutoSelectAll | ImGuiInputTextFlags.EnterReturnsTrue))
+            if (ImGui.InputTextWithHint($"##setName", "名称", ref popupSaveAsMacroName, 100, ImGuiInputTextFlags.AutoSelectAll | ImGuiInputTextFlags.EnterReturnsTrue))
             {
                 if (!string.IsNullOrWhiteSpace(popupSaveAsMacroName))
                 {
@@ -1496,7 +1496,7 @@ public sealed class MacroEditor : Window, IDisposable
 
     private void DrawImportPopup()
     {
-        const string ExampleMacro = "/mlock\n/ac \"Muscle Memory\" <wait.3>\n/ac Manipulation <wait.2>\n/ac Veneration <wait.2>\n/ac \"Waste Not II\" <wait.2>\n/ac Groundwork <wait.3>\n/ac Innovation <wait.2>\n/ac \"Preparatory Touch\" <wait.3>\n/ac \"Preparatory Touch\" <wait.3>\n/ac \"Preparatory Touch\" <wait.3>\n/ac \"Preparatory Touch\" <wait.3>\n/ac \"Great Strides\" <wait.2>\n/ac \"Byregot's Blessing\" <wait.3>\n/ac \"Careful Synthesis\" <wait.3>";
+        const string ExampleMacro = "/mlock\n/ac \"闲静\" <wait.3>\n/ac 掌握 <wait.2>\n/ac 坚信 <wait.2>\n/ac \"长期俭约\" <wait.2>\n/ac 坯料制作 <wait.3>\n/ac 改革 <wait.2>\n/ac \"坯料加工\" <wait.3>\n/ac \"坯料加工\" <wait.3>\n/ac \"坯料加工\" <wait.3>\n/ac \"坯料加工\" <wait.3>\n/ac \"阔步\" <wait.2>\n/ac \"比尔格的祝福\" <wait.3>\n/ac \"模范制作\" <wait.3>";
         const string ExampleUrl = "https://ffxivteamcraft.com/simulator/39630/35499/9XOZDZKhbVXJUIPXjM63";
 
         ImGui.SetNextWindowPos(ImGui.GetMainViewport().GetCenter(), ImGuiCond.Always, new Vector2(0.5f));
@@ -1509,7 +1509,7 @@ public sealed class MacroEditor : Window, IDisposable
             using (var panel = ImRaii2.GroupPanel("##text", -1, out var availWidth))
             {
                 ImGui.AlignTextToFramePadding();
-                ImGuiUtils.TextCentered("Paste your macro here");
+                ImGuiUtils.TextCentered("在此处粘贴宏内容");
                 {
                     using var font = ImRaii.PushFont(UiBuilder.MonoFont);
                     ImGuiUtils.InputTextMultilineWithHint("", ExampleMacro, ref popupImportText, 2048, new(availWidth, ImGui.GetTextLineHeight() * 15 + ImGui.GetStyle().FramePadding.Y), ImGuiInputTextFlags.AutoSelectAll);
@@ -1523,7 +1523,7 @@ public sealed class MacroEditor : Window, IDisposable
                 var availOffset = ImGui.GetContentRegionAvail().X - availWidth;
 
                 ImGui.AlignTextToFramePadding();
-                ImGuiUtils.TextCentered("or provide a url to it");
+                ImGuiUtils.TextCentered("或是导入在线手法");
                 ImGui.SameLine();
                 using (var color = ImRaii.PushColor(ImGuiCol.Text, ImGuiColors.DalamudGrey))
                 {
@@ -1533,15 +1533,15 @@ public sealed class MacroEditor : Window, IDisposable
                 if (ImGui.IsItemHovered())
                 {
                     using var t = ImRaii.Tooltip();
-                    ImGui.TextUnformatted("Supported sites:");
+                    ImGui.TextUnformatted("支持导入以下网站的手法：");
                     ImGui.BulletText("ffxivteamcraft.com");
                     ImGui.BulletText("craftingway.app");
-                    ImGui.TextUnformatted("More suggestions are appreciated!");
+                    ImGui.TextUnformatted("欢迎提出更多建议！");
                 }
                 ImGui.SetNextItemWidth(availWidth);
                 submittedUrl = ImGui.InputTextWithHint("", ExampleUrl, ref popupImportUrl, 2048, ImGuiInputTextFlags.AutoSelectAll | ImGuiInputTextFlags.EnterReturnsTrue);
                 using (var _disabled = ImRaii.Disabled(popupImportUrlTokenSource != null))
-                    submittedUrl = ImGui.Button("Import", new(availWidth, 0)) || submittedUrl;
+                    submittedUrl = ImGui.Button("导入", new(availWidth, 0)) || submittedUrl;
             }
 
             ImGui.Dummy(default);
@@ -1553,7 +1553,7 @@ public sealed class MacroEditor : Window, IDisposable
                 ImGui.Dummy(default);
             }
 
-            if (ImGuiUtils.ButtonCentered("Nevermind", new(ImGui.GetContentRegionAvail().X / 2f, 0)))
+            if (ImGuiUtils.ButtonCentered("取消", new(ImGui.GetContentRegionAvail().X / 2f, 0)))
             {
                 popupImportUrlTokenSource?.Cancel();
                 ImGui.CloseCurrentPopup();
@@ -1572,16 +1572,16 @@ public sealed class MacroEditor : Window, IDisposable
 
                         Service.Plugin.DisplayNotification(new()
                         {
-                            Content = $"Imported macro with {parsedActions.Count} step{(parsedActions.Count != 1 ? "s" : "")}",
-                            MinimizedText = $"Imported {parsedActions.Count} step macro",
-                            Title = "Macro Imported",
+                            Content = $"成功导入了{parsedActions.Count}步的手法",
+                            MinimizedText = $"导入了{parsedActions.Count}步的手法",
+                            Title = "成功导入",
                             Type = NotificationType.Success
                         });
                         popupImportUrlTokenSource?.Cancel();
                         ImGui.CloseCurrentPopup();
                     }
                     else
-                        popupImportError = "Could not find any actions to import. Is it a valid macro?";
+                        popupImportError = "未能在提供的内容中找到任何合法技能。请检查导入内容的准确性。";
                 }
                 if (submittedUrl)
                 {
@@ -1619,7 +1619,7 @@ public sealed class MacroEditor : Window, IDisposable
                         _ = task.ContinueWith(t => popupImportUrlMacro = t.Result, TaskContinuationOptions.OnlyOnRanToCompletion);
                     }
                     else
-                        popupImportError = "The url is not in the right format for any supported sites.";
+                        popupImportError = "暂不支持导入此网站的手法。";
                 }
                 if (popupImportUrlMacro is { Name: var name, Actions: var actions })
                 {
@@ -1628,8 +1628,8 @@ public sealed class MacroEditor : Window, IDisposable
                         AddStep(action);
                     Service.Plugin.DisplayNotification(new()
                     {
-                        Content = $"Imported macro \"{name}\"",
-                        Title = "Macro Imported",
+                        Content = $"成功导入了“{name}”",
+                        Title = "成功导入",
                         Type = NotificationType.Success
                     });
 

@@ -16,5 +16,5 @@ internal sealed class CarefulObservation() : BaseAction(
         s.StepCondition();
 
     public override string GetTooltip(Simulator s, bool addUsability) =>
-        $"{base.GetTooltip(s, addUsability)}Specialist Only\n";
+        $"{base.GetTooltip(s, addUsability)}专家技能\n";
 }

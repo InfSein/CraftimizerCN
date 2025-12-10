@@ -14,5 +14,5 @@ internal sealed class HeartAndSoul() : BaseBuffAction(
         !s.ActionStates.UsedHeartAndSoul;
 
     public override string GetTooltip(Simulator s, bool addUsability) =>
-        $"{GetBaseTooltip(s, addUsability)}Specialist Only\n";
+        $"{GetBaseTooltip(s, addUsability)}专家技能\n";
 }
