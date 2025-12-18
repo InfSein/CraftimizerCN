@@ -50,13 +50,18 @@ jobs:
           git tag build-${{ steps.get_hash.outputs.short_sha }}
           git push origin build-${{ steps.get_hash.outputs.short_sha }}
 
+      - name: Package release files
+        run: |
+          cd ${{ env.PROJECT_NAME }}/bin/x64/Release
+          zip -r latest.zip .
+
       - name: Create Release
         uses: softprops/action-gh-release@v1
         id: release
         with:
           tag_name: build-${{ steps.get_hash.outputs.short_sha }}
           name: "Release for ${{ steps.get_hash.outputs.short_sha }}"
-          files: ${{env.PROJECT_NAME}}/bin/x64/Release/${{env.PROJECT_NAME}}/*
+          files: ${{env.PROJECT_NAME}}/bin/x64/Release/latest.zip
           body: |
             This is an automatic build from commit `${{ steps.get_hash.outputs.short_sha }}`
         env:
