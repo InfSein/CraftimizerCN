@@ -131,22 +131,22 @@ internal static class DynamicBars
                                 using var _tooltip = ImRaii.Tooltip();
                                 using var _ = ImRaii.PushStyle(ImGuiStyleVar.ItemSpacing, Vector2.Zero);
 
-                                ImGui.TextUnformatted("Min: ");
+                                ImGui.TextUnformatted("最低: ");
                                 ImGui.SameLine(0, 0);
                                 using (var color = bar.PushCollectableColor(reliability.Min))
                                     ImGui.TextUnformatted(reliability.Min.ToString());
 
-                                ImGui.TextUnformatted("Med: ");
+                                ImGui.TextUnformatted("中位: ");
                                 ImGui.SameLine(0, 0);
                                 using (var color = bar.PushCollectableColor(reliability.Median))
                                     ImGui.TextUnformatted(reliability.Median.ToString());
 
-                                ImGui.TextUnformatted("Avg: ");
+                                ImGui.TextUnformatted("平均: ");
                                 ImGui.SameLine(0, 0);
                                 using (var color = bar.PushCollectableColor(reliability.Average))
                                     ImGui.TextUnformatted(reliability.Average.ToString());
 
-                                ImGui.TextUnformatted("Max: ");
+                                ImGui.TextUnformatted("最大: ");
                                 ImGui.SameLine(0, 0);
                                 using (var color = bar.PushCollectableColor(reliability.Max))
                                     ImGui.TextUnformatted(reliability.Max.ToString());

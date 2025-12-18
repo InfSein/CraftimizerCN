@@ -111,7 +111,7 @@ public sealed class MacroEditor : Window, IDisposable
     private CancellationTokenSource? popupImportUrlTokenSource;
     private CommunityMacros.CommunityMacro? popupImportUrlMacro;
 
-    public MacroEditor(CharacterStats characterStats, RecipeData recipeData, CrafterBuffs buffs, IEnumerable<int>? ingredientHqCounts, IEnumerable<ActionType> actions, Action<IEnumerable<ActionType>>? setter) : base("CraftimizerCN Macro Editor", WindowFlags)
+    public MacroEditor(CharacterStats characterStats, RecipeData recipeData, CrafterBuffs buffs, IEnumerable<int>? ingredientHqCounts, IEnumerable<ActionType> actions, Action<IEnumerable<ActionType>>? setter) : base("CraftimizerCN 宏编辑器", WindowFlags)
     {
         CharacterStats = characterStats;
         RecipeData = recipeData;
@@ -975,7 +975,7 @@ public sealed class MacroEditor : Window, IDisposable
             {
                 var perItem = RecipeData.CalculateItemStartingQuality(idx, 1);
                 var total = RecipeData.CalculateItemStartingQuality(idx, hqCount);
-                ImGuiUtils.Tooltip($"{ingredient.Item.Name} {SeIconChar.HighQuality.ToIconString()}\n+{perItem} Quality/Item{(total > 0 ? $"\n+{total} Quality" : "")}");
+                ImGuiUtils.Tooltip($"{ingredient.Item.Name} {SeIconChar.HighQuality.ToIconString()}\n初期品质+{perItem}/个{(total > 0 ? $"\n总共提供了{total}初期品质" : "")}");
             }
             else if (ingredient.Amount != 0)
                 ImGuiUtils.Tooltip($"{ingredient.Item.Name}");

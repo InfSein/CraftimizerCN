@@ -142,7 +142,7 @@ public sealed class MacroList : Window, IDisposable
     private void DrawSearchBar()
     {
         ImGui.SetNextItemWidth(ImGui.GetContentRegionAvail().X);
-        if (ImGui.InputTextWithHint("##search", "Search", ref searchText, 100))
+        if (ImGui.InputTextWithHint("##search", "搜索", ref searchText, 100))
             RefreshSearch();
     }
 
