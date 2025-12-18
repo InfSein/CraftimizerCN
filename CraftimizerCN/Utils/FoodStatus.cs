@@ -33,7 +33,8 @@ public static class FoodStatus
             if (item.ItemAction.ValueNullable is not { } itemAction)
                 continue;
 
-            if (itemAction.Type is not (844 or 845 or 846))
+            var actionType = itemAction.Type;
+            if (actionType != 844 && actionType != 845 && actionType != 846)
                 continue;
 
             if (LuminaSheets.ItemFoodSheet.GetRowOrDefault(itemAction.Data[1]) is not { } itemFood)
