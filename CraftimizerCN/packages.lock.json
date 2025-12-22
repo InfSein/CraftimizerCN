@@ -4,9 +4,9 @@
     "net10.0-windows7.0": {
       "DalamudPackager": {
         "type": "Direct",
-        "requested": "[14.0.0, )",
-        "resolved": "14.0.0",
-        "contentHash": "9c1q/eAeAs82mkQWBOaCvbt3GIQxAIadz5b/7pCXDIy9nHPtnRc+tDXEvKR+M36Wvi7n+qBTevRupkLUQp6DFA=="
+        "requested": "[14.0.1, )",
+        "resolved": "14.0.1",
+        "contentHash": "y0WWyUE6dhpGdolK3iKgwys05/nZaVf4ZPtIjpLhJBZvHxkkiE23zYRo7K7uqAgoK/QvK5cqF6l3VG5AbgC6KA=="
       },
       "DotNet.ReproducibleBuilds": {
         "type": "Direct",
@@ -22,22 +22,22 @@
       },
       "Meziantou.Analyzer": {
         "type": "Direct",
-        "requested": "[2.0.199, )",
-        "resolved": "2.0.199",
-        "contentHash": "y8oRrTLDBw1b10pWci/PnFoahdIMflNSlVheL9kzUylAASnoJPFyvuyaNXcrbOTNOEk1aMLFRr1mSX/xvYR15g=="
+        "requested": "[2.0.264, )",
+        "resolved": "2.0.264",
+        "contentHash": "zRG13RDG446rZNdd/YjKRd4utpbjleRDUqNQSrX0etMnH8Rz9NBlXUpS5aR2ExoOokhNfkdOW8HpLzjLj5x0hQ=="
       },
       "DotNext": {
         "type": "Transitive",
-        "resolved": "5.21.0",
-        "contentHash": "fU63OJVSDSsOl6adjNM8e5zmyhdZkX2ztvmSeW6lBjFdvFG8ZwMOrJ+L8Ih/2yKr0cuaV8PNwnhDrlS4MFf14A==",
+        "resolved": "5.26.1",
+        "contentHash": "rcy6Yrpb64B7qYm/+D+4sfBUzwX/IOGeJBYReDL8/TAIp8aZrZPtXx8nwkYjWCuakYn2tBppwefIM6pd/cOnMw==",
         "dependencies": {
           "System.IO.Hashing": "8.0.0"
         }
       },
       "Raphael.Net": {
         "type": "Transitive",
-        "resolved": "3.0.0",
-        "contentHash": "9yY+jR2gddw52HtShBL/JikQ4gZa8lxFYSUIi2y510HLsaK86iqtuRgrv8/akrHR66QRWEPtmHXyehW1hrmP9Q=="
+        "resolved": "4.0.1",
+        "contentHash": "LxzJhMnrjVF/jGkyJLWmMerkTDGW8zZ00ipXYg2BqfmGxgBjnjhZm4XsNLb6hLgkvV2rfWcuAtwF2rCdxkRPWw=="
       },
       "System.IO.Hashing": {
         "type": "Transitive",
@@ -51,16 +51,16 @@
         "type": "Project",
         "dependencies": {
           "CraftimizerCN.Simulator": "[1.0.0, )",
-          "DotNext": "[5.21.0, )",
-          "Raphael.Net": "[3.0.0, )"
+          "DotNext": "[5.26.1, )",
+          "Raphael.Net": "[4.0.1, )"
         }
       }
     },
     "net10.0-windows7.0/win-x64": {
       "Raphael.Net": {
         "type": "Transitive",
-        "resolved": "3.0.0",
-        "contentHash": "9yY+jR2gddw52HtShBL/JikQ4gZa8lxFYSUIi2y510HLsaK86iqtuRgrv8/akrHR66QRWEPtmHXyehW1hrmP9Q=="
+        "resolved": "4.0.1",
+        "contentHash": "LxzJhMnrjVF/jGkyJLWmMerkTDGW8zZ00ipXYg2BqfmGxgBjnjhZm4XsNLb6hLgkvV2rfWcuAtwF2rCdxkRPWw=="
       }
     }
   }

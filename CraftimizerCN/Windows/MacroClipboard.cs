@@ -58,7 +58,7 @@ public sealed class MacroClipboard : Window, IDisposable
                 ImGui.SetClipboardText(macro);
                 if (Service.Configuration.MacroCopy.ShowCopiedMessage)
                 {
-                    Service.Plugin.DisplayNotification(new()
+                    Plugin.Plugin.DisplayNotification(new()
                     {
                         Content = Macros.Count == 1 ? "已将宏复制到剪贴板。" : $"已将宏#{idx + 1}复制到剪贴板。",
                         MinimizedText = Macros.Count == 1 ? "已复制宏" : $"已复制宏#{idx + 1}",

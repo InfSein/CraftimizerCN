@@ -17,13 +17,13 @@ public sealed class Service
     [PluginService] public static IDalamudPluginInterface PluginInterface { get; private set; }
     [PluginService] public static ICommandManager CommandManager { get; private set; }
     [PluginService] public static IObjectTable Objects { get; private set; }
-    //[PluginService] public static ISigScanner SigScanner { get; private set; }
+    [PluginService] public static ISigScanner SigScanner { get; private set; }
     [PluginService] public static IGameGui GameGui { get; private set; }
     [PluginService] public static IClientState ClientState { get; private set; }
     [PluginService] public static IDataManager DataManager { get; private set; }
     [PluginService] public static ITextureProvider TextureProvider { get; private set; }
     [PluginService] public static IDalamudAssetManager DalamudAssetManager { get; private set; }
-    //[PluginService] public static ITargetManager TargetManager { get; private set; }
+    [PluginService] public static ITargetManager TargetManager { get; private set; }
     [PluginService] public static ICondition Condition { get; private set; }
     [PluginService] public static IFramework Framework { get; private set; }
     [PluginService] public static IPluginLog PluginLog { get; private set; }

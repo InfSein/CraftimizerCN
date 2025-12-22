@@ -190,7 +190,7 @@ public sealed unsafe class RecipeNote : Window, IDisposable
     private bool StatsChanged { get; set; }
     private bool CalculateShouldOpen()
     {
-        if (Service.ClientState.LocalPlayer == null)
+        if (Service.Objects.LocalPlayer == null)
             return false;
 
         bool ShouldUseRecipeNote()
@@ -476,7 +476,7 @@ public sealed unsafe class RecipeNote : Window, IDisposable
             Service.Plugin.OpenMacroListWindow();
 
         if (ImGui.Button("打开宏编辑器", new(availWidth, 0)))
-            Service.Plugin.OpenMacroEditor(CharacterStats!, RecipeData!, new(Service.ClientState.LocalPlayer!.StatusList), CalculateIngredientHqCounts(), [], null);
+            Service.Plugin.OpenMacroEditor(CharacterStats!, RecipeData!, new(Service.Objects.LocalPlayer!.StatusList), CalculateIngredientHqCounts(), [], null);
     }
 
     private void DrawCharacterStats()
@@ -1030,7 +1030,7 @@ public sealed unsafe class RecipeNote : Window, IDisposable
                 ImGui.TableNextColumn();
                 {
                     if (ImGuiUtils.IconButtonSquare(FontAwesomeIcon.Edit, miniRowHeight))
-                        Service.Plugin.OpenMacroEditor(CharacterStats!, RecipeData!, new(Service.ClientState.LocalPlayer!.StatusList), CalculateIngredientHqCounts(), actions, state.MacroEditorSetter);
+                        Service.Plugin.OpenMacroEditor(CharacterStats!, RecipeData!, new(Service.Objects.LocalPlayer!.StatusList), CalculateIngredientHqCounts(), actions, state.MacroEditorSetter);
                     if (ImGui.IsItemHovered())
                         ImGuiUtils.Tooltip("打开宏编辑器");
                     if (ImGuiUtils.IconButtonSquare(FontAwesomeIcon.Paste, miniRowHeight))
@@ -1124,7 +1124,7 @@ public sealed unsafe class RecipeNote : Window, IDisposable
         var statusRequired = RecipeData.Recipe.StatusRequired;
         if (statusRequired.RowId != 0 && statusRequired.IsValid)
         {
-            if (!Service.ClientState.LocalPlayer!.StatusList.Any(s => s.StatusId == statusRequired.RowId))
+            if (!Service.Objects.LocalPlayer!.StatusList.Any(s => s.StatusId == statusRequired.RowId))
                 return CraftableStatus.RequiredStatus;
         }
 
@@ -1233,7 +1233,7 @@ public sealed unsafe class RecipeNote : Window, IDisposable
 
             var solver = new Solver.Solver(config, state) { Token = token };
             solver.OnLog += Log.Debug;
-            solver.OnWarn += t => Service.Plugin.DisplaySolverWarning(t);
+            solver.OnWarn += t => Plugin.Plugin.DisplaySolverWarning(t);
             BestMacroSolver = solver;
             solver.Start();
             var solution = solver.GetTask().GetAwaiter().GetResult();
