@@ -23,8 +23,8 @@
     ],
     "IconUrl": "https://git.camora.dev/asriel/Craftimizer/raw/branch/main/icon.png",
     "ImageUrls": [
-        "https://git.camora.dev/asriel/Craftimizer/raw/branch/main/Images/RecipeNote.png",
-        "https://git.camora.dev/asriel/Craftimizer/raw/branch/main/Images/SynthHelper.png",
-        "https://git.camora.dev/asriel/Craftimizer/raw/branch/main/Images/MacroEditor.png"
+        "https://infsein.github.io/static/CraftimizerCN/1.png",
+        "https://infsein.github.io/static/CraftimizerCN/2.png",
+        "https://infsein.github.io/static/CraftimizerCN/3.png"
     ]
 }
