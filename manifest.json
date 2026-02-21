@@ -3,13 +3,14 @@
     "Name": "CraftimizerCN",
     "InternalName": "CraftimizerCN",
     "Author": "Asriel(原作) / InfSein(翻译)",
-    "Punchline": "国服本地化版本的 Craftimizer，提供UI翻译和官库环境适配。",
+    "Punchline": "国服本地化的 Craftimizer，提供UI翻译、官库环境适配和易用性优化。",
     "Description": "轻松模拟和生成制作手法，并在制作途中获得建议。\n不用离开游戏就能模拟各种制作流程并生成宏。打开制作笔记即可开始使用。",
-    "AssemblyVersion": "2.9.1.1",
-    "TestingAssemblyVersion": "2.9.1.1",
+    "AssemblyVersion": "2.9.1.2",
+    "TestingAssemblyVersion": "2.9.1.2",
     "DalamudApiLevel": 14,
     "TestingDalamudApiLevel": 14,
     "IconUrl": "https://git.camora.dev/asriel/Craftimizer/raw/branch/main/icon.png",
+    "RepoUrl": "https://github.com/InfSein/CraftimizerCN",
     "Repository": "https://github.com/InfSein/CraftimizerCN",
     "DownloadUrl": "https://github.com/InfSein/CraftimizerCN/releases/latest/download/latest.zip",
     "DownloadLinkInstall": "https://github.com/InfSein/CraftimizerCN/releases/latest/download/latest.zip",
@@ -35,9 +36,9 @@
     "CanUnloadAsync": false,
     "LoadPriority": 0,
     "ImageUrls": [
-      "https://git.camora.dev/asriel/Craftimizer/raw/branch/main/Images/RecipeNote.png",
-      "https://git.camora.dev/asriel/Craftimizer/raw/branch/main/Images/SynthHelper.png",
-      "https://git.camora.dev/asriel/Craftimizer/raw/branch/main/Images/MacroEditor.png"
+      "https://infsein.github.io/static/CraftimizerCN/1.png",
+      "https://infsein.github.io/static/CraftimizerCN/2.png",
+      "https://infsein.github.io/static/CraftimizerCN/3.png"
     ],
     "AcceptsFeedback": true
   }
