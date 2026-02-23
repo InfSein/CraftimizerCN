@@ -53,7 +53,7 @@ jobs:
       - name: Get version from package.json
         id: get_version
         run: |
-          version="v$(node -p 'require("./manifest.json").version')"
+          version="v$(node -p 'require("./manifest.json")[0].AssemblyVersion')"
           echo "version=$version" >> $GITHUB_OUTPUT
 
       - name: Get last commit message
