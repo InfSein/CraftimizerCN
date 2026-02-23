@@ -374,11 +374,20 @@ public sealed class MacroList : Window, IDisposable
         using (var _disabled = ImRaii.Disabled(!string.IsNullOrEmpty(popupShareError) || string.IsNullOrEmpty(popupShareCode)))
         {
             if (ImGui.Button("复制CAC工序码", new(width, 0)))
+            {
                 ImGui.SetClipboardText(popupShareCode);
+                ImGui.CloseCurrentPopup();
+            }
             if (ImGui.Button("复制CAC分享链接", new(width, 0)))
+            {
                 ImGui.SetClipboardText(shareUrl);
+                ImGui.CloseCurrentPopup();
+            }
             if (ImGui.Button("打开CAC分享链接", new(width, 0)))
+            {
                 Util.OpenLink(shareUrl);
+                ImGui.CloseCurrentPopup();
+            }
         }
 
         if (!string.IsNullOrWhiteSpace(popupShareError))
