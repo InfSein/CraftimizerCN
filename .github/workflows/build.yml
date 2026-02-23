@@ -50,6 +50,30 @@ jobs:
           git tag build-${{ steps.get_hash.outputs.short_sha }}
           git push origin build-${{ steps.get_hash.outputs.short_sha }}
 
+      - name: Get version from package.json
+        id: get_version
+        run: |
+          version="v$(node -p 'require("./manifest.json").version')"
+          echo "version=$version" >> $GITHUB_OUTPUT
+
+      - name: Get last commit message
+        id: get_commit
+        run: |
+          echo "msg<<EOF" >> $GITHUB_OUTPUT
+          echo "$(git log -1 --pretty=format:%B)" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+
+      - name: Parse changelog and PR number
+        id: parse_changelog
+        run: |
+          msg="${{ steps.get_commit.outputs.msg }}"
+          pr_number=$(echo "$msg" | grep -oP '#\d+' | head -n 1 || true)
+          changelog=$(echo "$msg" | sed '1d')
+          echo "pr_number=$pr_number" >> $GITHUB_OUTPUT
+          echo "changelog<<EOF" >> $GITHUB_OUTPUT
+          echo "$changelog" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+
       - name: Package release files
         run: |
           cd ${{ env.PROJECT_NAME }}/bin/x64/Release
@@ -60,9 +84,13 @@ jobs:
         id: release
         with:
           tag_name: build-${{ steps.get_hash.outputs.short_sha }}
-          name: "Release for ${{ steps.get_hash.outputs.short_sha }}"
+          name: "Release ${{ steps.get_version.outputs.version }} (${{ steps.get_hash.outputs.short_sha }})"
           files: ${{env.PROJECT_NAME}}/bin/x64/Release/latest.zip
           body: |
-            This is an automatic build from commit `${{ steps.get_hash.outputs.short_sha }}`
+            This is an automatic build from commit `${{ steps.get_hash.outputs.short_sha }}`. <br>
+            ${{ steps.parse_changelog.outputs.changelog }}
+
+            **Version**: ${{ steps.get_version.outputs.version }} <br>
+            **PR(s)**: ${{ steps.parse_changelog.outputs.pr_number }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
