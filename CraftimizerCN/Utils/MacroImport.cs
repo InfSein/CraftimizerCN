@@ -10,6 +10,7 @@ using System.Net.Http;
 using System.Net.Http.Json;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using static CraftimizerCN.Utils.CommunityMacros;
@@ -27,6 +28,48 @@ public static class MacroImport
                 actions.Add(action);
         }
         return actions.Count > 0 ? actions : null;
+    }
+
+    public static bool TryParseCacCode(string code, out IReadOnlyList<ActionType> actions, out string error)
+    {
+        actions = Array.Empty<ActionType>();
+        error = string.Empty;
+
+        if (string.IsNullOrWhiteSpace(code))
+        {
+            error = "CAC 工序码不能为空。";
+            return false;
+        }
+
+        code = code.Trim().Replace("https://cac.nbb.fan/?s=", "");
+        var match = Regex.Match(code, @"^(\d+)v(\d+)b(.*)$");
+        if (!match.Success)
+        {
+            error = "CAC 工序码格式不正确。";
+            return false;
+        }
+
+        if (!int.TryParse(match.Groups[1].Value, out var version) || version < 0)
+        {
+            error = "CAC 工序码版本无效。";
+            return false;
+        }
+        _ = version;
+
+        if (!int.TryParse(match.Groups[2].Value, out var bitWidth) || bitWidth <= 0 || bitWidth > 30)
+        {
+            error = "CAC 工序码位宽无效。";
+            return false;
+        }
+
+        var payload = match.Groups[3].Value;
+        if (string.IsNullOrEmpty(payload))
+        {
+            error = "未能在提供的 CAC 工序码中找到任何合法技能。";
+            return false;
+        }
+
+        return CacHelper.TryDecodeActions(payload, bitWidth, out actions, out error);
     }
 
     private static ActionType? TryParseLine(string line)

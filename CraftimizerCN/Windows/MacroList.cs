@@ -2,6 +2,7 @@ using CraftimizerCN.Plugin;
 using CraftimizerCN.Utils;
 using Dalamud.Interface.Utility.Raii;
 using Dalamud.Interface;
+using Dalamud.Interface.Colors;
 using Dalamud.Interface.Windowing;
 using Dalamud.Bindings.ImGui;
 using System;
@@ -253,6 +254,12 @@ public sealed class MacroList : Window, IDisposable
                 DrawRenamePopup(macro);
                 if (ImGui.IsItemHovered())
                     ImGuiUtils.Tooltip("重命名");
+                ImGui.SameLine(0, spacing);
+                if (ImGuiUtils.IconButtonSquare(FontAwesomeIcon.ShareAlt, miniRowHeight))
+                    ShowSharePopup(macro);
+                DrawSharePopup(macro);
+                if (ImGui.IsItemHovered())
+                    ImGuiUtils.Tooltip("分享");
 
                 if (ImGuiUtils.IconButtonSquare(FontAwesomeIcon.Paste, miniRowHeight))
                     MacroCopy.Copy(macro.Actions);
@@ -331,6 +338,62 @@ public sealed class MacroList : Window, IDisposable
                     ImGui.CloseCurrentPopup();
                 }
             }
+        }
+    }
+
+    private string popupShareCode = string.Empty;
+    private string popupShareError = string.Empty;
+    private Macro? popupShareMacro;
+    private void ShowSharePopup(Macro macro)
+    {
+        ImGui.OpenPopup($"##sharePopup-{macro.GetHashCode()}");
+        popupShareMacro = macro;
+        popupShareError = string.Empty;
+        if (!CacHelper.TryEncodeActions(macro.Actions, out popupShareCode, out popupShareError))
+            popupShareCode = string.Empty;
+        ImGui.SetNextWindowPos(ImGui.GetMousePos() - new Vector2(ImGui.CalcItemWidth() * .25f, ImGui.GetFrameHeight() + ImGui.GetStyle().WindowPadding.Y * 2));
+    }
+
+    private void DrawSharePopup(Macro macro)
+    {
+        using var popup = ImRaii.Popup($"##sharePopup-{macro.GetHashCode()}");
+        if (!popup)
+            return;
+
+        if (popupShareMacro != macro)
+        {
+            popupShareMacro = macro;
+            popupShareError = string.Empty;
+            if (!CacHelper.TryEncodeActions(macro.Actions, out popupShareCode, out popupShareError))
+                popupShareCode = string.Empty;
+        }
+
+        var width = ImGui.CalcTextSize("复制CAC分享链接").X + ImGui.GetStyle().FramePadding.X * 2;
+        var shareUrl = string.IsNullOrWhiteSpace(popupShareCode) ? string.Empty : $"https://cac.nbb.fan/?s={popupShareCode}";
+
+        using (var _disabled = ImRaii.Disabled(!string.IsNullOrEmpty(popupShareError) || string.IsNullOrEmpty(popupShareCode)))
+        {
+            if (ImGui.Button("复制CAC工序码", new(width, 0)))
+            {
+                ImGui.SetClipboardText(popupShareCode);
+                ImGui.CloseCurrentPopup();
+            }
+            if (ImGui.Button("复制CAC分享链接", new(width, 0)))
+            {
+                ImGui.SetClipboardText(shareUrl);
+                ImGui.CloseCurrentPopup();
+            }
+            if (ImGui.Button("打开CAC分享链接", new(width, 0)))
+            {
+                Util.OpenLink(shareUrl);
+                ImGui.CloseCurrentPopup();
+            }
+        }
+
+        if (!string.IsNullOrWhiteSpace(popupShareError))
+        {
+            using (var c = ImRaii.PushColor(ImGuiCol.Text, ImGuiColors.DalamudRed))
+                ImGui.TextWrapped(popupShareError);
         }
     }
 

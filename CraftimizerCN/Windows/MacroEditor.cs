@@ -107,6 +107,7 @@ public sealed class MacroEditor : Window, IDisposable
     private string popupSaveAsDefaultMacroName = string.Empty;
 
     private string popupImportText = string.Empty;
+    private string popupImportCac = string.Empty;
     private string popupImportUrl = string.Empty;
     private string popupImportError = string.Empty;
     private CancellationTokenSource? popupImportUrlTokenSource;
@@ -1510,6 +1511,7 @@ public sealed class MacroEditor : Window, IDisposable
     {
         ImGui.OpenPopup($"##importPopup");
         popupImportText = string.Empty;
+        popupImportCac = string.Empty;
         popupImportUrl = string.Empty;
         popupImportError = string.Empty;
         popupImportUrlMacro = null;
@@ -1519,6 +1521,7 @@ public sealed class MacroEditor : Window, IDisposable
     private void DrawImportPopup()
     {
         const string ExampleMacro = "/mlock\n/ac \"闲静\" <wait.3>\n/ac 掌握 <wait.2>\n/ac 坚信 <wait.2>\n/ac \"长期俭约\" <wait.2>\n/ac 坯料制作 <wait.3>\n/ac 改革 <wait.2>\n/ac \"坯料加工\" <wait.3>\n/ac \"坯料加工\" <wait.3>\n/ac \"坯料加工\" <wait.3>\n/ac \"坯料加工\" <wait.3>\n/ac \"阔步\" <wait.2>\n/ac \"比尔格的祝福\" <wait.3>\n/ac \"模范制作\" <wait.3>";
+        const string ExampleCac = "1v6b...";
         const string ExampleUrl = "https://ffxivteamcraft.com/simulator/39630/35499/9XOZDZKhbVXJUIPXjM63";
 
         ImGui.SetNextWindowPos(ImGui.GetMainViewport().GetCenter(), ImGuiCond.Always, new Vector2(0.5f));
@@ -1526,18 +1529,52 @@ public sealed class MacroEditor : Window, IDisposable
         using var popup = ImRaii.Popup($"##importPopup", ImGuiWindowFlags.Modal | ImGuiWindowFlags.NoMove);
         if (popup)
         {
-            bool submittedText, submittedUrl;
+            bool submittedText, submittedCac, submittedUrl;
 
             using (var panel = ImRaii2.GroupPanel("##text", -1, out var availWidth))
             {
                 ImGui.AlignTextToFramePadding();
-                ImGuiUtils.TextCentered("在此处粘贴宏内容");
+                ImGuiUtils.TextCentered("导入用户宏");
                 {
                     using var font = ImRaii.PushFont(UiBuilder.MonoFont);
-                    ImGuiUtils.InputTextMultilineWithHint("", ExampleMacro, ref popupImportText, 2048, new(availWidth, ImGui.GetTextLineHeight() * 15 + ImGui.GetStyle().FramePadding.Y), ImGuiInputTextFlags.AutoSelectAll);
+                    ImGuiUtils.InputTextMultilineWithHint("", ExampleMacro, ref popupImportText, 2048, new(availWidth, ImGui.GetTextLineHeight() * 12 + ImGui.GetStyle().FramePadding.Y), ImGuiInputTextFlags.AutoSelectAll);
                 }
                 using (var _disabled = ImRaii.Disabled(popupImportUrlTokenSource != null))
-                    submittedText = ImGui.Button("Import", new(availWidth, 0));
+                    submittedText = ImGui.Button("导入", new(availWidth, 0));
+            }
+
+            using (var panel = ImRaii2.GroupPanel("##cac", -1, out var availWidth))
+            {
+                var availOffset = ImGui.GetContentRegionAvail().X - availWidth;
+                var iconSpacing = ImGui.GetStyle().ItemSpacing.X;
+                var linkButtonSize = ImGui.GetFrameHeight();
+                ImGui.AlignTextToFramePadding();
+                ImGuiUtils.TextCentered("导入CAC工序码");
+                ImGui.SameLine();
+                using (var color = ImRaii.PushColor(ImGuiCol.Text, ImGuiColors.DalamudGrey))
+                {
+                    using var font = ImRaii.PushFont(UiBuilder.IconFont);
+                    var infoText = FontAwesomeIcon.InfoCircle.ToIconString();
+                    var infoSize = ImGui.CalcTextSize(infoText).X;
+                    var rightWidth = infoSize + iconSpacing + linkButtonSize;
+                    ImGuiUtils.AlignRight(rightWidth, ImGui.GetContentRegionAvail().X - availOffset);
+                    ImGui.TextUnformatted(infoText);
+                }
+                if (ImGui.IsItemHovered())
+                {
+                    using var t = ImRaii.Tooltip();
+                    ImGui.TextUnformatted("CAC工序码是一个压缩生产工序的全新标准。");
+                    ImGui.TextUnformatted("将工序码或是分享链接粘贴到下方输入框即可识别出完整工序。");
+                }
+                ImGui.SameLine(0, iconSpacing);
+                if (ImGuiUtils.IconButtonSquare(FontAwesomeIcon.ExternalLinkAlt))
+                    Util.OpenLink("https://cac.nbb.fan/");
+                if (ImGui.IsItemHovered())
+                    ImGuiUtils.Tooltip("https://cac.nbb.fan/");
+                ImGui.SetNextItemWidth(availWidth);
+                submittedCac = ImGui.InputTextWithHint("", ExampleCac, ref popupImportCac, 2048, ImGuiInputTextFlags.AutoSelectAll | ImGuiInputTextFlags.EnterReturnsTrue);
+                using (var _disabled = ImRaii.Disabled(popupImportUrlTokenSource != null))
+                    submittedCac = ImGui.Button("导入", new(availWidth, 0)) || submittedCac;
             }
 
             using (var panel = ImRaii2.GroupPanel("##url", -1, out var availWidth))
@@ -1545,7 +1582,7 @@ public sealed class MacroEditor : Window, IDisposable
                 var availOffset = ImGui.GetContentRegionAvail().X - availWidth;
 
                 ImGui.AlignTextToFramePadding();
-                ImGuiUtils.TextCentered("或是导入在线手法");
+                ImGuiUtils.TextCentered("导入在线手法");
                 ImGui.SameLine();
                 using (var color = ImRaii.PushColor(ImGuiCol.Text, ImGuiColors.DalamudGrey))
                 {
@@ -1555,7 +1592,7 @@ public sealed class MacroEditor : Window, IDisposable
                 if (ImGui.IsItemHovered())
                 {
                     using var t = ImRaii.Tooltip();
-                    ImGui.TextUnformatted("支持导入以下网站的手法：");
+                    ImGui.TextUnformatted("目前支持导入以下网站的手法：");
                     ImGui.BulletText("ffxivteamcraft.com");
                     ImGui.BulletText("craftingway.app");
                     ImGui.TextUnformatted("欢迎提出更多建议！");
@@ -1604,6 +1641,30 @@ public sealed class MacroEditor : Window, IDisposable
                     }
                     else
                         popupImportError = "未能在提供的内容中找到任何合法技能。请检查导入内容的准确性。";
+                }
+                if (submittedCac)
+                {
+                    if (MacroImport.TryParseCacCode(popupImportCac, out var parsedActions, out var error))
+                    {
+                        popupImportUrlTokenSource?.Cancel();
+                        Macro.Clear();
+                        foreach (var action in parsedActions)
+                            AddStep(action);
+
+                        Plugin.Plugin.DisplayNotification(new()
+                        {
+                            Content = $"成功导入了{parsedActions.Count}步的手法",
+                            MinimizedText = $"导入了{parsedActions.Count}步的手法",
+                            Title = "成功导入",
+                            Type = NotificationType.Success
+                        });
+                        popupImportUrlTokenSource?.Cancel();
+                        ImGui.CloseCurrentPopup();
+                    }
+                    else
+                    {
+                        popupImportError = error;
+                    }
                 }
                 if (submittedUrl)
                 {
