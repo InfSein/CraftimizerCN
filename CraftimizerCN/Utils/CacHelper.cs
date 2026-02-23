@@ -1,11 +1,13 @@
 using CraftimizerCN.Simulator.Actions;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace CraftimizerCN.Utils;
 
 public static class CacHelper
 {
+    private const int CacVersionForExport = 1;
     private static readonly Dictionary<int, ActionType> CacIdToActionType = new()
     {
         { 1, ActionType.GreatStrides },
@@ -45,6 +47,66 @@ public static class CacHelper
         { 35, ActionType.ImmaculateMend },
         { 36, ActionType.TrainedPerfection },
     };
+    private static readonly Dictionary<ActionType, int> ActionTypeToCacId = CacIdToActionType.ToDictionary(pair => pair.Value, pair => pair.Key);
+
+    public static bool TryEncodeActions(IReadOnlyList<ActionType> actions, out string code, out string error)
+    {
+        code = string.Empty;
+        error = string.Empty;
+
+        if (actions.Count == 0)
+        {
+            code = $"{CacVersionForExport}v1b";
+            return true;
+        }
+
+        var ids = new int[actions.Count];
+        var maxId = 0;
+        for (var i = 0; i < actions.Count; i++)
+        {
+            var action = actions[i];
+            if (!ActionTypeToCacId.TryGetValue(action, out var id))
+            {
+                error = $"不支持的技能：{action}。";
+                return false;
+            }
+            ids[i] = id;
+            if (id > maxId)
+                maxId = id;
+        }
+
+        var bitWidth = 1;
+        while ((1 << bitWidth) <= maxId)
+            bitWidth++;
+        if (bitWidth <= 0 || bitWidth > 30)
+        {
+            error = "CAC 工序码位宽无效。";
+            return false;
+        }
+
+        var bytes = new List<byte>();
+        var bitBuffer = 0L;
+        var bitLength = 0;
+        foreach (var id in ids)
+        {
+            bitBuffer = (bitBuffer << bitWidth) | id;
+            bitLength += bitWidth;
+            while (bitLength >= 8)
+            {
+                bitLength -= 8;
+                bytes.Add((byte)((bitBuffer >> bitLength) & 0xFF));
+            }
+        }
+        if (bitLength > 0)
+            bytes.Add((byte)((bitBuffer << (8 - bitLength)) & 0xFF));
+
+        var payload = Convert.ToBase64String(bytes.ToArray())
+            .Replace('+', '-')
+            .Replace('/', '_')
+            .TrimEnd('=');
+        code = $"{CacVersionForExport}v{bitWidth}b{payload}";
+        return true;
+    }
 
     public static bool TryDecodeActions(string payload, int bitWidth, out IReadOnlyList<ActionType> actions, out string error)
     {
