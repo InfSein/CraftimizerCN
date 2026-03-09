@@ -30,6 +30,7 @@ internal static class ActionUtils
         ActionRows = new (CraftAction? CraftAction, Action? Action)[actionTypes.Length, classJobs.Length];
         foreach (var actionType in actionTypes)
         {
+            if (actionType == ActionType.DutyAction2) continue;
             var actionId = actionType.Base().ActionId;
             if (LuminaSheets.CraftActionSheet.GetRowOrDefault(actionId) is { } baseCraftAction)
             {
@@ -67,20 +68,26 @@ internal static class ActionUtils
     public static (CraftAction? CraftAction, Action? Action) GetActionRow(this ActionType me, ClassJob classJob) =>
         ActionRows[(int)me, (int)classJob];
 
+    private static GeneralAction? GetGeneralAction(uint actionId) =>
+        LuminaSheets.GeneralActionSheet.GetRowOrDefault(actionId) is { } generalAction ? generalAction : null;
+
     public static uint GetId(this ActionType me, ClassJob classJob)
     {
+        if (me == ActionType.DutyAction2) return GetGeneralAction(27)?.RowId ?? 0;
         var (craftAction, action) = GetActionRow(me, classJob);
         return craftAction?.RowId ?? action?.RowId ?? 0;
     }
 
     public static string GetName(this ActionType me, ClassJob classJob)
     {
+        if (me == ActionType.DutyAction2) return GetGeneralAction(27)?.Name.AsSpan().ToString() ?? "Unknown";
         var (craftAction, action) = GetActionRow(me, classJob);
         return (craftAction?.Name ?? action?.Name)?.AsSpan().ToString() ?? "Unknown";
     }
 
     public static ITextureIcon GetIcon(this ActionType me, ClassJob classJob)
     {
+        if (me == ActionType.DutyAction2) return Service.IconManager.GetIconCached((uint)(GetGeneralAction(27)?.Icon ?? 1953));
         var (craftAction, action) = GetActionRow(me, classJob);
         // 1953 = Old "Steady Hand" action icon
         return Service.IconManager.GetIconCached(craftAction?.Icon ?? action?.Icon ?? 1953);
@@ -88,6 +95,10 @@ internal static class ActionUtils
 
     public static ActionType? GetActionTypeFromId(uint actionId, ClassJob classJob, bool isCraftAction)
     {
+        if (actionId == 27)
+        {
+            return ActionType.DutyAction2;
+        }
         foreach (var action in Enum.GetValues<ActionType>())
         {
             var row = action.GetActionRow(classJob);

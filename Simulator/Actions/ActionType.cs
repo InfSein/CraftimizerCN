@@ -46,6 +46,8 @@ public enum ActionType : byte
     AdvancedTouchCombo,
     ObservedAdvancedTouchCombo,
     RefinedTouchCombo,
+
+    DutyAction2,
 }
 
 public static class ActionUtils

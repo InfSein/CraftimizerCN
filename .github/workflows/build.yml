@@ -87,10 +87,12 @@ jobs:
           name: "Release ${{ steps.get_version.outputs.version }} (${{ steps.get_hash.outputs.short_sha }})"
           files: ${{env.PROJECT_NAME}}/bin/x64/Release/latest.zip
           body: |
-            This is an automatic build from commit `${{ steps.get_hash.outputs.short_sha }}`. <br>
+            This is an automatic build from commit `${{ steps.get_hash.outputs.short_sha }}`.
+
+            **RELEASE NOTE:**
             ${{ steps.parse_changelog.outputs.changelog }}
 
-            **Version**: ${{ steps.get_version.outputs.version }} <br>
+            **Version**: ${{ steps.get_version.outputs.version }}
             **PR(s)**: ${{ steps.parse_changelog.outputs.pr_number }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

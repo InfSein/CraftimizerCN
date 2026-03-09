@@ -19,6 +19,8 @@ namespace CraftimizerCN.Utils;
 
 public static class MacroImport
 {
+    public readonly record struct ImportedMacro(IReadOnlyList<ActionType> Actions, string? Name);
+
     public static IReadOnlyList<ActionType>? TryParseMacro(string inputMacro)
     {
         var actions = new List<ActionType>();
@@ -71,7 +73,49 @@ public static class MacroImport
 
         return CacHelper.TryDecodeActions(payload, bitWidth, out actions, out error);
     }
+    public static bool TryParseBatchCacImports(string text, out IReadOnlyList<ImportedMacro> macros, out string error)
+    {
+        macros = Array.Empty<ImportedMacro>();
+        error = string.Empty;
 
+        if (string.IsNullOrWhiteSpace(text))
+        {
+            error = "请输入导入内容。";
+            return false;
+        }
+
+        var parsed = new List<ImportedMacro>();
+        var lines = text.ReplaceLineEndings("\n").Split('\n');
+        for (var i = 0; i < lines.Length; i++)
+        {
+            var line = lines[i].Trim();
+            if (string.IsNullOrWhiteSpace(line))
+                continue;
+
+            var split = line.Split((char[]?)null, 2, StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
+            if (split.Length == 0)
+                continue;
+
+            var code = split[0];
+            if (!TryParseCacCode(code, out var actions, out var parseError))
+            {
+                error = $"第 {i + 1} 行：{parseError}";
+                return false;
+            }
+
+            var name = split.Length > 1 && !string.IsNullOrWhiteSpace(split[1]) ? split[1] : null;
+            parsed.Add(new(actions, name));
+        }
+
+        if (parsed.Count == 0)
+        {
+            error = "未能在提供的内容中找到任何可导入的 CAC 工序码。";
+            return false;
+        }
+
+        macros = parsed;
+        return true;
+    }
     private static ActionType? TryParseLine(string line)
     {
         if (line.StartsWith("/ac", StringComparison.OrdinalIgnoreCase))

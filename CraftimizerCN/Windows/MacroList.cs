@@ -4,6 +4,7 @@ using Dalamud.Interface.Utility.Raii;
 using Dalamud.Interface;
 using Dalamud.Interface.Colors;
 using Dalamud.Interface.Windowing;
+using Dalamud.Interface.ImGuiNotification;
 using Dalamud.Bindings.ImGui;
 using System;
 using CraftimizerCN.Simulator;
@@ -142,9 +143,21 @@ public sealed class MacroList : Window, IDisposable
     private bool isUnsorted = true;
     private void DrawSearchBar()
     {
-        ImGui.SetNextItemWidth(ImGui.GetContentRegionAvail().X);
+        var spacing = ImGui.GetStyle().ItemSpacing.X;
+        var buttonSize = ImGui.GetFrameHeight();
+        var width = Math.Max(1f, ImGui.GetContentRegionAvail().X - buttonSize - spacing);
+
+        ImGui.SetNextItemWidth(width);
         if (ImGui.InputTextWithHint("##search", "搜索", ref searchText, 100))
             RefreshSearch();
+
+        ImGui.SameLine(0, spacing);
+        if (ImGuiUtils.IconButtonSquare(FontAwesomeIcon.FileImport))
+            ShowBatchImportPopup();
+        if (ImGui.IsItemHovered())
+            ImGuiUtils.Tooltip("批量导入");
+
+        DrawBatchImportPopup();
     }
 
     private void DrawMacro(Macro macro, float width = -1)
@@ -310,7 +323,86 @@ public sealed class MacroList : Window, IDisposable
             }
         }
     }
+    private string popupBatchImportText = string.Empty;
+    private string popupBatchImportError = string.Empty;
 
+    private void ShowBatchImportPopup()
+    {
+        ImGui.OpenPopup("##batchImportPopup");
+        popupBatchImportText = string.Empty;
+        popupBatchImportError = string.Empty;
+    }
+
+    private void DrawBatchImportPopup()
+    {
+        const string Example = "1v6bZCFER 自定宏1\n1v6biZCF";
+
+        ImGui.SetNextWindowPos(ImGui.GetMainViewport().GetCenter(), ImGuiCond.Appearing, new Vector2(0.5f));
+        ImGui.SetNextWindowSizeConstraints(new(500, 0), new(float.PositiveInfinity));
+        using var popup = ImRaii.Popup("##batchImportPopup", ImGuiWindowFlags.Modal | ImGuiWindowFlags.NoMove);
+        if (!popup)
+            return;
+
+        ImGui.TextUnformatted("批量导入");
+        ImGui.TextWrapped("一行一个。");
+        ImGui.TextWrapped("格式：CAC工序码 宏名称(可选)。");
+        ImGui.Dummy(default);
+
+        var availWidth = ImGui.GetContentRegionAvail().X;
+        using (var mono = ImRaii.PushFont(UiBuilder.MonoFont))
+            ImGuiUtils.InputTextMultilineWithHint("##batchImportText", Example, ref popupBatchImportText, 8192, new(availWidth, ImGui.GetTextLineHeight() * 10 + ImGui.GetStyle().FramePadding.Y), ImGuiInputTextFlags.AutoSelectAll);
+
+        if (!string.IsNullOrWhiteSpace(popupBatchImportError))
+        {
+            using var c = ImRaii.PushColor(ImGuiCol.Text, ImGuiColors.DalamudRed);
+            ImGui.TextWrapped(popupBatchImportError);
+        }
+
+        var halfWidth = (ImGui.GetContentRegionAvail().X - ImGui.GetStyle().ItemSpacing.X) / 2f;
+        if (ImGui.Button("导入", new(halfWidth, 0)))
+            TryImportBatchMacros();
+        ImGui.SameLine();
+        if (ImGui.Button("取消", new(halfWidth, 0)))
+            ImGui.CloseCurrentPopup();
+    }
+
+    private void TryImportBatchMacros()
+    {
+        if (!MacroImport.TryParseBatchCacImports(popupBatchImportText, out var imports, out var error))
+        {
+            popupBatchImportError = error;
+            return;
+        }
+
+        var existingNames = MacroNaming.CreateExistingNameSet(Service.Configuration.Macros.Select(m => m.Name));
+        var macros = new List<Macro>(imports.Count);
+        foreach (var imported in imports)
+        {
+            var name = string.IsNullOrWhiteSpace(imported.Name)
+                ? MacroNaming.GenerateDefaultMacroName(existingNames)
+                : imported.Name!.Trim();
+
+            existingNames.Add(name);
+            macros.Add(new Macro
+            {
+                Name = name,
+                Actions = [.. imported.Actions]
+            });
+        }
+
+        foreach (var macro in macros)
+            Service.Configuration.AddMacro(macro);
+
+        Plugin.Plugin.DisplayNotification(new()
+        {
+            Content = $"成功导入了 {macros.Count} 个宏",
+            MinimizedText = $"导入了 {macros.Count} 个宏",
+            Title = "成功导入",
+            Type = NotificationType.Success
+        });
+
+        ImGui.CloseCurrentPopup();
+    }
     private string popupMacroName = string.Empty;
     private Macro? popupMacro;
     private void ShowRenamePopup(Macro macro)
