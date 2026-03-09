@@ -46,6 +46,7 @@ public static class CacHelper
         { 34, ActionType.QuickInnovation },
         { 35, ActionType.ImmaculateMend },
         { 36, ActionType.TrainedPerfection },
+        { 37, ActionType.DutyAction2 },
     };
     private static readonly Dictionary<ActionType, int> ActionTypeToCacId = CacIdToActionType.ToDictionary(pair => pair.Value, pair => pair.Key);
 

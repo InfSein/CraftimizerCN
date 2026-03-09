@@ -1458,7 +1458,7 @@ public sealed class MacroEditor : Window, IDisposable
     {
         ImGui.OpenPopup($"##saveAsPopup");
         popupSaveAsMacroName = string.Empty;
-        popupSaveAsDefaultMacroName = GenerateDefaultMacroName();
+        popupSaveAsDefaultMacroName = MacroNaming.GenerateDefaultMacroName(MacroNaming.CreateExistingNameSet(Service.Configuration.Macros.Select(m => m.Name)));
         ImGui.SetNextWindowPos(ImGui.GetMousePos() - new Vector2(ImGui.CalcItemWidth() * .25f, ImGui.GetFrameHeight() + ImGui.GetStyle().WindowPadding.Y * 2));
     }
 
@@ -1487,23 +1487,6 @@ public sealed class MacroEditor : Window, IDisposable
                     ImGui.CloseCurrentPopup();
                 }
             }
-        }
-    }
-
-    private static string GenerateDefaultMacroName()
-    {
-        var existingNames = Service.Configuration.Macros
-            .Select(m => m.Name?.Trim())
-            .Where(n => !string.IsNullOrWhiteSpace(n))
-            .ToHashSet(StringComparer.Ordinal);
-
-        var index = 1;
-        while (true)
-        {
-            var candidate = $"{index}号宏";
-            if (!existingNames.Contains(candidate))
-                return candidate;
-            index++;
         }
     }
 

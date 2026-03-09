@@ -1,12 +1,14 @@
-# CraftimizerCN
+﻿# CraftimizerCN
 
 基于 [WorkingRobot/Craftimizer](https://github.com/WorkingRobot/Craftimizer) 魔改，提供以下特殊调整：
 
 * 适配国服卫月官库的运行环境
 * 将各处的 UI 文本翻译为中文
 * 一些易用性优化，包括：
+  - 支持“任务指令2”(宇宙探索等场景)
   - 在宏编辑器中保存和另存新宏时，会自动提供默认名称，不再一定需要你手动敲字
   - 接入CAC标准，可以将CAC工序码导入到宏编辑器／将本地宏以CAC格式进行分享
+  - 本地宏界面可以批量导入
 
 如果这些调整恰好满足了你的需要，你可以考虑迁移到 `CraftimizerCN` 。
 
@@ -21,4 +23,11 @@
 
 ```
 https://raw.githubusercontent.com/InfSein/CraftimizerCN/refs/heads/main/manifest.json
+```
+
+## 本地开发
+
+```powershell
+dotnet restore -r win
+dotnet build CraftimizerCN.sln -c Debug
 ```

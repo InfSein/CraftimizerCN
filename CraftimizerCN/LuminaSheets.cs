@@ -23,6 +23,7 @@ public static class LuminaSheets
     public static readonly ExcelSheet<Recipe> RecipeSheet = Module.GetSheet<Recipe>();
     public static readonly ExcelSheet<Action> ActionSheet = Module.GetSheet<Action>();
     public static readonly ExcelSheet<CraftAction> CraftActionSheet = Module.GetSheet<CraftAction>();
+    public static readonly ExcelSheet<GeneralAction> GeneralActionSheet = Module.GetSheet<GeneralAction>();
     public static readonly ExcelSheet<Status> StatusSheet = Module.GetSheet<Status>();
     public static readonly ExcelSheet<Addon> AddonSheet = Module.GetSheet<Addon>();
     public static readonly ExcelSheet<ClassJob> ClassJobSheet = Module.GetSheet<ClassJob>();
