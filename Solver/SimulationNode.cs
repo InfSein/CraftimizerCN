@@ -1,4 +1,4 @@
-using CraftimizerCN.Simulator;
+﻿using CraftimizerCN.Simulator;
 using CraftimizerCN.Simulator.Actions;
 using System.Diagnostics.Contracts;
 using System.Runtime.CompilerServices;
@@ -33,6 +33,17 @@ public struct SimulationNode(in SimulationState state, ActionType? action, Compl
             return null;
 
         var stepScore = 1f - ((float)(state.ActionCount + 1) / config.MaxStepCount);
+
+        if (config.AutoScore)
+        {
+            if (state.Input.Recipe.MaxQuality == 0)
+                return 1f + stepScore;
+
+            var qualityRatio = Math.Clamp((float)state.Quality / state.Input.Recipe.MaxQuality, 0, 1);
+            if (qualityRatio >= 1f)
+                return 2f + stepScore;
+            return qualityRatio;
+        }
 
         if (state.Input.Recipe.MaxQuality == 0)
             return stepScore;
@@ -89,3 +100,4 @@ public struct SimulationNode(in SimulationState state, ActionType? action, Compl
         return progressScore + qualityScore + durabilityScore + cpScore + fewerStepsScore;
     }
 }
+

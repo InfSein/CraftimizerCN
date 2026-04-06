@@ -1,4 +1,4 @@
-using CraftimizerCN.Simulator.Actions;
+﻿using CraftimizerCN.Simulator.Actions;
 using System.Collections.Frozen;
 using System.Runtime.InteropServices;
 
@@ -34,6 +34,7 @@ public readonly record struct SolverConfig
     public float ScoreDurability { get; init; }
     public float ScoreCP { get; init; }
     public float ScoreSteps { get; init; }
+    public bool AutoScore { get; init; }
 
     // Raphael/A* configuration
     public bool Adversarial { get; init; }
@@ -63,6 +64,7 @@ public readonly record struct SolverConfig
         ScoreDurability = 2;
         ScoreCP = 3;
         ScoreSteps = 5;
+        AutoScore = true;
 
         ActionPool = DeterministicActionPool;
         Algorithm = SolverAlgorithm.StepwiseGenetic;
@@ -201,3 +203,4 @@ public readonly record struct SolverConfig
         ActionPool = RandomizedActionPool
     };
 }
+

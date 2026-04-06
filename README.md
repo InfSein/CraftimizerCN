@@ -1,14 +1,24 @@
 ﻿# CraftimizerCN
 
-基于 [WorkingRobot/Craftimizer](https://github.com/WorkingRobot/Craftimizer) 魔改，提供以下特殊调整：
+基于 [WorkingRobot/Craftimizer](https://github.com/WorkingRobot/Craftimizer) 魔改，针对国服卫月官库的运行环境做出适配、翻译各处的UI文本，并提供以下易用性优化：
 
-* 适配国服卫月官库的运行环境
-* 将各处的 UI 文本翻译为中文
-* 一些易用性优化，包括：
-  - 支持“任务指令2”(宇宙探索等场景)
-  - 在宏编辑器中保存和另存新宏时，会自动提供默认名称，不再一定需要你手动敲字
-  - 接入CAC标准，可以将CAC工序码导入到宏编辑器／将本地宏以CAC格式进行分享
-  - 本地宏界面可以批量导入
+* 优化“最佳本地宏”的判断逻辑，提供“自动”权重
+* 支持“任务指令2”(宇宙探索等场景)
+* 在宏编辑器中保存和另存新宏时，会自动提供默认名称，不再一定需要你手动敲字
+* 接入CAC标准，可以将CAC工序码导入到宏编辑器／将本地宏以CAC格式进行分享
+* 本地宏界面可以批量导入
+
+<table>
+  <tbody>
+    <tr>
+      <td><img src="https://raw.githubusercontent.com/InfSein/static/master/CraftimizerCN/1.png" /></td>
+      <td><img src="https://raw.githubusercontent.com/InfSein/static/master/CraftimizerCN/2.png" /></td>
+    </tr>
+    <tr>
+      <td colspan="2"><img src="https://raw.githubusercontent.com/InfSein/static/master/CraftimizerCN/3.png" /></td>
+    </tr>
+  </tbody>
+</table>
 
 如果这些调整恰好满足了你的需要，你可以考虑迁移到 `CraftimizerCN` 。
 

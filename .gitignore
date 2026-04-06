@@ -6,3 +6,4 @@ bin/
 BenchmarkDotNet.Artifacts/
 folder-alias.json
 private-folder-alias.json
+CONTEXT.md

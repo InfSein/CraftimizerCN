@@ -1,4 +1,4 @@
-using CraftimizerCN.Simulator;
+﻿using CraftimizerCN.Simulator;
 using CraftimizerCN.Simulator.Actions;
 using CraftimizerCN.Solver;
 using Dalamud.Interface;
@@ -715,6 +715,20 @@ public sealed class Settings : Window, IDisposable
             using (var panel = ImRaii2.GroupPanel("权重分数 (高级)", -1, out _))
             {
                 DrawOption(
+                    "自动",
+                    "按以下优先级决定最优解，而非权重计分：" +
+                    "\n1. 确保能够将配方的进展推进到最大值" +
+                    "\n2. 如果没有宏能够推满品质，选取其中品质推进最多的" +
+                    "\n3. 如果有多个宏能够将推满品质，选取其中步数最少的" +
+                    "\n关闭此选项会重新启用权重计分。",
+                    config.AutoScore,
+                    v => config = config with { AutoScore = v },
+                    ref isDirty
+                );
+
+                if (!config.AutoScore)
+                {
+                DrawOption(
                     "进展",
                     "决定你要为推进配方进展分配多少权重分数。",
                     config.ScoreProgress,
@@ -764,6 +778,7 @@ public sealed class Settings : Window, IDisposable
                     v => config = config with { ScoreSteps = v },
                     ref isDirty
                 );
+                }
             }
         }
 
@@ -1186,3 +1201,4 @@ public sealed class Settings : Window, IDisposable
         HeaderFont?.Dispose();
     }
 }
+
