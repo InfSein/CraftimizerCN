@@ -1,4 +1,4 @@
-using Dalamud.Networking.Http;
+﻿using Dalamud.Networking.Http;
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
@@ -370,6 +370,24 @@ public sealed class CommunityMacros
         {
             var (resp, outState, failedIdx) = simulator.ExecuteMultiple(startingState, actions);
             outState.ActionCount = actions.Count;
+
+            if (mctsConfig.AutoScore)
+            {
+                if (simulator.CompletionState != CompletionState.ProgressComplete)
+                    return (0, outState);
+
+                if (resp != ActionResponse.SimulationComplete && failedIdx != -1)
+                    return (0, outState);
+
+                if (outState.Input.Recipe.MaxQuality <= 0)
+                    return (1_000_000f - outState.ActionCount, outState);
+
+                if (outState.Quality >= outState.Input.Recipe.MaxQuality)
+                    return (2_000_000f - outState.ActionCount, outState);
+
+                return (Math.Clamp((float)outState.Quality / outState.Input.Recipe.MaxQuality, 0, 1), outState);
+            }
+
             var score = SimulationNode.CalculateScoreForState(outState, simulator.CompletionState, mctsConfig) ?? 0;
             if (resp != ActionResponse.SimulationComplete)
             {
@@ -490,3 +508,4 @@ public sealed class CommunityMacros
         return await message.Content!.ReadFromJsonAsync<TResponse>(options, cancellationToken).ConfigureAwait(false);
     }
 }
+
