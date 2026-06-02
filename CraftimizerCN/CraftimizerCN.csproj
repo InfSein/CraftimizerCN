@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Project Sdk="Dalamud.NET.Sdk/14.0.1">
+<Project Sdk="Dalamud.NET.Sdk/15.0.0">
   <PropertyGroup>
     <Authors>Asriel Camora</Authors>
-    <Version>2.9.1.6</Version>
+    <Version>2.10.0.1</Version>
     <PackageProjectUrl>https://github.com/InfSein/CraftimizerCN.git</PackageProjectUrl>
     <Configurations>Debug;Release</Configurations>
   </PropertyGroup>
-
   <PropertyGroup>
     <TargetFramework>net10.0-windows</TargetFramework>
     <Platforms>x64</Platforms>
@@ -19,26 +18,23 @@
     <RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
     <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
   </PropertyGroup>
-  
-   <ItemGroup>
-     <EmbeddedResource Include="Graphics\icon.png" />
-     <EmbeddedResource Include="Graphics\horse_icon.png" />
-     <EmbeddedResource Include="Graphics\collectible_badge.png" />
-     <EmbeddedResource Include="Graphics\expert.png" />
-     <EmbeddedResource Include="Graphics\expert_badge.png" />
-     <EmbeddedResource Include="Graphics\no_manip.png" />
-     <EmbeddedResource Include="Graphics\specialist.png" />
-     <EmbeddedResource Include="Graphics\splendorous.png" />
-   </ItemGroup>
-
+  <ItemGroup>
+    <EmbeddedResource Include="Graphics\icon.png" />
+    <EmbeddedResource Include="Graphics\horse_icon.png" />
+    <EmbeddedResource Include="Graphics\collectible_badge.png" />
+    <EmbeddedResource Include="Graphics\expert.png" />
+    <EmbeddedResource Include="Graphics\expert_badge.png" />
+    <EmbeddedResource Include="Graphics\no_manip.png" />
+    <EmbeddedResource Include="Graphics\specialist.png" />
+    <EmbeddedResource Include="Graphics\splendorous.png" />
+  </ItemGroup>
   <ItemGroup>
     <PackageReference Include="MathNet.Numerics" Version="5.0.0" />
-    <PackageReference Include="Meziantou.Analyzer" Version="2.0.264">
+    <PackageReference Include="Meziantou.Analyzer" Version="3.0.61">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <ProjectReference Include="..\Simulator\CraftimizerCN.Simulator.csproj" />
     <ProjectReference Include="..\Solver\CraftimizerCN.Solver.csproj" />
   </ItemGroup>
-
 </Project>
