@@ -1,4 +1,4 @@
-using Craftimizer.Plugin;
+using CraftimizerCN.Plugin;
 using Dalamud.Bindings.ImGui;
 using Dalamud.Interface;
 using Dalamud.Interface.Colors;
@@ -6,7 +6,7 @@ using Dalamud.Interface.Utility.Raii;
 using Dalamud.Interface.Windowing;
 using System;
 
-namespace Craftimizer.Windows;
+namespace CraftimizerCN.Windows;
 
 public sealed class ChangelogWindow : Window, IDisposable
 {
@@ -18,42 +18,29 @@ public sealed class ChangelogWindow : Window, IDisposable
     private static readonly Release[] Releases =
     [
         // Add new releases at the top
-        new("2.11.0.2", "Attempted Crash Hotfix",
+        new("2.11.0.2", "合并上游更新",
         [
-            new("Bug Fixes",
+            new("功能新增/调整",
             [
-                "An attempted hotfix for a rare GC corruption crash that may occur randomly.",
+                "新增“下一步（Next Action）”求解器，制作助手现已默认使用该求解器。它不再每次都求解整个宏，而是将全部计算资源集中用于找出当前最佳的下一步动作。",
+                "“下一步”求解器新增“时间限制”设置，无论你的电脑性能快慢，都能在设定时间内给出建议。",
+                "新增“品质目标 (%)”设置：以配方最大品质的一定百分比作为目标，达到后停止，而不是始终追求满品质。",
+                "新增“将品质限制为最高收藏价值门槛”设置：制作收藏品时，求解器会在达到最高收藏价值后停止，而不会继续浪费额外步骤提升不再需要的品质。",
+                "求解器整体速度得到提升；对于核心数较少的电脑，“下一步”求解器会先快速评估所有可选动作，再将计算时间集中用于最有希望的候选动作（可在高级设置中调整）。",
+                "移除了旧的“评分权重”设置，因为评分机制重构后，它们已不再发挥任何作用。"
             ]),
-        ]),
-        new("2.11.0.1", "Hotfix for 2.11.0",
-        [
-            new("Bug Fixes",
+            new("问题修复",
             [
-                "\"Cap Quality to Max Collectable Threshold\" no longer applies to Cosmic Exploration collectables. These crafts give bonuses past the highest tier, so the solver will now push for max quality.",
-            ]),
-        ]),
-        new("2.11.0.0", "A Smarter Synthesis Helper!",
-        [
-            new("New Features / Changes",
-            [
-                "Added a new \"Next Action\" solver that the Synthesis Helper now uses by default. Instead of solving the whole macro every time, it puts all of its effort into figuring out just the single best next step.",
-                "The \"Next Action\" solver has a new \"Time Limit\" setting, so giving you a suggestion within a set amount of time no matter how fast or slow your PC is.",
-                "New \"Quality Target (%)\" setting: aim for a set percentage of a recipe's max quality and stop there instead of always pushing for 100%",
-                "New \"Cap Quality to Max Collectable Threshold\" setting: on collectables, the solver stops once it reaches the highest collectability tier instead of burning extra steps on quality you don't need.",
-                "The solver is faster across the board, and on lower-core PCs the Next Action solver takes a quick first look at the options and then spends its time on the most promising ones (tweakable in the advanced settings).",
-                "Removed the old Score Weights settings, since the scoring rework left them doing nothing."
-            ]),
-            new("Bug Fixes",
-            [
-                "Fixed a threading issue where the forked/genetic solvers would share one random number generator, which caused lots of annoying rare crashes.",
-                "The solver no longer pads the end of a craft with pointless extra actions just to spend leftover durability or CP. It now finishes first, then maximizes quality, then uses as few steps as possible.",
-            ]),
+                "修复了一个线程问题：分叉求解器和遗传求解器会共享同一个随机数生成器，从而导致一些烦人的低概率崩溃。",
+                "求解器不再为了耗尽剩余耐久或CP而在制作结束后追加无意义的动作。现在会优先完成制作，然后尽可能提高品质，最后使用尽可能少的步骤完成整个流程。",
+                "“将品质限制为最高收藏品门槛”不再对宇宙探索收藏品生效。这类制作在达到最高价值门槛后仍可获得额外奖励，因此求解器现在会继续追求最高品质。",
+            ])
         ]),
     ];
 
     private static string LatestVersion => Releases[0].Version;
 
-    public ChangelogWindow() : base("Craftimizer Changelog", WindowFlags)
+    public ChangelogWindow() : base("CraftimizerCN 更新日志", WindowFlags)
     {
         Service.WindowSystem.AddWindow(this);
 

@@ -1,4 +1,4 @@
-﻿using Dalamud.Networking.Http;
+using Dalamud.Networking.Http;
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
@@ -371,6 +371,10 @@ public sealed class CommunityMacros
             var (resp, outState, failedIdx) = simulator.ExecuteMultiple(startingState, actions);
             outState.ActionCount = actions.Count;
 
+            // NOTE 20260706 2.11.0.2
+            // 上游更改删除了所有权重设置，自动评分机制也应当随之删除。
+            // 暂且保留原代码以供未来调整。
+            /*
             if (mctsConfig.AutoScore)
             {
                 if (simulator.CompletionState != CompletionState.ProgressComplete)
@@ -387,6 +391,7 @@ public sealed class CommunityMacros
 
                 return (Math.Clamp((float)outState.Quality / outState.Input.Recipe.MaxQuality, 0, 1), outState);
             }
+            */
 
             var score = SimulationNode.CalculateScoreForState(outState, simulator.CompletionState, mctsConfig) ?? 0;
             if (resp != ActionResponse.SimulationComplete)

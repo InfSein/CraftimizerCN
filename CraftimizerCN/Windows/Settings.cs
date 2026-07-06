@@ -1,4 +1,4 @@
-﻿using CraftimizerCN.Simulator;
+using CraftimizerCN.Simulator;
 using CraftimizerCN.Simulator.Actions;
 using CraftimizerCN.Solver;
 using Dalamud.Interface;
@@ -148,8 +148,8 @@ public sealed class Settings : Window, IDisposable
     private static string GetAlgorithmName(SolverAlgorithm algorithm) =>
         algorithm switch
         {
-            SolverAlgorithm.Oneshot => "一次性 / Oneshot",
-            SolverAlgorithm.OneshotForked => "一次性(分支) / Oneshot Forked",
+            SolverAlgorithm.Oneshot => "一次性／Oneshot",
+            SolverAlgorithm.OneshotForked => "一次性(分支)／Oneshot Forked",
             SolverAlgorithm.Stepwise => "逐步／Stepwise",
             SolverAlgorithm.StepwiseForked => "逐步(分支)／Stepwise Forked",
             SolverAlgorithm.StepwiseGenetic => "逐步(遗传)／Stepwise Genetic",
@@ -165,7 +165,7 @@ public sealed class Settings : Window, IDisposable
             SolverAlgorithm.OneshotForked => "一次性算法，但同时使用多个求解器",
             SolverAlgorithm.Stepwise => "运行所有迭代并选出下一个最佳步骤，随后以此前步骤为起点重复执行",
             SolverAlgorithm.StepwiseForked => "逐步算法，但同时使用多个求解器",
-            SolverAlgorithm.StepwiseGenetic => "逐步(分支)算法，但从求解器中选出前 N 个最佳的下一步，并将每一个都作为等权的起始点",
+            SolverAlgorithm.StepwiseGenetic => "逐步(分支)算法，但从求解器中选出前N个最佳的下一步，并将每一个都作为等权的起始点",
             SolverAlgorithm.NextActionForked => "将整个迭代预算都用于寻找当前最佳的下一步技能，而不是规划一整套宏操作。" +
                                                 "系统会并行评估所有可能的下一步技能，并选择能够使当前制作状态达到最佳结果的那个。" +
                                                 "相比其他求解，它在每一步决策上的准确性更高，运行速度也更快，尤其是在制作进行到中后期时优势更加明显。" +
@@ -180,7 +180,7 @@ public sealed class Settings : Window, IDisposable
             MacroCopyConfiguration.CopyType.OpenWindow => "打开复制窗口",
             MacroCopyConfiguration.CopyType.CopyToMacro => "复制到用户宏",
             MacroCopyConfiguration.CopyType.CopyToClipboard => "复制到剪贴板",
-            MacroCopyConfiguration.CopyType.CopyToMacroMate => "复制到 Macro Mate",
+            MacroCopyConfiguration.CopyType.CopyToMacroMate => "复制到Macro Mate",
             _ => "Unknown",
         };
 
@@ -406,7 +406,7 @@ public sealed class Settings : Window, IDisposable
 
             DrawOption(
                 "启用宏锁定(/mlock)",
-                "在每个宏的开头添加一行 /mlock ，" +
+                "在每个宏的开头添加一行/mlock，" +
                 "以阻止制作宏被其他宏打断。",
                 Config.MacroCopy.UseMacroLock,
                 v => Config.MacroCopy.UseMacroLock = v,
@@ -415,7 +415,7 @@ public sealed class Settings : Window, IDisposable
 
             DrawOption(
                 "启用完成提醒",
-                "在每个宏的最后添加一行 /echo ，以提醒你这个宏已经执行完毕。",
+                "在每个宏的最后添加一行/echo，以提醒你这个宏已经执行完毕。",
                 Config.MacroCopy.AddNotification,
                 v => Config.MacroCopy.AddNotification = v,
                 ref isDirty
@@ -549,22 +549,21 @@ public sealed class Settings : Window, IDisposable
                 );
 
             DrawOption(
-                    "Quality Target (%)",
-                    "The solver aims for this percentage of the recipe's maximum quality and " +
-                    "stops spending effort once it gets there. Lower it when you don't need full " +
-                    "quality, like when a lower HQ chance or collectability tier is good enough.",
-                    config.QualityTargetPercent,
-                    1,
-                    100,
-                    v => config = config with { QualityTargetPercent = v },
-                    ref isDirty
-                );
+                "品质目标(%)",
+                "求解器会以配方最大品质的这一百分比作为目标，并在达到后停止继续投入资源。" +
+                "当不需要满品质时可适当降低，例如HQ率/收藏价值达到一定程度便已经足够时。",
+                config.QualityTargetPercent,
+                1,
+                100,
+                v => config = config with { QualityTargetPercent = v },
+                ref isDirty
+            );
 
             DrawOption(
-                "Cap Quality to Max Collectable Threshold",
-                "For collectable recipes, stop at the quality that reaches the highest " +
-                "collectability tier instead of chasing the full Quality Target above. " +
-                "Has no effect on recipes that aren't collectable and Cosmic Exploration crafts.",
+                "将品质限制为最高收藏价值门槛",
+                "对于收藏品配方，在达到最高收藏价值所需的品质后停止，" +
+                "而不是继续追求上方设置的品质目标。" +
+                "对非收藏品配方和宇宙探索制作无效。",
                 config.QualityTargetToMaxCollectability,
                 v => config = config with { QualityTargetToMaxCollectability = v },
                 ref isDirty
@@ -597,17 +596,18 @@ public sealed class Settings : Window, IDisposable
                         ref isDirty
                     );
 
-                DrawOption(
-                    "最大迭代次数",
-                    "当制作难度足够高且求解器尚未找到任何完成方式时，" +
-                    "求解器可能会超过目标迭代次数。在少数情况下，" +
-                    "求解器可能会持续运行非常长的时间。设置该最大值是为了防止求解器占用你所有的内存。",
-                    config.MaxIterations,
-                    config.Iterations,
-                    5000000,
-                    v => config = config with { MaxIterations = v },
-                    ref isDirty
-                );
+                    DrawOption(
+                        "最大迭代次数",
+                        "当制作难度足够高且求解器尚未找到任何完成方式时，" +
+                        "求解器可能会超过目标迭代次数。在少数情况下，" +
+                        "求解器可能会持续运行非常长的时间。设置该最大值是为了防止求解器占用你所有的内存。",
+                        config.MaxIterations,
+                        config.Iterations,
+                        5000000,
+                        v => config = config with { MaxIterations = v },
+                        ref isDirty
+                    );
+                }
 
                 DrawOption(
                     "最大步骤数",
@@ -749,13 +749,13 @@ public sealed class Settings : Window, IDisposable
                 if (config.Algorithm == SolverAlgorithm.NextActionForked)
                 {
                     DrawOption(
-                        "Screened Action Count",
-                        "The most candidate next actions the Next Action algorithm will fully " +
-                        "search at once. When there are more options than this, it takes a quick " +
-                        "look at all of them and then spends the rest of its time on the best ones. " +
-                        "The default is based on your core count, since extra actions only have to " +
-                        "share time when they outnumber your cores. Raise it past the size of your " +
-                        "action pool to search every option.",
+                        "候选技能筛选数量",
+                        "“下一步”算法会对这么多个候选下一步技能同时进行完整搜索。" +
+                        "当可选技能数量超过此值时，会先快速评估所有技能，" +
+                        "然后将剩余时间集中用于搜索其中表现最好的技能。" +
+                        "默认值会根据你的CPU核心数决定，因为只有当技能数量超过核心数时，" +
+                        "这些额外技能才需要共享计算时间。" +
+                        "将其提高到超过你的技能池大小，即可搜索所有可选技能。",
                         config.PruneActionCount,
                         1,
                         40,
@@ -764,10 +764,10 @@ public sealed class Settings : Window, IDisposable
                     );
 
                     DrawOption(
-                        "Screening Budget",
-                        "How much of the solve time, as a percentage, goes into that first look " +
-                        "at every action before narrowing down. The rest is spent on the actions " +
-                        "that made the cut. Only used when the screening above is active.",
+                        "筛选预算",
+                        "用于首次评估所有技能的求解时间占总时间的百分比。" +
+                        "剩余时间将用于搜索通过筛选的技能。" +
+                        "仅在启用上述筛选机制时生效。",
                         config.ScreenBudgetPercent,
                         5,
                         95,
@@ -1116,8 +1116,8 @@ public sealed class Settings : Window, IDisposable
                 using (SubheaderFont.Push())
                     ImGuiUtils.TextCentered($"v{plugin.Version} {plugin.BuildConfiguration}");
 
-                ImGuiUtils.AlignCentered(ImGui.CalcTextSize($"原作者： {plugin.Author} (WorkingRobot)").X);
-                ImGui.TextUnformatted($"原作者： {plugin.Author} (");
+                ImGuiUtils.AlignCentered(ImGui.CalcTextSize($"原作者： Asriel Camora (WorkingRobot)").X);
+                ImGui.TextUnformatted($"原作者： Asriel Camora (");
                 ImGui.SameLine(0, 0);
                 ImGuiUtils.Hyperlink("WorkingRobot", "https://github.com/WorkingRobot");
                 ImGui.SameLine(0, 0);
@@ -1138,8 +1138,8 @@ public sealed class Settings : Window, IDisposable
                     ImGui.TextUnformatted(" 上赞助原作者!");
                 }
 
-                ImGuiUtils.AlignCentered(ImGui.CalcTextSize("Open Changelog").X + ImGui.GetStyle().ItemSpacing.X);
-                if (ImGui.Button("Open Changelog"))
+                ImGuiUtils.AlignCentered(ImGui.CalcTextSize("打开更新日志").X + ImGui.GetStyle().ItemSpacing.X);
+                if (ImGui.Button("打开更新日志"))
                     Service.Plugin.ChangelogWindow.Open();
             }
         }

@@ -1,4 +1,4 @@
-﻿using CraftimizerCN.Simulator;
+using CraftimizerCN.Simulator;
 using CraftimizerCN.Simulator.Actions;
 using System.Collections.Frozen;
 using System.Runtime.InteropServices;
@@ -30,7 +30,6 @@ public readonly record struct SolverConfig
     public int FurcatedActionCount { get; init; }
     public bool StrictActions { get; init; }
 
-    public bool AutoScore { get; init; }
     // Quality is rewarded only up to this target
     public int QualityTargetPercent { get; init; }
     // Override QualityTargetPercent if it's higher than the max collectability for the recipe.
@@ -71,7 +70,6 @@ public readonly record struct SolverConfig
         FurcatedActionCount = ForkCount / 2;
         StrictActions = true;
 
-        AutoScore = true;
         // Keep at most this many candidate actions; defaults to the core count so screening only
         // kicks in when there are more actions than cores (otherwise each already gets a full search).
         PruneActionCount = MaxThreadCount;
