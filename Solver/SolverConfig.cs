@@ -1,4 +1,5 @@
-﻿using CraftimizerCN.Simulator.Actions;
+﻿using CraftimizerCN.Simulator;
+using CraftimizerCN.Simulator.Actions;
 using System.Collections.Frozen;
 using System.Runtime.InteropServices;
 
@@ -12,6 +13,7 @@ public enum SolverAlgorithm
     StepwiseForked,
     StepwiseGenetic,
     Raphael,
+    NextActionForked,
 }
 
 [StructLayout(LayoutKind.Auto)]
@@ -28,19 +30,29 @@ public readonly record struct SolverConfig
     public int FurcatedActionCount { get; init; }
     public bool StrictActions { get; init; }
 
-    // MCTS score weights
-    public float ScoreProgress { get; init; }
-    public float ScoreQuality { get; init; }
-    public float ScoreDurability { get; init; }
-    public float ScoreCP { get; init; }
-    public float ScoreSteps { get; init; }
     public bool AutoScore { get; init; }
+    // Quality is rewarded only up to this target
+    public int QualityTargetPercent { get; init; }
+    // Override QualityTargetPercent if it's higher than the max collectability for the recipe.
+    public bool QualityTargetToMaxCollectability { get; init; }
 
     // Raphael/A* configuration
     public bool Adversarial { get; init; }
     public bool BackloadProgress { get; init; }
 
     public int MaxThreadCount { get; init; }
+
+    // Wall-clock budget for NextActionForked, in milliseconds. 0 = iteration-based.
+    public int MaxTimeMs { get; init; }
+
+    // NextActionForked candidate screening. When the solver has more candidate next actions than
+    // PruneActionCount, it spends ScreenBudgetPercent of its time giving every candidate a quick look,
+    // then puts the rest into the best PruneActionCount of them. PruneActionCount defaults to the core
+    // count (so screening only happens when actions outnumber cores); raise it past the action pool
+    // size to search every option. ScreenBudgetPercent is a percentage of the budget.
+    public int PruneActionCount { get; init; }
+    public int ScreenBudgetPercent { get; init; }
+
     public ActionType[] ActionPool { get; init; }
     public SolverAlgorithm Algorithm { get; init; }
 
@@ -59,12 +71,14 @@ public readonly record struct SolverConfig
         FurcatedActionCount = ForkCount / 2;
         StrictActions = true;
 
-        ScoreProgress = 10;
-        ScoreQuality = 80;
-        ScoreDurability = 2;
-        ScoreCP = 3;
-        ScoreSteps = 5;
         AutoScore = true;
+        // Keep at most this many candidate actions; defaults to the core count so screening only
+        // kicks in when there are more actions than cores (otherwise each already gets a full search).
+        PruneActionCount = MaxThreadCount;
+        ScreenBudgetPercent = 33;
+
+        QualityTargetPercent = 100;
+        QualityTargetToMaxCollectability = true;
 
         ActionPool = DeterministicActionPool;
         Algorithm = SolverAlgorithm.StepwiseGenetic;
@@ -74,7 +88,7 @@ public readonly record struct SolverConfig
         [.. actions.Order()];
 
     public SolverConfig FilterSpecialistActions() =>
-        this with { ActionPool = ActionPool.Where(action => !SpecialistActions.Contains(action)).ToArray() };
+        this with { ActionPool = [.. ActionPool.Where(action => !SpecialistActions.Contains(action))] };
 
     public static readonly ActionType[] DeterministicActionPool = OptimizeActionPool(new[]
     {
@@ -200,7 +214,23 @@ public readonly record struct SolverConfig
 
     public static readonly SolverConfig SynthHelperDefault = new SolverConfig() with
     {
+        Algorithm = SolverAlgorithm.NextActionForked,
+        Iterations = 1_000_000,
+        MaxTimeMs = 2000,
         ActionPool = RandomizedActionPool
     };
+
+    public int ResolveQualityTarget(in RecipeInfo recipe)
+    {
+        var maxQuality = recipe.MaxQuality;
+        if (maxQuality <= 0)
+            return 0;
+
+        var target = maxQuality * QualityTargetPercent / 100;
+        if (QualityTargetToMaxCollectability && recipe.CollectableTargetQuality is { } maxCollectableQuality)
+            target = Math.Min(target, maxCollectableQuality);
+
+        return Math.Min(target, maxQuality);
+    }
 }
 

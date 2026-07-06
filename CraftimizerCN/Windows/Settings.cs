@@ -150,10 +150,11 @@ public sealed class Settings : Window, IDisposable
         {
             SolverAlgorithm.Oneshot => "一次性 / Oneshot",
             SolverAlgorithm.OneshotForked => "一次性(分支) / Oneshot Forked",
-            SolverAlgorithm.Stepwise => "逐步 / Stepwise",
-            SolverAlgorithm.StepwiseForked => "逐步(分支) / Stepwise Forked",
-            SolverAlgorithm.StepwiseGenetic => "逐步(遗传) / Stepwise Genetic",
-            SolverAlgorithm.Raphael => "最优 / Optimal",
+            SolverAlgorithm.Stepwise => "逐步／Stepwise",
+            SolverAlgorithm.StepwiseForked => "逐步(分支)／Stepwise Forked",
+            SolverAlgorithm.StepwiseGenetic => "逐步(遗传)／Stepwise Genetic",
+            SolverAlgorithm.NextActionForked => "下一步／Next Action",
+            SolverAlgorithm.Raphael => "最优／Optimal",
             _ => "Unknown",
         };
 
@@ -165,6 +166,10 @@ public sealed class Settings : Window, IDisposable
             SolverAlgorithm.Stepwise => "运行所有迭代并选出下一个最佳步骤，随后以此前步骤为起点重复执行",
             SolverAlgorithm.StepwiseForked => "逐步算法，但同时使用多个求解器",
             SolverAlgorithm.StepwiseGenetic => "逐步(分支)算法，但从求解器中选出前 N 个最佳的下一步，并将每一个都作为等权的起始点",
+            SolverAlgorithm.NextActionForked => "将整个迭代预算都用于寻找当前最佳的下一步技能，而不是规划一整套宏操作。" +
+                                                "系统会并行评估所有可能的下一步技能，并选择能够使当前制作状态达到最佳结果的那个。" +
+                                                "相比其他求解，它在每一步决策上的准确性更高，运行速度也更快，尤其是在制作进行到中后期时优势更加明显。" +
+                                                "非常适合作为“制作助手”的决策算法。",
             SolverAlgorithm.Raphael => "每次都能找到最佳解。此求解器与其他求解器的选项差异很大，因为它使用完全不同的算法设计。",
             _ => "Unknown"
         };
@@ -519,8 +524,8 @@ public sealed class Settings : Window, IDisposable
                 "算法",
                 "决定在求解宏时要采用的算法。" +
                 "这些算法各有优劣。" +
-                "目前来看，“最优”和“逐步(遗传)”算法能提供最好的结果，" +
-                "尤其是在处理高难度的制作时。",
+                "对于生成完整宏而言，“最优”和“逐步(遗传)”算法能提供最好的结果，尤其是在处理高难度制作时。" +
+                "而对于制作助手的下一步建议而言，使用“下一步”算法则是最为精准灵活的。",
                 GetAlgorithmName,
                 GetAlgorithmTooltip,
                 config.Algorithm,
@@ -529,14 +534,13 @@ public sealed class Settings : Window, IDisposable
                 disableOptimal ? [SolverAlgorithm.Raphael] : []
             );
 
-            using (ImRaii.Disabled(config.Algorithm is not (SolverAlgorithm.OneshotForked or SolverAlgorithm.StepwiseForked or SolverAlgorithm.StepwiseGenetic or SolverAlgorithm.Raphael)))
+            if (config.Algorithm is SolverAlgorithm.OneshotForked or SolverAlgorithm.StepwiseForked or SolverAlgorithm.StepwiseGenetic or SolverAlgorithm.NextActionForked or SolverAlgorithm.Raphael)
                 DrawOption(
                     "最大核心数",
                     "求解时使用的核心数量。你应尽可能多地使用可用核心。" +
                     $"如果设置过高，可能会影响你的游戏体验。" +
                     $"一个较好的估计是比你的系统核心数少1到2个，但请确保为后台任务预留足够的核心（如果有）。" +
-                    $"\n（提示：你有{Environment.ProcessorCount}个核心）\n" +
-                    "（只在分支、遗传和最优算法中使用）",
+                    $"\n（提示：你有{Environment.ProcessorCount}个核心）",
                     config.MaxThreadCount,
                     1,
                     Environment.ProcessorCount,
@@ -544,19 +548,54 @@ public sealed class Settings : Window, IDisposable
                     ref isDirty
                 );
 
-            if (config.Algorithm != SolverAlgorithm.Raphael)
-            {
-                DrawOption(
-                    "目标迭代次数",
-                    "每个制作步骤要运行的总迭代次数。" +
-                    "较高的数值需要更多的计算能力。" +
-                    "较高的数值也可能降低结果的波动性，因此可以根据需要调整其他参数，以获得更理想的结果。",
-                    config.Iterations,
-                    1000,
-                    1000000,
-                    v => config = config with { Iterations = v },
+            DrawOption(
+                    "Quality Target (%)",
+                    "The solver aims for this percentage of the recipe's maximum quality and " +
+                    "stops spending effort once it gets there. Lower it when you don't need full " +
+                    "quality, like when a lower HQ chance or collectability tier is good enough.",
+                    config.QualityTargetPercent,
+                    1,
+                    100,
+                    v => config = config with { QualityTargetPercent = v },
                     ref isDirty
                 );
+
+            DrawOption(
+                "Cap Quality to Max Collectable Threshold",
+                "For collectable recipes, stop at the quality that reaches the highest " +
+                "collectability tier instead of chasing the full Quality Target above. " +
+                "Has no effect on recipes that aren't collectable and Cosmic Exploration crafts.",
+                config.QualityTargetToMaxCollectability,
+                v => config = config with { QualityTargetToMaxCollectability = v },
+                ref isDirty
+            );
+
+            if (config.Algorithm != SolverAlgorithm.Raphael)
+            {
+                if (config.Algorithm == SolverAlgorithm.NextActionForked)
+                    DrawOption(
+                        "时间限制（秒）",
+                        "求解器会花费大约这么长的时间来决定下一步的技能，" +
+                        "因此无论你的硬件性能如何，都能在大致相同的时间内收到下一步建议。",
+                        config.MaxTimeMs / 1000f,
+                        2f,
+                        10f,
+                        v => config = config with { MaxTimeMs = (int)MathF.Round(v * 1000f) },
+                        ref isDirty
+                    );
+                else
+                {
+                    DrawOption(
+                        "目标迭代次数",
+                        "每个制作步骤要运行的总迭代次数。" +
+                        "较高的数值需要更多的计算能力。" +
+                        "较高的数值也可能降低结果的波动性，因此可以根据需要调整其他参数，以获得更理想的结果。",
+                        config.Iterations,
+                        1000,
+                        1000000,
+                        v => config = config with { Iterations = v },
+                        ref isDirty
+                    );
 
                 DrawOption(
                     "最大迭代次数",
@@ -606,15 +645,14 @@ public sealed class Settings : Window, IDisposable
                     ref isDirty
                 );
 
-                using (ImRaii.Disabled(config.Algorithm is not (SolverAlgorithm.OneshotForked or SolverAlgorithm.StepwiseForked or SolverAlgorithm.StepwiseGenetic)))
+                if (config.Algorithm is SolverAlgorithm.OneshotForked or SolverAlgorithm.StepwiseForked or SolverAlgorithm.StepwiseGenetic)
                     DrawOption(
                         "分支数量",
                         "将迭代次数分配到不同的求解器上。" +
                         "通常，你应该将此值至少增加到系统核心数以获得最大的加速效果。" +
                         $"\n（提示：你有{Environment.ProcessorCount}个核心）\n" +
                         "数量越高，找到更好局部最大值的机会就越大；" +
-                        "这一概念与探索常数类似，但不完全相同。\n" +
-                        "（只在分支和遗传算法中使用）",
+                        "这一概念与探索常数类似，但不完全相同。",
                         config.ForkCount,
                         1,
                         500,
@@ -622,12 +660,11 @@ public sealed class Settings : Window, IDisposable
                         ref isDirty
                     );
 
-                using (ImRaii.Disabled(config.Algorithm is not SolverAlgorithm.StepwiseGenetic))
+                if (config.Algorithm is SolverAlgorithm.StepwiseGenetic)
                     DrawOption(
                         "精英动作数量",
                         "在每个制作步骤中，选择此处指定的数量的最佳方案，并将它们作为下一制作步骤的输入。" +
-                        "为了获得最佳效果，可设置为分支数量的一半，如有需要可再加1到2。\n" +
-                        "（只在逐步遗传算法中使用）",
+                        "为了获得最佳效果，可设置为分支数量的一半，如有需要可再加1到2。",
                         config.FurcatedActionCount,
                         1,
                         500,
@@ -708,77 +745,35 @@ public sealed class Settings : Window, IDisposable
                     v => config = config with { StrictActions = v },
                     ref isDirty
                 );
-            }
-        }
 
-        if (config.Algorithm != SolverAlgorithm.Raphael)
-        {
-            using (var panel = ImRaii2.GroupPanel("权重分数 (高级)", -1, out _))
-            {
-                DrawOption(
-                    "自动",
-                    "按以下优先级决定最优解，而非权重计分：" +
-                    "\n - 确保能够将配方的进展推进到最大值" +
-                    "\n - 如果没有宏能够推满品质，选取其中品质推进最多的" +
-                    "\n - 如果有多个宏能够将推满品质，选取其中步数最少的" +
-                    "\n关闭此选项会重新启用权重计分。",
-                    config.AutoScore,
-                    v => config = config with { AutoScore = v },
-                    ref isDirty
-                );
-
-                if (!config.AutoScore)
+                if (config.Algorithm == SolverAlgorithm.NextActionForked)
                 {
-                DrawOption(
-                    "进展",
-                    "决定你要为推进配方进展分配多少权重分数。",
-                    config.ScoreProgress,
-                    0,
-                    100,
-                    v => config = config with { ScoreProgress = v },
-                    ref isDirty
-                );
+                    DrawOption(
+                        "Screened Action Count",
+                        "The most candidate next actions the Next Action algorithm will fully " +
+                        "search at once. When there are more options than this, it takes a quick " +
+                        "look at all of them and then spends the rest of its time on the best ones. " +
+                        "The default is based on your core count, since extra actions only have to " +
+                        "share time when they outnumber your cores. Raise it past the size of your " +
+                        "action pool to search every option.",
+                        config.PruneActionCount,
+                        1,
+                        40,
+                        v => config = config with { PruneActionCount = v },
+                        ref isDirty
+                    );
 
-                DrawOption(
-                    "品质",
-                    "决定你要为提高配方品质分配多少权重分数。",
-                    config.ScoreQuality,
-                    0,
-                    100,
-                    v => config = config with { ScoreQuality = v },
-                    ref isDirty
-                );
-
-                DrawOption(
-                    "耐久",
-                    "决定你要为剩余耐久分配多少权重分数。",
-                    config.ScoreDurability,
-                    0,
-                    100,
-                    v => config = config with { ScoreDurability = v },
-                    ref isDirty
-                );
-
-                DrawOption(
-                    "制作力",
-                    "决定你要为剩余制作力分配多少权重分数。",
-                    config.ScoreCP,
-                    0,
-                    100,
-                    v => config = config with { ScoreCP = v },
-                    ref isDirty
-                );
-
-                DrawOption(
-                    "步数",
-                    "决定你要为工序步数分配多少权重分数。" +
-                    "\n步数越少，权重分越高。",
-                    config.ScoreSteps,
-                    0,
-                    100,
-                    v => config = config with { ScoreSteps = v },
-                    ref isDirty
-                );
+                    DrawOption(
+                        "Screening Budget",
+                        "How much of the solve time, as a percentage, goes into that first look " +
+                        "at every action before narrowing down. The rest is spent on the actions " +
+                        "that made the cut. Only used when the screening above is active.",
+                        config.ScreenBudgetPercent,
+                        5,
+                        95,
+                        v => config = config with { ScreenBudgetPercent = v },
+                        ref isDirty
+                    );
                 }
             }
         }
@@ -1051,7 +1046,9 @@ public sealed class Settings : Window, IDisposable
         DrawOption(
             "求解器步骤数",
             "在游戏内制作时，求解器要考虑的最少未来步骤数。" +
-            "如果不会对你造成额外成本，求解器仍可能给出超过此数量的步骤。",
+            "如果不会对你造成额外成本，求解器仍可能给出超过此数量的步骤。" +
+            "(“下一步”算法始终只计算当前最优的下一步操作，并同时展示其后续的规划路线，" +
+            "因此该选项主要用于控制显示多少个后续步骤。)",
             Config.SynthHelperStepCount,
             1,
             100,
@@ -1113,7 +1110,7 @@ public sealed class Settings : Window, IDisposable
                 using (HeaderFont.Push())
                 {
                     ImGuiUtils.AlignCentered(ImGui.CalcTextSize("CraftimizerCN").X);
-                    ImGuiUtils.Hyperlink("CraftimizerCN", "https://github.com/WorkingRobot/CraftimizerCN", false);
+                    ImGuiUtils.Hyperlink("CraftimizerCN", "https://github.com/InfSein/CraftimizerCN", false);
                 }
 
                 using (SubheaderFont.Push())
@@ -1140,6 +1137,10 @@ public sealed class Settings : Window, IDisposable
                     ImGui.SameLine(0, 0);
                     ImGui.TextUnformatted(" 上赞助原作者!");
                 }
+
+                ImGuiUtils.AlignCentered(ImGui.CalcTextSize("Open Changelog").X + ImGui.GetStyle().ItemSpacing.X);
+                if (ImGui.Button("Open Changelog"))
+                    Service.Plugin.ChangelogWindow.Open();
             }
         }
 

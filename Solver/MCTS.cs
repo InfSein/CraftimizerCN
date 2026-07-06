@@ -11,17 +11,50 @@ namespace CraftimizerCN.Solver;
 public sealed class MCTS
 {
     private readonly MCTSConfig config;
+    private readonly Random rng;
     private readonly Node rootNode;
     private readonly RootScores rootScores;
+
+    // Anytime best-solution tracking: MCTS here is an OPTIMIZER (we will execute the single best
+    // rotation found, not a robust tree policy). Rollouts simulate full rotations but normally
+    // discard their actions, so the actual best rotation is lost and Solution() can only recover a
+    // shallow tree prefix. Instead we record the highest-scoring complete action sequence ever
+    // simulated and return that. Valid because the solver's simulator is deterministic
+    // (SimulatorNoRandom: fixed conditions/success), so a recorded sequence re-executes exactly.
+    private float bestScore = -1f;
+    private readonly List<ActionType> bestActions = [];
+    private SimulationState bestState;
+    private bool hasBest;
 
     public const int ProgressUpdateFrequency = 1 << 10;
     private const int StaleProgressThreshold = 1 << 12;
 
     public float MaxScore => rootScores.MaxScore;
 
-    public MCTS(in MCTSConfig config, in SimulationState state)
+    private void RecordBest(Node leaf, ReadOnlySpan<ActionType> rollout, in SimulationState finalState, float score)
     {
+        if (score <= bestScore)
+            return;
+        bestScore = score;
+        bestState = finalState;
+        bestActions.Clear();
+        // Tree path from leaf up to root (actions in reverse), then the rollout actions.
+        for (var n = leaf; n != rootNode; n = n.Parent!)
+        {
+            if (n.State.Action is { } a)
+                bestActions.Add(a);
+        }
+        bestActions.Reverse();
+        foreach (var a in rollout)
+            bestActions.Add(a);
+        hasBest = true;
+    }
+
+    public MCTS(in MCTSConfig config, in SimulationState state, Random rng)
+    {
+        ArgumentNullException.ThrowIfNull(rng);
         this.config = config;
+        this.rng = rng;
         var sim = new Simulator(config.ActionPool, config.MaxStepCount, state);
         rootNode = new(new(
             state,
@@ -176,39 +209,48 @@ public sealed class MCTS
     }
 
     [SkipLocalsInit]
-    private (Node ExpandedNode, float Score) ExpandAndRollout(Random random, Simulator simulator, Node initialNode, Span<ActionType> actionBuffer)
+    private (Node ExpandedNode, float Score) ExpandAndRollout(Random random, Simulator simulator, Node initialNode)
     {
         ref var initialState = ref initialNode.State;
         // expand once
         if (initialState.IsComplete)
-            return (initialNode, initialState.CalculateScore(config) ?? 0);
+        {
+            var s = initialState.CalculateScore(config) ?? 0;
+            RecordBest(initialNode, ReadOnlySpan<ActionType>.Empty, in initialState.State, s);
+            return (initialNode, s);
+        }
 
         var poppedAction = initialState.AvailableActions.PopRandom(random);
         var expandedNode = initialNode.Add(Execute(simulator, initialState.State, poppedAction, true));
+        // simulator's internal state is now the expanded node's state.
 
-        // playout to a terminal state
+        // playout to a terminal state (capturing the rollout actions for best-solution tracking)
         var currentState = expandedNode.State.State;
         var currentCompletionState = expandedNode.State.SimulationCompletionState;
-        var currentActions = expandedNode.State.AvailableActions;
+        Span<ActionType> rollout = stackalloc ActionType[config.MaxRolloutStepCount];
+        var rolloutCount = 0;
 
-        if (currentState.ActionCount < config.MaxStepCount)
+        if (currentCompletionState == CompletionState.Incomplete &&
+            !expandedNode.State.AvailableActions.IsEmpty &&
+            currentState.ActionCount < config.MaxStepCount)
         {
-            var actions = actionBuffer[..Math.Min(config.MaxStepCount - currentState.ActionCount, config.MaxRolloutStepCount)];
-            byte actionCount = 0;
-            while (SimulationNode.GetCompletionState(currentCompletionState, currentActions) == CompletionState.Incomplete &&
-                actionCount < actions.Length)
+            var maxRollout = Math.Min(config.MaxStepCount - currentState.ActionCount, config.MaxRolloutStepCount);
+            // Rejection-sampling playout: one uniform-random valid action per step, without
+            // materializing the full action set every step (see Simulator.TryPickRolloutAction).
+            for (var actionCount = 0; actionCount < maxRollout; actionCount++)
             {
-                var nextAction = currentActions.SelectRandom(random);
-                actions[actionCount++] = nextAction;
+                if (!simulator.TryPickRolloutAction(random, out var nextAction))
+                    break; // no valid action => NoMoreActions terminal
+                rollout[rolloutCount++] = nextAction;
                 currentState = simulator.ExecuteUnchecked(currentState, nextAction);
                 currentCompletionState = simulator.CompletionState;
                 if (currentCompletionState != CompletionState.Incomplete)
                     break;
-                currentActions = simulator.AvailableActionsHeuristic(true);
             }
         }
 
         var score = SimulationNode.CalculateScoreForState(currentState, currentCompletionState, config) ?? 0;
+        RecordBest(expandedNode, rollout[..rolloutCount], in currentState, score);
         return (expandedNode, score);
     }
 
@@ -253,19 +295,18 @@ public sealed class MCTS
     }
 
     [SkipLocalsInit]
-    public unsafe void Search(int iterations, int maxIterations, ref int progress, CancellationToken token)
+    public void Search(int iterations, int maxIterations, ref int progress, CancellationToken token)
     {
         maxIterations = Math.Max(iterations, maxIterations);
         var simulator = new Simulator(config.ActionPool, config.MaxStepCount, rootNode.State.State);
-        var random = rootNode.State.State.Input.Random;
+        var random = rng;
         var staleCounter = 0;
         var i = 0;
 
-        Span<ActionType> actionBuffer = stackalloc ActionType[Math.Min(config.MaxStepCount, config.MaxRolloutStepCount)];
-        for (; (i < iterations || MaxScore == 0); i++)
+        for (; i < iterations || MaxScore == 0; i++)
         {
             var selectedNode = Select();
-            var (endNode, score) = ExpandAndRollout(random, simulator, selectedNode, actionBuffer);
+            var (endNode, score) = ExpandAndRollout(random, simulator, selectedNode);
             if (MaxScore == 0)
             {
                 if (endNode == selectedNode)
@@ -297,6 +338,11 @@ public sealed class MCTS
     [Pure]
     public SolverSolution Solution()
     {
+        // Return the best complete rotation actually simulated (the optimizer's job).
+        if (hasBest)
+            return new(new List<ActionType>(bestActions), bestState);
+
+        // Fallback (no scored solution found yet): the tree's max-score principal variation.
         var actions = new List<ActionType>();
         var node = rootNode;
 

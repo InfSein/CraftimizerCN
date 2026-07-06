@@ -1193,7 +1193,7 @@ public sealed unsafe class RecipeNote : Window, IDisposable
             var canUseDelineations = !Service.Configuration.CheckDelineations || hasDelineations;
             if (!canUseDelineations)
                 config = config.FilterSpecialistActions();
-            var mctsConfig = new MCTSConfig(config);
+            var mctsConfig = new MCTSConfig(config, input.Recipe);
             var simulator = new SimulatorNoRandom();
             List<Macro> macros = [.. Service.Configuration.Macros];
 
@@ -1257,7 +1257,7 @@ public sealed unsafe class RecipeNote : Window, IDisposable
             var canUseDelineations = !Service.Configuration.CheckDelineations || hasDelineations;
             if (!canUseDelineations)
                 config = config.FilterSpecialistActions();
-            var mctsConfig = new MCTSConfig(config);
+            var mctsConfig = new MCTSConfig(config, input.Recipe);
             var simulator = new SimulatorNoRandom();
             var macros = Service.CommunityMacros.RetrieveRotations((int)RecipeData.Table.RowId, token).GetAwaiter().GetResult();
 

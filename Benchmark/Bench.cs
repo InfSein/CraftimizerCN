@@ -8,8 +8,7 @@ using System.Runtime.CompilerServices;
 
 namespace CraftimizerCN.Benchmark;
 
-[SimpleJob(RuntimeMoniker.Net80, baseline: true)]
-//[SimpleJob(RuntimeMoniker.Net90)]
+[SimpleJob(RuntimeMoniker.Net10_0, baseline: true)]
 [MinColumn, Q1Column, Q3Column, MaxColumn]
 //[DotTraceDiagnoser]
 //[MemoryDiagnoser]
@@ -21,7 +20,9 @@ public class Bench
         public static implicit operator T(HashWrapper<T> wrapper) => wrapper.Data;
 
         public override readonly string ToString() =>
-            $"{HashCode.Combine(Data.ToString()!):X8}";
+            Data is SimulationState s
+                ? $"P{s.Input.Recipe.MaxProgress}Q{s.Input.Recipe.MaxQuality}D{s.Input.Recipe.MaxDurability}"
+                : $"{HashCode.Combine(Data.ToString()!):X8}";
     }
 
     private static SimulationInput[] Inputs { get; } =
@@ -76,6 +77,32 @@ public class Bench
             QualityDivider = 115,
             ProgressModifier = 80,
             ProgressDivider = 130
+        }),
+
+        // https://craftingway.app/rotation/tangy-craft-mxixB
+        // Boonewa Soda
+        new(new()
+        {
+            Craftsmanship = 5852,
+            Control = 5103,
+            CP = 664,
+            Level = 100,
+            CanUseManipulation = true,
+            HasSplendorousBuff = false,
+            IsSpecialist = false,
+        },
+        new()
+        {
+            IsExpert = false,
+            ClassJobLevel = 100,
+            ConditionsFlag = 0b1111,
+            MaxDurability = 80,
+            MaxQuality = 7200,
+            MaxProgress = 4950,
+            QualityModifier = 75,
+            QualityDivider = 150,
+            ProgressModifier = 90,
+            ProgressDivider = 170
         })
     ];
 
@@ -109,9 +136,9 @@ public class Bench
     [MethodImpl(MethodImplOptions.NoInlining)]
     public (float MaxScore, SolverSolution Solution) Solve()
     {
-        var config = new MCTSConfig(Config.Data);
+        var config = new MCTSConfig(Config.Data, State.Data.Input.Recipe);
 
-        var solver = new MCTS(config, State);
+        var solver = new MCTS(config, State, State.Data.Input.Random);
         var progress = 0;
         solver.Search(Config.Data.Iterations, Config.Data.MaxIterations, ref progress, CancellationToken.None);
         var solution = solver.Solution();

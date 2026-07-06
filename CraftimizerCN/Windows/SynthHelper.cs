@@ -21,6 +21,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
 using System.Threading;
+using System.Text;
 using ActionType = CraftimizerCN.Simulator.Actions.ActionType;
 using Sim = CraftimizerCN.Simulator.Simulator;
 using SimNoRandom = CraftimizerCN.Simulator.SimulatorNoRandom;
